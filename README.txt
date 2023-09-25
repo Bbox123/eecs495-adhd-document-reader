@@ -1,0 +1,1 @@
+This is an ADHD document reading assistant project as a part of an EECS495 project.
