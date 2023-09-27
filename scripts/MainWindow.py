@@ -19,8 +19,10 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1065, 820)
-        MainWindow.setStyleSheet("selection-color: rgb(65, 59, 85);\n"
-"background-color: rgb(236, 236, 236);")
+        MainWindow.setStyleSheet(
+            "selection-color: rgb(65, 59, 85);\n"
+            "background-color: rgb(236, 236, 236);"
+        )
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout_3 = QtWidgets.QGridLayout(self.centralwidget)
@@ -80,7 +82,7 @@ class Ui_MainWindow(object):
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName("label")
         self.gridLayout_2.addWidget(self.label, 1, 0, 1, 1)
-        self.importButton = QtWidgets.QPushButton(self.centralwidget)
+        self.importButton = QtWidgets.QPushButton(self.centralwidget, clicked = lambda: MainWindowBackEnd.importFile())
         font = QtGui.QFont()
         font.setPointSize(12)
         font.setBold(True)
