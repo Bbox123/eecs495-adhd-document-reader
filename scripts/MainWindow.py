@@ -22,6 +22,8 @@ class Ui_MainWindow(object):
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
         self.gridLayout.setContentsMargins(50, 50, 50, 50)
         self.gridLayout.setObjectName("gridLayout")
+
+        # This frame contains all of the UI layouts and is nested within the main window layout
         self.frame = QtWidgets.QFrame(self.centralwidget)
         self.frame.setStyleSheet(
                                 "background-color: rgb(101, 149, 163);\n"
@@ -64,8 +66,12 @@ class Ui_MainWindow(object):
         self.vertical_layout.addLayout(self.header_layout)
         self.input_options_layout = QtWidgets.QHBoxLayout()
         self.input_options_layout.setObjectName("input_options_layout")
+
+        # SpacerItems are used to maintain distance between widgets
         spacerItem = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
         self.input_options_layout.addItem(spacerItem)
+
+        # The 'Upload from computer' button
         self.importButton = QtWidgets.QPushButton(self.frame, clicked = lambda: MainWindowBackEnd.importFile())
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -89,6 +95,7 @@ class Ui_MainWindow(object):
         self.importButton.setIconSize(QtCore.QSize(65, 65))
         self.importButton.setObjectName("importButton")
         self.input_options_layout.addWidget(self.importButton)
+
         spacerItem1 = QtWidgets.QSpacerItem(100, 20, QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
         self.input_options_layout.addItem(spacerItem1)
         self.dividerLine = QtWidgets.QFrame(self.frame)
@@ -104,6 +111,8 @@ class Ui_MainWindow(object):
         self.input_options_layout.addWidget(self.dividerLine)
         spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
         self.input_options_layout.addItem(spacerItem2)
+
+        # The plain text edit box
         self.copyPasteInput = QtWidgets.QPlainTextEdit(self.frame)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -130,8 +139,11 @@ class Ui_MainWindow(object):
         self.vertical_layout.addLayout(self.input_options_layout)
         self.submit_layout = QtWidgets.QHBoxLayout()
         self.submit_layout.setObjectName("submit_layout")
+
         spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Minimum)
         self.submit_layout.addItem(spacerItem3)
+
+        # Submit button for the copy paste text box
         self.submitButton = QtWidgets.QPushButton(self.frame, clicked = lambda: MainWindowBackEnd.collectTextFromTextBox(self.copyPasteInput.toPlainText()))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
