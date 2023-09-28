@@ -2,6 +2,10 @@ from PyQt5 import QtWidgets
 
 def collectTextFromTextBox(inputText):
     """inputText contains all the text that was placed in the text box before submit was clicked"""
+    # If user clicks submit and they haven't added any text, return
+    if (len(inputText) == 0 or inputText == "Paste into text box..."):
+        return
+    
     print(inputText)
 
 def importFile():
