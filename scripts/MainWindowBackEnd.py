@@ -6,8 +6,8 @@ def collectTextFromTextBox(self, inputText):
     if (len(inputText) == 0 or inputText == "Paste into text box..."):
         return
     self.headerText.setText(f"input complete: {inputText}")
-    
-    print(inputText)
+    self.submitButton.setVisible(False)
+#    print(inputText)
 
 def importFile():
     """Open the file dialog to import a .txt or .pdf"""
