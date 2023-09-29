@@ -1,0 +1,11 @@
+{
+    "files": [
+    "scripts/MainWindow.py",
+    "scripts/MainWindowBackEnd.py",
+    "designerUIFiles/MainWindow.ui",
+    "designerUIFiles/MainWindowImproved.ui",
+    ".gitignore",
+    "README.txt",
+    "requirements.txt"
+    ]
+}
