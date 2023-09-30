@@ -1,15 +1,17 @@
 from PyQt5 import QtWidgets
+import main
 
-def collectTextFromTextBox(self, inputText):
+def collectTextFromTextBox(self, inputText, widget):
     """inputText contains all the text that was placed in the text box before submit was clicked"""
     # If user clicks submit and they haven't added any text, return
     if (len(inputText) == 0 or inputText == "Paste into text box..."):
         return
     self.headerText.setText(f"input complete: {inputText}")
     self.submitButton.setVisible(False)
-#    print(inputText)
+    goToReadingScreen(self, widget)
+    
 
-def importFile():
+def importFile(self, widget):
     """Open the file dialog to import a .txt or .pdf"""
     # This method returns a tuple, but the ', _' syntax allows us to just grab the first index of it which has the file path
     filepath, _ = QtWidgets.QFileDialog.getOpenFileName(
@@ -25,3 +27,7 @@ def importFile():
     with open(filepath) as file:
         for line in file:
             print(line)
+
+# Will be adjusted to display text
+def goToReadingScreen(self, widget):
+    widget.setCurrentIndex(1)
