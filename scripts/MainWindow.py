@@ -144,7 +144,7 @@ class Ui_MainWindow(object):
         self.submit_layout.addItem(spacerItem3)
 
         # Submit button for the copy paste text box
-        self.submitButton = QtWidgets.QPushButton(self.frame, clicked = lambda: MainWindowBackEnd.collectTextFromTextBox(self, self.copyPasteInput.toPlainText()))
+        self.submitButton = QtWidgets.QPushButton(self.frame, clicked = lambda: MainWindowBackEnd.collectTextFromTextBox(self.copyPasteInput.toPlainText()))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -183,12 +183,4 @@ class Ui_MainWindow(object):
         self.importButton.setText(_translate("MainWindow", "Upload from computer"))
         self.copyPasteInput.setPlainText(_translate("MainWindow", "Paste into text box..."))
         self.submitButton.setText(_translate("MainWindow", "Submit"))
-
-
-if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())
+        

@@ -14,4 +14,4 @@ Install the required packages for the project:
 $ pip install -r requirements.txt
 
 To run the project:
-$ python3 scripts/MainWindow.py
+$ python3 scripts/main.py
