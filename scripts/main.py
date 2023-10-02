@@ -1,5 +1,5 @@
 import sys
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt6 import QtCore, QtGui, QtWidgets
 import MainWindow as mw
 import ReadingScreen as rs
 
@@ -18,4 +18,4 @@ if __name__ == "__main__":
     widget.setFixedHeight(900)
     
     widget.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
