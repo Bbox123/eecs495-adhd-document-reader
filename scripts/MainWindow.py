@@ -9,7 +9,7 @@
 
 
 import sys
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt6 import QtCore, QtGui, QtWidgets
 import MainWindowBackEnd
 
 class Ui_MainWindow(object):
