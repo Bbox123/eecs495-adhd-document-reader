@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets
-import main
+import ReadingScreen as rs
 
 def collectTextFromTextBox(self, inputText, widget):
     """inputText contains all the text that was placed in the text box before submit was clicked"""
@@ -8,7 +8,7 @@ def collectTextFromTextBox(self, inputText, widget):
         return
     self.headerText.setText(f"input complete: {inputText}")
     self.submitButton.setVisible(False)
-    goToReadingScreen(self, widget)
+    goToReadingScreen(self, widget, inputText)
     
 
 def importFile(self, widget):
@@ -29,5 +29,10 @@ def importFile(self, widget):
             print(line)
 
 # Will be adjusted to display text
-def goToReadingScreen(self, widget):
+def goToReadingScreen(self, widget, text):
+    ReadingScreen = QtWidgets.QMainWindow()
+    ui_rs = rs.Ui_ReadingScreen()
+    ui_rs.setupUi(ReadingScreen, widget, text)
+
+    widget.addWidget(ReadingScreen)
     widget.setCurrentIndex(1)

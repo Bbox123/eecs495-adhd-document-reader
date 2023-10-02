@@ -12,7 +12,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Ui_ReadingScreen(object):
-    def setupUi(self, MainWindow, widget):
+    def setupUi(self, MainWindow, widget, text):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1500, 900)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -28,6 +28,9 @@ class Ui_ReadingScreen(object):
         self.verticalLayout.addWidget(self.label)
         self.textBrowser = QtWidgets.QTextBrowser(self.centralwidget)
         self.textBrowser.setObjectName("textBrowser")
+        self.textBrowser.setFontPointSize(32)
+        # This is essential to populate the reading screen with the desired text
+        self.textBrowser.setText(text)
         self.verticalLayout.addWidget(self.textBrowser)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)

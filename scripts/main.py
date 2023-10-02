@@ -12,13 +12,7 @@ if __name__ == "__main__":
     ui = mw.Ui_MainWindow()
     ui.setupUi(MainWindow, widget)
 
-    # might change this later to lower memory costs (have it instantiate when user clicks import/submit instead of right now)
-    ReadingScreen = QtWidgets.QMainWindow()
-    ui_rs = rs.Ui_ReadingScreen()
-    ui_rs.setupUi(ReadingScreen, widget)
-
     widget.addWidget(MainWindow)
-    widget.addWidget(ReadingScreen)
     widget.setWindowTitle("ADHD Reader")
     widget.setFixedWidth(1500)
     widget.setFixedHeight(900)
