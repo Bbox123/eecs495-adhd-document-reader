@@ -25,8 +25,10 @@ def importFile(self, widget):
         return
     
     with open(filepath) as file:
-        for line in file:
-            print(line)
+        # first case: txt
+        if filepath.endswith('.txt'):
+            text = file.read()
+            goToReadingScreen(self, widget, text)
 
 # Will be adjusted to display text
 def goToReadingScreen(self, widget, text):
