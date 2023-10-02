@@ -1,4 +1,10 @@
-from PyQt5 import QtWidgets
+from PyQt6 import QtWidgets
+## For File Parsing
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) # Add parent directory to path
+from FileProcessing import parse_file
+##
 import ReadingScreen as rs
 
 def collectTextFromTextBox(self, inputText, widget):
@@ -24,6 +30,22 @@ def importFile(self, widget):
     if (len(filepath) == 0):
         return
     
+    ## Parsing the specified file
+    file_type = ""
+    # Specifying the file type (this is just the first idea that came to mind, might need to change)
+    if ".pdf" in filepath:
+        file_type = "pdf"
+    elif ".txt" in filepath:
+        file_type = "txt"
+    else:
+        print("ERROR: Invalid file type")
+
+    # Parsing the file
+    file_text = parse_file(file_type, filepath)
+    print(file_text)
+    ##
+    
+
     with open(filepath) as file:
         for line in file:
             print(line)
