@@ -78,16 +78,22 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.importButton.sizePolicy().hasHeightForWidth())
         self.importButton.setSizePolicy(sizePolicy)
         self.importButton.setMaximumSize(QtCore.QSize(500, 150))
-        self.importButton.setStyleSheet(
-                                        "background-color: rgb(78, 134, 150);\n"
-                                        "box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);\n"
-                                        "border-radius: 20px;\n"
-                                        "color: white; \n"
-                                        "font-size: 32px; \n"
-                                        "font-family: Inter; \n"
-                                        "font-weight: 300;\n"
-                                        "word-wrap: break-word;"
-                                )
+        self.importButton.setStyleSheet("""
+                                        QPushButton {
+                                                background-color: rgb(78, 134, 150);
+                                                box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+                                                border-radius: 20px;
+                                                color: white;
+                                                font-size: 32px;
+                                                font-family: Inter;
+                                                font-weight: 300;
+                                                word-wrap: break-word;
+                                        }
+                                        
+                                        QPushButton:hover { 
+                                                background-color: rgb(53, 90, 100);
+                                         }
+                                """)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("UI/icons/downloadButton.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.importButton.setIcon(icon)
@@ -151,17 +157,23 @@ class Ui_MainWindow(object):
         self.submitButton.setSizePolicy(sizePolicy)
         self.submitButton.setMinimumSize(QtCore.QSize(0, 115))
         self.submitButton.setMaximumSize(QtCore.QSize(260, 200))
-        self.submitButton.setStyleSheet(
-                                        "border-radius: 20px;\n"
-                                        "background: #FCFFED;\n"
-                                        "box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);\n"
-                                        "color: #324143;\n"
-                                        "font-family: Inter;\n"
-                                        "font-size: 32px;\n"
-                                        "font-style: normal;\n"
-                                        "font-weight: 500;\n"
-                                        "line-height: normal;"
-                                )
+        self.submitButton.setStyleSheet("""
+                                        QPushButton {
+                                                border-radius: 20px;
+                                                background: #FCFFED;
+                                                box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+                                                color: #324143;
+                                                font-family: Inter;
+                                                font-size: 32px;
+                                                font-style: normal;
+                                                font-weight: 500;
+                                                line-height: normal;
+                                        }
+                                        QPushButton:hover {
+                                                background: rgb(127, 153, 0);
+                                        }
+                                        
+                                """)
         self.submitButton.setObjectName("submitButton")
         self.submit_layout.addWidget(self.submitButton)
         self.vertical_layout.addLayout(self.submit_layout)
