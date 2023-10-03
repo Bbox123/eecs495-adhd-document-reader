@@ -14,8 +14,7 @@ if __name__ == "__main__":
 
     widget.addWidget(MainWindow)
     widget.setWindowTitle("ADHD Reader")
-    widget.setFixedWidth(1500)
-    widget.setFixedHeight(900)
+    widget.resize(1500, 900)
     
     widget.show()
     sys.exit(app.exec())

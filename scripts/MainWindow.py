@@ -10,6 +10,7 @@
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 import MainWindowBackEnd
+import TitleBar as tb
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow, widget):
@@ -19,7 +20,7 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
-        self.gridLayout.setContentsMargins(50, 50, 50, 50)
+        self.gridLayout.setContentsMargins(0, 0, 0, 0)
         self.gridLayout.setObjectName("gridLayout")
 
         # This frame contains all of the UI layouts and is nested within the main window layout
@@ -61,7 +62,7 @@ class Ui_MainWindow(object):
                                 )
         self.headerText.setAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter|QtCore.Qt.AlignmentFlag.AlignTop)
         self.headerText.setObjectName("headerText")
-        self.header_layout.addWidget(self.headerText)
+        self.header_layout.addWidget(self.headerText, 0, QtCore.Qt.AlignmentFlag.AlignHCenter|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.vertical_layout.addLayout(self.header_layout)
         self.input_options_layout = QtWidgets.QHBoxLayout()
         self.input_options_layout.setObjectName("input_options_layout")
@@ -178,14 +179,142 @@ class Ui_MainWindow(object):
         self.submit_layout.addWidget(self.submitButton)
         self.vertical_layout.addLayout(self.submit_layout)
         self.gridLayout_3.addLayout(self.vertical_layout, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.frame, 0, 1, 1, 1)
+        # Setting the first digit to 1 is crucial for allowing the title bar setup to work properly
+        self.gridLayout.addWidget(self.frame, 1, 1, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
-
+        self.setupTitleBar()
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+    def setupTitleBar(self):
+        self.titleBar = QtWidgets.QWidget(parent=self.centralwidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.titleBar.sizePolicy().hasHeightForWidth())
+        self.titleBar.setSizePolicy(sizePolicy)
+        self.titleBar.setMinimumSize(QtCore.QSize(0, 64))
+        self.titleBar.setStyleSheet("background-color: rgb(50, 65, 67);")
+        self.titleBar.setObjectName("titleBar")
+        self.header = QtWidgets.QHBoxLayout(self.titleBar)
+        self.header.setContentsMargins(0, 0, 0, 0)
+        self.header.setObjectName("header")
+        self.gridLayout_2 = QtWidgets.QGridLayout()
+        self.gridLayout_2.setObjectName("gridLayout_2")
+        self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_4.setSizeConstraint(QtWidgets.QLayout.SizeConstraint.SetFixedSize)
+        self.horizontalLayout_4.setSpacing(0)
+        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
+        self.pushButton_4 = QtWidgets.QPushButton(parent=self.titleBar)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Maximum, QtWidgets.QSizePolicy.Policy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.pushButton_4.sizePolicy().hasHeightForWidth())
+        self.pushButton_4.setSizePolicy(sizePolicy)
+        self.pushButton_4.setMinimumSize(QtCore.QSize(30, 20))
+        self.pushButton_4.setMaximumSize(QtCore.QSize(35, 35))
+        self.pushButton_4.setStyleSheet("""
+                                        QPushButton {
+                                                border: none;
+                                        }
+                                        QPushButton:hover {
+                                                background: rgb(33, 44, 46);
+                                        }
+                                        """)
+        self.pushButton_4.setText("")
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap("UI/icons/icons8-minimize-100.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        self.pushButton_4.setIcon(icon1)
+        self.pushButton_4.setIconSize(QtCore.QSize(32, 32))
+        self.pushButton_4.setObjectName("pushButton_4")
+        self.horizontalLayout_4.addWidget(self.pushButton_4, 0, QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTop)
+        self.pushButton_2 = QtWidgets.QPushButton(parent=self.titleBar)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Maximum, QtWidgets.QSizePolicy.Policy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.pushButton_2.sizePolicy().hasHeightForWidth())
+        self.pushButton_2.setSizePolicy(sizePolicy)
+        self.pushButton_2.setMaximumSize(QtCore.QSize(35, 35))
+        self.pushButton_2.setStyleSheet("""
+                                        QPushButton {
+                                                border: none;
+                                        }
+                                        QPushButton:hover {
+                                                background: rgb(33, 44, 46);
+                                        }
+                                        """)
+        self.pushButton_2.setText("")
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap("UI/icons/icons8-square-90.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        self.pushButton_2.setIcon(icon2)
+        self.pushButton_2.setIconSize(QtCore.QSize(32, 32))
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.horizontalLayout_4.addWidget(self.pushButton_2, 0, QtCore.Qt.AlignmentFlag.AlignTop)
+        self.pushButton_3 = QtWidgets.QPushButton(parent=self.titleBar)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Maximum, QtWidgets.QSizePolicy.Policy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.pushButton_3.sizePolicy().hasHeightForWidth())
+        self.pushButton_3.setSizePolicy(sizePolicy)
+        self.pushButton_3.setMaximumSize(QtCore.QSize(35, 35))
+        self.pushButton_3.setStyleSheet("""
+                                        QPushButton {
+                                                border: none;
+                                        }
+                                        QPushButton:hover {
+                                                background: rgb(33, 44, 46);
+                                        }
+                                        """)
+        self.pushButton_3.setText("")
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap("UI/icons/icons8-close-48.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        self.pushButton_3.setIcon(icon3)
+        self.pushButton_3.setIconSize(QtCore.QSize(32, 32))
+        self.pushButton_3.setObjectName("pushButton_3")
+        self.horizontalLayout_4.addWidget(self.pushButton_3, 0, QtCore.Qt.AlignmentFlag.AlignTop)
+        self.gridLayout_2.addLayout(self.horizontalLayout_4, 0, 2, 1, 1)
+        self.Title = QtWidgets.QLabel(parent=self.titleBar)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.Title.sizePolicy().hasHeightForWidth())
+        self.Title.setSizePolicy(sizePolicy)
+        self.Title.setMouseTracking(True)
+        self.Title.setStyleSheet("color: #B6C28B;\n"
+"font-family: Inter;\n"
+"font-size: 40px;\n"
+"font-style: normal;\n"
+"font-weight: 700;\n"
+"line-height: normal;")
+        self.Title.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.Title.setObjectName("Title")
+        self.gridLayout_2.addWidget(self.Title, 0, 1, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.pushButton = QtWidgets.QPushButton(parent=self.titleBar)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.pushButton.sizePolicy().hasHeightForWidth())
+        self.pushButton.setSizePolicy(sizePolicy)
+        self.pushButton.setStyleSheet("""
+                                        QPushButton {
+                                                border: none;
+                                        }
+                                        QPushButton:hover {
+                                                background: rgb(33, 44, 46);
+                                        }
+                                        """)
+        self.pushButton.setText("")
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap("UI/icons/book.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        self.pushButton.setIcon(icon4)
+        self.pushButton.setIconSize(QtCore.QSize(64, 64))
+        self.pushButton.setObjectName("pushButton")
+        self.gridLayout_2.addWidget(self.pushButton, 0, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignLeft)
+        self.header.addLayout(self.gridLayout_2)
+        self.gridLayout.addWidget(self.titleBar, 0, 1, 1, 1)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -194,4 +323,5 @@ class Ui_MainWindow(object):
         self.importButton.setText(_translate("MainWindow", "Upload from computer"))
         self.copyPasteInput.setPlainText(_translate("MainWindow", "Paste into text box..."))
         self.submitButton.setText(_translate("MainWindow", "Submit"))
+        self.Title.setText(_translate("MainWindow", "ADHD Reader"))
 
