@@ -38,9 +38,14 @@ class Ui_ReadingScreen(object):
         self.frame.setObjectName("frame")
         self.gridLayout = QtWidgets.QGridLayout(self.frame)
         self.gridLayout.setObjectName("gridLayout")
+
         self.text = QtWidgets.QTextBrowser(self.frame)
         self.text.setStyleSheet("border: 0px;")
+        self.text.setFontPointSize(20)
+        self.text.setPlainText(text)
+        
         self.text.setObjectName("text")
+
         self.gridLayout.addWidget(self.text, 0, 0, 1, 1)
         self.horizontalWidget = QtWidgets.QWidget(self.centralwidget)
         self.horizontalWidget.setGeometry(QtCore.QRect(40, 810, 1213, 153))
