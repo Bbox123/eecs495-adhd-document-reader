@@ -7,7 +7,6 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
-import TitleBar as tb
 
 class Ui_ReadingScreen(object):
     def setupUi(self, MainWindow, widget, text):

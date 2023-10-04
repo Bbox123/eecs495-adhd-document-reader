@@ -9,11 +9,11 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
+from PyQt6.QtGui import QPainter, QMouseEvent, QCursor
 import MainWindowBackEnd
-import TitleBar as tb
 
 class Ui_MainWindow(object):
-    def setupUi(self, MainWindow, widget):
+    def setupUi(self, MainWindow, adhdReader):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1500, 900)
         MainWindow.setStyleSheet("background-color: rgb(252, 255, 237);")
@@ -72,7 +72,7 @@ class Ui_MainWindow(object):
         self.input_options_layout.addItem(spacerItem)
 
         # The 'Upload from computer' button
-        self.importButton = QtWidgets.QPushButton(self.frame, clicked = lambda: MainWindowBackEnd.importFile(self, widget))
+        self.importButton = QtWidgets.QPushButton(self.frame, clicked = lambda: MainWindowBackEnd.importFile(self, adhdReader))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -150,7 +150,7 @@ class Ui_MainWindow(object):
         self.submit_layout.addItem(spacerItem3)
 
         # Submit button for the copy paste text box
-        self.submitButton = QtWidgets.QPushButton(self.frame, clicked = lambda: MainWindowBackEnd.collectTextFromTextBox(self, self.copyPasteInput.toPlainText(), widget))
+        self.submitButton = QtWidgets.QPushButton(self.frame, clicked = lambda: MainWindowBackEnd.collectTextFromTextBox(self, self.copyPasteInput.toPlainText(), adhdReader))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -179,17 +179,16 @@ class Ui_MainWindow(object):
         self.submit_layout.addWidget(self.submitButton)
         self.vertical_layout.addLayout(self.submit_layout)
         self.gridLayout_3.addLayout(self.vertical_layout, 0, 0, 1, 1)
-        # Setting the first digit to 1 is crucial for allowing the title bar setup to work properly
         self.gridLayout.addWidget(self.frame, 1, 1, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
-        self.setupTitleBar()
+        self.setupTitleBar(adhdReader)
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-    def setupTitleBar(self):
+    def setupTitleBar(self, adhdReader):
         self.titleBar = QtWidgets.QWidget(parent=self.centralwidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -208,73 +207,51 @@ class Ui_MainWindow(object):
         self.horizontalLayout_4.setSizeConstraint(QtWidgets.QLayout.SizeConstraint.SetFixedSize)
         self.horizontalLayout_4.setSpacing(0)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-        self.pushButton_4 = QtWidgets.QPushButton(parent=self.titleBar)
+        self.minimizeButton = QtWidgets.QPushButton(parent=self.titleBar)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Maximum, QtWidgets.QSizePolicy.Policy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.pushButton_4.sizePolicy().hasHeightForWidth())
-        self.pushButton_4.setSizePolicy(sizePolicy)
-        self.pushButton_4.setMinimumSize(QtCore.QSize(30, 20))
-        self.pushButton_4.setMaximumSize(QtCore.QSize(35, 35))
-        self.pushButton_4.setStyleSheet("""
+        sizePolicy.setHeightForWidth(self.minimizeButton.sizePolicy().hasHeightForWidth())
+        self.minimizeButton.setSizePolicy(sizePolicy)
+        self.minimizeButton.setMinimumSize(QtCore.QSize(30, 20))
+        self.minimizeButton.setMaximumSize(QtCore.QSize(35, 35))
+        self.minimizeButton.setStyleSheet("""
                                         QPushButton {
                                                 border: none;
                                         }
-                                        QPushButton:hover {
-                                                background: rgb(33, 44, 46);
-                                        }
                                         """)
-        self.pushButton_4.setText("")
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("UI/icons/icons8-minimize-100.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
-        self.pushButton_4.setIcon(icon1)
-        self.pushButton_4.setIconSize(QtCore.QSize(32, 32))
-        self.pushButton_4.setObjectName("pushButton_4")
-        self.horizontalLayout_4.addWidget(self.pushButton_4, 0, QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTop)
-        self.pushButton_2 = QtWidgets.QPushButton(parent=self.titleBar)
+        self.minimizeButton.setText("")
+        self.minimizeButton.setObjectName("minimizeButton")
+        self.horizontalLayout_4.addWidget(self.minimizeButton, 0, QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTop)
+        self.maximizeButton = QtWidgets.QPushButton(parent=self.titleBar)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Maximum, QtWidgets.QSizePolicy.Policy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.pushButton_2.sizePolicy().hasHeightForWidth())
-        self.pushButton_2.setSizePolicy(sizePolicy)
-        self.pushButton_2.setMaximumSize(QtCore.QSize(35, 35))
-        self.pushButton_2.setStyleSheet("""
+        sizePolicy.setHeightForWidth(self.maximizeButton.sizePolicy().hasHeightForWidth())
+        self.maximizeButton.setSizePolicy(sizePolicy)
+        self.maximizeButton.setMaximumSize(QtCore.QSize(35, 35))
+        self.maximizeButton.setStyleSheet("""
                                         QPushButton {
                                                 border: none;
                                         }
-                                        QPushButton:hover {
-                                                background: rgb(33, 44, 46);
-                                        }
                                         """)
-        self.pushButton_2.setText("")
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("UI/icons/icons8-square-90.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
-        self.pushButton_2.setIcon(icon2)
-        self.pushButton_2.setIconSize(QtCore.QSize(32, 32))
-        self.pushButton_2.setObjectName("pushButton_2")
-        self.horizontalLayout_4.addWidget(self.pushButton_2, 0, QtCore.Qt.AlignmentFlag.AlignTop)
-        self.pushButton_3 = QtWidgets.QPushButton(parent=self.titleBar)
+        self.maximizeButton.setText("")
+        self.horizontalLayout_4.addWidget(self.maximizeButton, 0, QtCore.Qt.AlignmentFlag.AlignTop)
+        # You have to pass in adhdReader here since that contains all of our screens
+        self.closeButton = QtWidgets.QPushButton(parent=self.titleBar)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Maximum, QtWidgets.QSizePolicy.Policy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.pushButton_3.sizePolicy().hasHeightForWidth())
-        self.pushButton_3.setSizePolicy(sizePolicy)
-        self.pushButton_3.setMaximumSize(QtCore.QSize(35, 35))
-        self.pushButton_3.setStyleSheet("""
+        sizePolicy.setHeightForWidth(self.closeButton.sizePolicy().hasHeightForWidth())
+        self.closeButton.setSizePolicy(sizePolicy)
+        self.closeButton.setMaximumSize(QtCore.QSize(35, 35))
+        self.closeButton.setStyleSheet("""
                                         QPushButton {
                                                 border: none;
                                         }
-                                        QPushButton:hover {
-                                                background: rgb(33, 44, 46);
-                                        }
                                         """)
-        self.pushButton_3.setText("")
-        icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap("UI/icons/icons8-close-48.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
-        self.pushButton_3.setIcon(icon3)
-        self.pushButton_3.setIconSize(QtCore.QSize(32, 32))
-        self.pushButton_3.setObjectName("pushButton_3")
-        self.horizontalLayout_4.addWidget(self.pushButton_3, 0, QtCore.Qt.AlignmentFlag.AlignTop)
+        self.closeButton.setText("")
+        self.horizontalLayout_4.addWidget(self.closeButton, 0, QtCore.Qt.AlignmentFlag.AlignTop)
         self.gridLayout_2.addLayout(self.horizontalLayout_4, 0, 2, 1, 1)
         self.Title = QtWidgets.QLabel(parent=self.titleBar)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Preferred)

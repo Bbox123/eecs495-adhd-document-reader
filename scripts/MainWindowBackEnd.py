@@ -39,10 +39,10 @@ def importFile(self, widget):
             goToReadingScreen(self, widget, text)
 
 # Will be adjusted to display text
-def goToReadingScreen(self, widget, text):
+def goToReadingScreen(self, adhdReader, text):
     ReadingScreen = QtWidgets.QMainWindow()
     ui_rs = rs.Ui_ReadingScreen()
-    ui_rs.setupUi(ReadingScreen, widget, text)
+    ui_rs.setupUi(ReadingScreen, adhdReader, text)
 
-    widget.addWidget(ReadingScreen)
-    widget.setCurrentIndex(1)
+    adhdReader.stacked_widget.addWidget(ReadingScreen)
+    adhdReader.stacked_widget.setCurrentIndex(1)
