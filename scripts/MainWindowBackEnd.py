@@ -1,5 +1,6 @@
 from PyQt6 import QtWidgets
 import ReadingScreen as rs
+import ReadingScreen_MileStoneScreen as rs_ms
 import ParseFile as pf
 # import PyPDF2
 
@@ -48,7 +49,7 @@ def importFile(self, widget):
 # Will be adjusted to display text
 def goToReadingScreen(self, adhdReader, text):
     ReadingScreen = QtWidgets.QMainWindow()
-    ui_rs = rs.Ui_ReadingScreen()
+    ui_rs = rs_ms.Ui_MainWindow()
     ui_rs.setupUi(ReadingScreen, adhdReader, text)
 
     adhdReader.stacked_widget.addWidget(ReadingScreen)
