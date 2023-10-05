@@ -1,6 +1,7 @@
 from PyQt6 import QtWidgets
 import ReadingScreen as rs
-import PyPDF2
+import ParseFile as pf
+# import PyPDF2
 
 def collectTextFromTextBox(self, inputText, widget):
     """inputText contains all the text that was placed in the text box before submit was clicked"""
@@ -25,18 +26,24 @@ def importFile(self, widget):
     if (len(filepath) == 0):
         return
 
-    if filepath.endswith('.txt'):
-        with open(filepath, 'r') as file:
-            # first case: txt
-            text = file.read()
-            goToReadingScreen(self, widget, text)
-    else:  # pdf
-        with open(filepath, 'rb') as file:
-            pdf_reader = PyPDF2.PdfReader(file)
-            text = ""
-            for page in pdf_reader.pages:
-                text += page.extract_text()
-            goToReadingScreen(self, widget, text)
+    # Parse the file
+    parser = pf.Partition_Text()                            # create parser
+    parser.parse_file(filepath.split(".")[-1], filepath)    # parse file
+    # TODO: add functionality to display the text
+
+    # Previous code, delete if not needed
+    # if filepath.endswith('.txt'):
+    #     with open(filepath, 'r') as file:
+    #         # first case: txt
+    #         text = file.read()
+    #         goToReadingScreen(self, widget, text)
+    # else:  # pdf
+    #     with open(filepath, 'rb') as file:
+    #         pdf_reader = PyPDF2.PdfReader(file)
+    #         text = ""
+    #         for page in pdf_reader.pages:
+    #             text += page.extract_text()
+    #         goToReadingScreen(self, widget, text)
 
 # Will be adjusted to display text
 def goToReadingScreen(self, adhdReader, text):

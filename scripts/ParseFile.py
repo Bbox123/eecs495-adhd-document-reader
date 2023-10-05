@@ -1,6 +1,7 @@
 import pdftotext
 import sys
-import re
+import heapq
+from nltk import sent_tokenize
 
 # Class to partition text into strings of size partition_size
 class Partition_Text(object):
@@ -10,9 +11,11 @@ class Partition_Text(object):
         # Text variables
         self.text = ""                                  # string of text in file
         self.partitions = []                            # list of partitions
+
         # Partition variables
         self.partition_size = partition_size            # number of words per partition
         self.milestone_frequency = milestone_frequency  # number of partitions between milestones
+
         # Counter variables
         self.current_partition = 0                      # index of current partition
         self.milestone_counter = 0                      # number of partitions since last milestone (resets to 0 after each milestone)
@@ -40,16 +43,25 @@ class Partition_Text(object):
             self.partition_text()           # call partition_text function
 
     def partition_text(self):
-        ''' This function partitions the text into strings of size partition_size and stores them in a list '''
-        words = self.text.split()   # list of words in text
-        num_words = len(words)      # number of words in text
-        num_partitions = num_words // self.partition_size  # number of partitions
-        # Add extra partition if necessary
-        if num_words % self.partition_size != 0:    # if there are extra words
-            num_partitions += 1                         # add extra partition
-        # Partition text into list of strings of size partition_size
-        for i in range(num_partitions):             # for each partition
-            self.partitions.append(" ".join(words[i*self.partition_size:(i+1)*self.partition_size])) # add partition to list of partitions
+        ''' This function partitions the text into strings of size partition_size (or less) and stores them in a list '''
+        # Format text and split into sentences
+        self.text = " ".join(self.text.split())                                                 # remove extra whitespace
+        sentences = sent_tokenize(self.text)                                                    # list of sentences in text
+
+        # Check if partition size is too small
+        max_sentence = heapq.nlargest(1, [len(sentence.split()) for sentence in sentences])[0]  # length of longest sentence
+        if max_sentence > self.partition_size:                                                  # if the longest sentence is longer than the partition size
+            print("Partition size is too small, increasing partition size to", max_sentence)
+            self.partition_size = max_sentence                                                  # increase partition size to length of longest sentence (TODO: should we do this or just throw an error?)
+
+        # Partition text into strings of size partition_size (or less)
+        while len(sentences) > 0:                                                               # while there are more sentences to partition
+            partition = ""
+            while len(sentences) > 0\
+                and len((partition + " " + sentences[0]).split())\
+                    <= self.partition_size:                            # while the current partition would not exceed the partition size if the next sentence were added
+                partition = " ".join([partition, sentences.pop(0)])         # add next sentence to current partition
+            self.partitions.append(partition.strip())                       # add current partition to list of partitions
 
     # Return next partition or milestone
     def get_next(self):
@@ -74,10 +86,10 @@ if __name__ == "__main__":
     next_partition = parser.get_next()                          # get first partition
     while next_partition != None:                               # while there are more partitions
         if next_partition == "milestone":                           # if milestone
-            print("milestone")                                          # print milestone
+            print("---milestone---", "\n")                              # print milestone
         else:                                                       # if not milestone
             print("partition #", parser.current_partition, ":")         # print partition number
-            print(next_partition)                                       # print partition
+            print(next_partition, "\n")                                 # print partition
         next_partition = parser.get_next()                          # get next partition
     print("end of file")                                        # print end of file
     # END TESTING

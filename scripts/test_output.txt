@@ -1,0 +1,181 @@
+Partition size is too small, increasing partition size to 86
+partition # 1 :
+77
+Current Biology Vol 21 No 2 R62 Primer Sexual selection David J. Hosken and Clarissa M. House Sexual selection is a concept that has probably been misunderstood and misrepresented more than any other idea in evolutionary biology, confusion that continues to the present day. We are not entirely sure why this is, but sexual politics seems to have played its role, as does a failure to understand what sexual selection is and why it was initially invoked.
+partition # 2 :
+59
+While in some ways less intuitive than natural selection, sexual selection is conceptually identical to it, and evolution via either mechanism will occur given sufficient genetic variation. Recent claims that sexual selection theory is fundamentally flawed are simply wrong and ignore an enormous body of evidence that provides a bedrock of support for this major mechanism of organic evolution.
+partition # 3 :
+79
+In fact it is partly due to this solid foundation that current research has largely shifted from documenting whether or not sexual selection occurs, to addressing more complex evolutionary questions. What is sexual selection? Sexual selection is Darwin’s second great insight, and he defined it as depending on “the advantage which certain individuals have over other individuals of the same sex and species solely in respect of reproduction”. So sexual selection can be thought of as intra-specific reproductive competition.
+partition # 4 :
+42
+While some have suggested distinguishing between sexual and natural selection is worthless, Darwin made the distinction clearly, cogently and for good reason — he was trying to explain the existence of characters that were apparently not favoured by natural selection (Figure 1).
+partition # 5 :
+77
+He says, for example, that sexual selection “depends not on the struggle for existence, but on the struggle between males for possession of females.” Statements like this have been (mis)interpreted by some as implying that Darwin was not aware of female reproductive competition, but this is clearly not the case. Darwin suggested that when males and females had different “habits”, and differed in traits other than primary sexual characters, the differences were probably due to natural selection.
+---milestone---
+partition # 6 :
+68
+Furthermore, whenever a trait is developed for “the general purposes of life” this is also due to natural selection. If, however, a trait provides an advantage over a rival in securing a mate, then it is subject to sexual selection. Darwin also suggested that many characters are likely to be exposed to both forms of selection and that it will often be difficult to distinguish between the two.
+partition # 7 :
+55
+But although difficult, the distinction is still useful conceptually and operationally, and when talking about the sum of these two mechanisms of evolution, selection (or net selection) should be used as an umbrella term to incorporate both natural and sexual selection and distinguish them from neutral processes that cause organic evolution (such as genetic drift).
+partition # 8 :
+72
+Sexual selection is not a subcategory of natural selection, as Darwin made very clear: it arises from differences in mating success, whereas natural selection is due to variance in all other fitness components. This simple delineation comes closest to Darwin’s concepts and distinctions. What Darwin apparently did not clearly appreciate, however, is that sexual selection is often stronger than natural selection, as it frequently drives trait values beyond their naturally selected optima.
+partition # 9 :
+55
+Furthermore, this occurs even though sexual selection largely acts on only half the population (usually males), a situation that has been referred to as the quantitative paradox of sexual selection. The solution to this apparent paradox is that the variance in male reproductive success is typically very large, meaning that sexual selection can be strong.
+partition # 10 :
+72
+It is important to remember that the variance in reproductive success is a measure of the potential for sexual selection and need not imply that any selection is occurring — the variance in sexual fitness may be random with respect to trait values, which of course means no selection. To establish a trait is subject to sexual selection, a clear link between it and mating success needs to be made (see below).
+---milestone---
+partition # 11 :
+65
+Nonetheless, potential and realized selection on male traits is often very strong, with many male characters subject to sexual selection. This includes male body size, display rate or display size, and is why male mammals are often larger than females, for example. Figure 1. Examples of conspicuous sexually selected characters. These can be display traits used to attract females and/or weapons used in male–male combat.
+partition # 12 :
+67
+Shown here (clockwise from top left) are: the plumage of a male sunbird; the exaggerated sword of a male sword-tailed fish; the horns of a male chameleon; and the enlarged eye-stalks of a male stalk-eyed fly. Images courtesy of Mhairi McFarlane, Nick Royle, Jan Stipala and Sam Cotton, respectively. Magazine R63 Darwin also erroneously suggested that “promiscuous intercourse” will “prevent or check the action of sexual selection”.
+partition # 13 :
+78
+We now know that females of most species mate with multiple males and when this occurs there can be a shift in the focus of sexual selection to the post-copulatory arena, resulting in the evolution of exaggerated reproductive traits in males, such as testis mass. Postcopulatory sexual selection is also a major driver of the evolution of the male intromittent organ, and probably sperm form too, but how it affects net sexual selection on males is more debatable.
+partition # 14 :
+52
+Variance in male mating success still appears to be the strongest determinant of the strength of sexual selection because if a male does not mate, he will not take part in post-copulatory sexual selection. The mechanisms of sexual selection Darwin provided two mechanisms of sexual selection: mate choice and competition for mates.
+partition # 15 :
+76
+While acknowledging that males can be choosy and females competitive, it is typically females that are more choosy and males that are more competitive, so as a first approximation, mate choice is female mate choice and competition is male–male competition for mates. The logic of this was fleshed-out by Trivers, although Fisher in letters to A.J. Batemen had noted that sexual selection should be stronger on males because their fitness is limited by access to females.
+---milestone---
+partition # 16 :
+73
+In any case, Darwin’s contemporaries, and those that followed, readily accepted male–male mate competition as a mechanism of sexual selection, probably because male–male competition was so obvious, but female choice was controversial, and confusion about female preference/choice continues to this day. The initial controversy might be partly because Darwin did not really explain why females might have one preference over another, or why they would continue to prefer males with exaggerated sexual traits.
+partition # 17 :
+27
+Instead, Darwin took female preference as a given, and although he did hint that preference could evolve, he at times attributed female choice to higher mental faculties.
+partition # 18 :
+86
+All this led to the rejection of female mate choice, often through arguments of incredulity: “… it is absurd to credit birds with aesthetic tastes equal, if not superior, to those of the most refined and civilized human beings.” Darwin anticipated these arguments against female preference, saying that preference did not depend on a sense of beauty, but only on females being able to discriminate amongst males, so rejection of female preference on this basis represents a fundamental misunderstanding of choice and preference in sexual selection.
+partition # 19 :
+82
+For example, females do not have to be actively choosing: if they only mate on a certain tree, then there will be selection against any male who is not also on the tree. This does not require any higher female cognition, merely that because of something females do, some male phenotypes do well and others do poorly. Sexual selection was also dealt a savage blow by Julian Huxley, who either did not read Darwin, or did not understand what he had read.
+partition # 20 :
+66
+He said for example “Darwin further failed to draw a general distinction between interspecific and intraspecific selection, although in sexual selection, as defined by him, he gave the first example of intraspecific selection promoting individual success without advantage to the type”, and further, “display may often be of advantage to the species ….. and any resultant selection will therefore come under the head of Natural Selection”.
+---milestone---
+partition # 21 :
+68
+It is abundantly clear from these quotes that Huxley fundamentally failed to understand Darwin’s message, but many, including Lack, accepted his criticisms, and sexual selection entered a period of torpor. So much so that it did not figure in the Modern Synthesis. Fisher was the next major figure to turn his attention to sexual selection, with a short section in his classic The Genetical Theory of Natural Selection.
+partition # 22 :
+61
+His work explained the establishment, spread and persistence of female preference, and so filled a gap in Darwin’s original thesis. Fisher imagined a male trait that was initially favoured by natural selection. Any female that paid attention to that character would have higher fitness as her offspring would inherit the trait, but also the tendency to pay attention to the trait.
+partition # 23 :
+40
+Thus, the trait would come to have a naturally selected advantage and an extra advantage via female preference, which would be proportional to the strength of preference, and both preference and trait would spread through the population because of this.
+partition # 24 :
+60
+As Fisher stated “Whenever appreciable differences exist in a species, which are in fact correlated with selective advantage, there will be a tendency to select also those individuals of the opposite sex which most clearly discriminate the difference to be observed” and this can lead to the evolution of male trait and female preference. Fisher’s fundamental insights were essentially ignored.
+partition # 25 :
+86
+In fact it was not until some 50 years later that Lande showed that Fisher’s logic was correct, and that accelerating evolution of preference and trait could occur when the strength of natural selection on the male trait was relatively weak and the genetic correlation between female preference and male trait was relatively strong (Figure 2). This work by Lande, together with the insights of Trivers and others, was largely responsible for the enormous explosion in sexual selection research that has occurred after the early 1970s.
+---milestone---
+partition # 26 :
+73
+Sexual selection via female choice and male–male competition has now been documented in many species, and sex-role reversal, where females compete and males are choosy, is also well documented. Choice for what? While it is clear why males are competing — they need females (or more strictly their eggs) to secure fitness — what is in it for females? The benefits of female choice have been discussed widely and subject to much research.
+partition # 27 :
+82
+They are broadly divided into direct benefits, increased female fecundity or lifespan, for example, and indirect benefits, some increase in the quality of offspring. This quality can be sexual quality, more attractive sons (Fisher’s effect), or general viability (good genes). Theory has largely focused on indirect benefits perhaps because if benefits are direct, there is not a lot left to say — females increase their fecundity by mating with specific males, q.e.d. — and Lande’s model assumed no direct selection on preference.
+partition # 28 :
+75
+This may, however, have inadvertently placed too much emphasis on the importance of indirect benefits, and empirically there is evidence that direct benefits of choice can be very important. With that in mind, some of the most vigorous Current Biology Vol 21 No 2 R64 Average strength of female preference Line of neutral equilibria Lines of motion Average size of male trait Current Biology Figure 2. A diagram illustrating Lande’s model of the Fisher process.
+partition # 29 :
+80
+Male trait size (the red tail of the cartoon bird) is plotted on the x-axis and female preference for the male tail is on the y-axis. The dotted line (labelled Q) represents the naturally selected optimal tail size, and female preference tends to move the tail beyond this size. The solid black line (the line of neutral equilibria) represents a balance between natural and sexual selection, and when these two are equal, there is no net selection on tail size.
+partition # 30 :
+86
+The slope of this line depends on the strength of natural and sexual selection on tail size. If, for example, female preference is strong and stereotyped and natural selection against exaggerated tail size is weak, the slope will be relatively shallow. The red dotted lines (lines of motion) represent the evolutionary trajectories of a population, with the precise trajectory followed being determined by the population’s starting point. The slope of the lines of motion is determined by the genetic correlation between male trait and female preference.
+---milestone---
+partition # 31 :
+76
+Shown here is the case when the genetic covariance is relatively strong — the lines of motion have a relatively steep slope — and the line of equilibrium has a relatively shallow slope. This corresponds to Fisher’s runaway, where populations evolve away from the line of equilibria. Note that above the line of equilibria, larger tails evolve and below it, smaller tails. Redrawn from Arnold (1983) in Bateson, P. (ed) Mate Choice (Cambridge University Press, Cambridge).
+partition # 32 :
+65
+debate has been over the importance of good genes (for viability) and Fisher’s (attractiveness) sons’ effect as indirect benefits of choice. Part of the problem is that good genes benefits include a sons’ effect (as explained by Fisher) and with females exercising some preference, male traits will be dragged past their naturally selected optima, so there will be a viability cost to exaggerated sexual traits.
+partition # 33 :
+80
+Furthermore, if male fitness is enhanced more by marginal investment in sexual traits than survival, any positive link between the size of a male sexual trait and male viability will also be lost. Additionally, intra-locus sexual conflict, sexual differences in optimal trait values, may mean good genes for a male phenotype are not good genes for a female phenotype, and finally, inter-locus sexual conflict, the divergence of male and female reproductive interests, can generate direct negative selection on female preference.
+partition # 34 :
+68
+So, in spite of claims that all sexual selection must be inevitably linked to good genes, this need not be the case. We also note here that “sexy sons”, which is often confused with Fisher’s effect, is in fact the idea that females can compensate for direct negative selection on preferences — by mating with preferred males females produce fewer offspring — through the attractiveness of their sons.
+partition # 35 :
+86
+This idea has little theoretical support, while Fisher’s sons’ effect can lead to bouts of accelerating evolution of trait and preference. Measuring sexual selection This is another area that has been subject to considerable debate. In fact, Grafen asked why we should even bother to measure sexual selection at all? The crux of his question was that Darwin’s fundamental insight required no measurement of selection, plus seeing no sexual selection on a character now does not mean it was not under sexual selection in the past.
+---milestone---
+partition # 36 :
+68
+There are a number of reasonable answers to this query, the most pertinent being that by assessing selection now, we can infer recent-past and near-future evolution (if we also know something about the genetics involved, because selection does not always result in evolution). Measuring current sexual selection is in principle easy, and a framework for doing this was established over 25 years ago by Lande, Arnold and Wade.
+partition # 37 :
+27
+This approach builds on the simple principle that the selection operating on a phenotypic trait can be measured by the statistical relationship between the trait and fitness.
+partition # 38 :
+60
+Lande and Arnold referred to this relationship as a selection gradient, and further showed that the mathematical form of the selection gradient tells us how the trait distribution will change with selection (assuming there is sufficient genetic variation for the trait in the direction of selection), thus providing a useful way of characterizing the type of selection targeting a trait.
+partition # 39 :
+82
+In the simplest case, the relationship between the size of a sexual trait and mating success is linear, and hence the sign of the selection gradient indicates whether sexual selection favours an increase or decrease in trait size. This will in turn result in an increase or decrease in mean trait expression, with the magnitude of this change determined by the slope of the selection gradient and the heritable genetic variation for the trait. However, selection can also be nonlinear in form.
+partition # 40 :
+61
+If the relationship between trait and mating success is concave down, sexual selection will be stabilizing in form and individuals expressing traits close to the population mean will have the highest fitness. Conversely, if the relationship is concave up, sexual selection will be disruptive in form and individuals with traits at the extremes of the distribution will have the highest fitness.
+---milestone---
+partition # 41 :
+55
+Magazine R65 Based on these criteria, measuring sexual selection is, in principle, relatively simple: collect a sample of mating and non-mating males from a population, measure their phenotype and quantify the relationship between phenotype and mating success. Unfortunately, however, predicting evolutionary responses based on assessment of sexual selection is problematic for a number of reasons.
+partition # 42 :
+62
+This includes Grafen’s complaint — failure to detect selection now does not mean there was not selection in the past (or future) — but additionally, because different traits are nearly always correlated with each other (either at the phenotypic or genetic level) and selection rarely focuses on a single trait at a time, responses to selection can differ markedly from simple expectations.
+partition # 43 :
+59
+This is illustrated perfectly by the fact that sexual selection can also be correlational in form if the covariance between two traits influences mating success. This may occur, for example, if two colours on a male bird’s plumage are preferred most by females when they occur together. This highlights the simple fact that sexual selection is a multivariate process.
+partition # 44 :
+72
+This means that measuring the sexual selection acting on a given trait is slightly more complicated, as a technique is required that enables the direct selection acting on a trait to be separated from the indirect selection operating on it (via correlations), as well as linear and nonlinear selection gradients to be measured independently. Lande and Arnold showed how some of these issues could in principle be solved using multiple regression analysis.
+partition # 45 :
+79
+By building a regression model that includes the suite of correlated male sexual traits as predictor variables and mating success as the response variable, the linear selection gradient for one trait can be estimated when the effects of all other correlated traits are held constant. Moreover, by adding quadratic terms for each trait and the covariance between each pair of traits to this linear model, nonlinear selection gradients can be estimated when the effects of linear selection are removed.
+---milestone---
+partition # 46 :
+59
+An additional benefit of this approach is that, when the traits are standardized and mating success made relative prior to analysis, the selection gradients are directly comparable across studies using organisms with very different sexual traits. Numerous researchers have taken advantage of this to address fundamental questions such as what is the strength of sexual selection in natural populations?
+partition # 47 :
+48
+A myriad other statistical approaches have more recently been developed to help simplify the interpretation of nonlinear selection, which can become complicated when more than a few traits are being examined, as well as to formally compare selection gradients amongst different ‘groups’ (such as populations or the sexes).
+partition # 48 :
+86
+These approaches have been used to address more complex questions such as whether current patterns of multivariate sexual selection can explain the evolutionary divergence of male sexual traits observed across populations and what the relative importance of sexual selection, genetics and drift are to this process. Where to now? For much of its early history researchers had to collate evidence for sexual selection, and establish that females (or males) were in fact choosy and that the outcome of reproductive competition was determined by an individuals’ phenotype.
+partition # 49 :
+64
+All this established the fundamental truth of Darwin’s hypothesis, but there are many areas that still require research and new vistas have appeared as older questions have been answered. One area that remains underexplored is female preference. There is a current paucity of information on female preference functions, their shape, whether there is genetic variation for them, and the costs of expressing different preferences.
+partition # 50 :
+81
+This gap restricts our understanding of the nature of sexual selection acting on male sexual traits and the evolution of female preference itself. Female reproductive competition is also an area that has received relatively little investigation and the realisation that sexual-signal honesty can be compromised by genotype-by-environment interactions also provides fertile ground for new empirical and theoretical research. We also do not have a clear understanding of the relative importance of sexual conflict and traditional sexual selection in driving trait evolution.
+---milestone---
+partition # 51 :
+49
+Are females making rational mate choices or are they being coerced into choices that are not in their best interests? At this point in time we do not have clear answers to these questions. Even more fundamentally, it is currently not clear if sexual selection is adaptive or not.
+partition # 52 :
+61
+While Darwin invoked sexual selection to explain characters that were apparently not adaptive, he also suggested sexual selection could lead to the improvement of the breed or species, but as Fisher and Lande explained, sexual selection often drives traits from their naturally selected optima. Furthermore, if sexual selection inherently includes a conflict load, it is also not expected to be adaptive.
+partition # 53 :
+86
+At present we only have limited evidence bearing on this issue, and because it is only relatively recently that we have become aware that sexual selection is a general and potent driver of population divergence, this is an area ripe for additional work. These are just some issues that should gain more research time, and we should continue to apply the multiple regression approach to sexual selection while also being aware of the limitation of this approach. These include measuring selection and phenotypes accurately and meaningfully.
+partition # 54 :
+71
+Nevertheless, big unanswered questions remain for young researchers with an eye for detail, and reading Darwin is still a good place to start. Further reading Andersson, M., and Simmons, L.W. (2006). Sexual selection and mate choice. Trends Ecol. Evol. 21, 298–302. Arnold, S.J., and Wade, M.J. (1984). On the measurement of natural and sexual selection: theory. Evolution 38, 709–719. Arnqvist, G., and Rowe, L. (2005). Sexual Conflict (Princeton University Press, Princeton).
+partition # 55 :
+84
+ Bradbury, J.W., and Andersson, M. (eds) (1987) Sexual Selection: Testing the Alternatives (John Wiley & Sons, New York). Cameron, E., Day, T., and Rowe, L. (2003). Sexual conflict and indirect benefits. J. Evol. Biol. 16, 1055–1060. Darwin, C. (1871). The Descent of Man and Selection in Relation to Sex (John Murray, London). Ingleby, F., Hunt, J., and Hosken, D.J. (2010). The role of genotype-by-environment interactions in sexual selection. J. Evol. Biol. 23, 2031–2045. Klug, H., Heuschelle, J., Jennions, M.D., and Kokko, H. (2010).
+---milestone---
+partition # 56 :
+66
+The mismeasurement of sexual selection. J. Evol. Biol. 23, 447–462. Lande, R. (1981). Models of speciation by sexual selection on polygenic traits. Proc. Natl. Acad. Sci. USA 78, 3721–3725. Mead, L.S., and Arnold, S.J. (2004). Quantitative genetic models of sexual selection. Trends Ecol. Evol. 19, 264–271. Centre for Ecology & Conservation, Biosciences, The University of Exeter, Cornwall Campus, Tremough, Penryn TR10 9EZ, Cornwall, UK. E-mail: D.J.Hosken@exeter.ac.uk
+end of file
