@@ -335,6 +335,7 @@ class Ui_MainWindow(object):
         self.goToReadingScreen(adhdReader, parser)
 
     def goToReadingScreen(self, adhdReader, parser):
+        """Take the document or text and head to the reading screen to display it!"""
         ui_rs = rs_ms.Ui_ReadingScreen(adhdReader, parser)
         ui_rs.setupUi()
 

@@ -191,6 +191,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.setWindowTitle(_translate("MainWindow", "MainWindow"))
 
     def loadNextPartition(self):
+        """Get the next partition or milestone"""
         self.textBrowser.setText(self.parser.get_next(self.loadMileStone, self.loadTextBrowser))
         self.progressBar.setValue(self.parser.current_partition)
 
