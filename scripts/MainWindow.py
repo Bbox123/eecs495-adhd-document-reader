@@ -9,8 +9,8 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
-from PyQt6.QtGui import QPainter, QMouseEvent, QCursor
-import MainWindowBackEnd
+import ReadingScreen_MileStoneScreen as rs_ms
+import ParseFile as pf
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow, adhdReader):
@@ -72,7 +72,7 @@ class Ui_MainWindow(object):
         self.input_options_layout.addItem(spacerItem)
 
         # The 'Upload from computer' button
-        self.importButton = QtWidgets.QPushButton(self.frame, clicked = lambda: MainWindowBackEnd.importFile(self, adhdReader))
+        self.importButton = QtWidgets.QPushButton(self.frame, clicked = lambda: self.importFile(adhdReader))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -150,7 +150,7 @@ class Ui_MainWindow(object):
         self.submit_layout.addItem(spacerItem3)
 
         # Submit button for the copy paste text box
-        self.submitButton = QtWidgets.QPushButton(self.frame, clicked = lambda: MainWindowBackEnd.collectTextFromTextBox(self, self.copyPasteInput.toPlainText(), adhdReader))
+        self.submitButton = QtWidgets.QPushButton(self.frame, clicked = lambda: self.collectTextFromTextBox(self.copyPasteInput.toPlainText(), adhdReader))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -301,4 +301,43 @@ class Ui_MainWindow(object):
         self.copyPasteInput.setPlainText(_translate("MainWindow", "Paste into text box..."))
         self.submitButton.setText(_translate("MainWindow", "Submit"))
         self.Title.setText(_translate("MainWindow", "ADHD Reader"))
+
+    def collectTextFromTextBox(self, inputText, adhdReader):
+        """inputText contains all the text that was placed in the text box before submit was clicked"""
+        # If user clicks submit and they haven't added any text, return
+        if (len(inputText) == 0 or inputText == "Paste into text box..."):
+                return
+        
+        # Parse the file
+        parser = pf.Partition_Text(text=inputText)              # create parser
+
+        # Change to reading screen 
+        self.goToReadingScreen(adhdReader, parser)           # pass in parser object
+
+    def importFile(self, adhdReader):
+        """Open the file dialog to import a .txt or .pdf"""
+        # This method returns a tuple, but the ', _' syntax allows us to just grab the first index of it which has the file path
+        filepath, _ = QtWidgets.QFileDialog.getOpenFileName(
+                caption="Import File", 
+                directory="",  # Default import directory is the same directory the application is in
+                filter="PDF and Text Files (*.txt | *.pdf);;Text Files (*.txt);;PDF (*.pdf)"
+        )
+
+        # If the user clicks cancel, return
+        if (len(filepath) == 0):
+                return
+
+        # Parse the file
+        parser = pf.Partition_Text()                            # create parser
+        parser.parse_file(filepath.split(".")[-1], filepath)    # parse file
+
+        # Change to reading screen
+        self.goToReadingScreen(adhdReader, parser)
+
+    def goToReadingScreen(self, adhdReader, parser):
+        ui_rs = rs_ms.Ui_ReadingScreen(adhdReader, parser)
+        ui_rs.setupUi()
+
+        adhdReader.stacked_widget.addWidget(ui_rs)
+        adhdReader.stacked_widget.setCurrentIndex(1)
 

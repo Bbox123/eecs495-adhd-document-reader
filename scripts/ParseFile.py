@@ -1,9 +1,12 @@
 import pdftotext
 import sys
 import heapq
+import nltk
+nltk.download('punkt')
 from nltk import sent_tokenize
 import os
 import re
+import ReadingScreen_MileStoneScreen as rs_ms
 
 # Class to partition text into strings of size partition_size
 class Partition_Text(object):
@@ -75,16 +78,17 @@ class Partition_Text(object):
             self.partitions.append(partition.strip())                       # add current partition to list of partitions
 
     # Return next partition or milestone
-    def get_next(self):
+    def get_next(self, loadMileStone, loadTextBrowser):
         ''' This function returns the next partition or milestone or None if there are no more partitions '''
         if self.current_partition < len(self.partitions):           # if there are more partitions
             if self.milestone_counter == self.milestone_frequency:      # if milestone
                 self.milestone_counter = 0                                  # reset milestone counter
-                return "milestone"                                          # return milestone (TODO: replace with front end call)
+                loadMileStone()                                     # return milestone (TODO: replace with function call to determine which milestone (maybe its own class that front end calls?))
             else:                                                       # if not milestone
                 self.milestone_counter += 1                                 # increment milestone counter
                 self.current_partition += 1                                 # increment current partition
                 # print(len(self.partitions[self.current_partition - 1].split())
+                loadTextBrowser()                                   # call to switch back over to text browser if necessary 
                 return self.partitions[self.current_partition - 1]          # return next partition
         else:                                                       # if no more partitions
             return None                                                 # return None (TODO: replace with front end call)

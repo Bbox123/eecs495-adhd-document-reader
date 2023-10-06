@@ -8,14 +8,24 @@
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 import TakeABreakMilestone as tab_m
+import ParseFile
 
+class Ui_ReadingScreen(QtWidgets.QMainWindow):
+    
+    def __init__(self, adhdReader: QtWidgets.QMainWindow, parser: ParseFile.Partition_Text):
+        """Initialize the reading screen. Pass in a pointer to the screen controller (adhdReader) and a parser object"""
+        super(Ui_ReadingScreen, self).__init__()
+        self.adhdReader = adhdReader
+        self.parser = parser
 
-class Ui_MainWindow(object):
-    def setupUi(self, MainWindow, widget, text):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1124, 749)
-        MainWindow.setStyleSheet("background-color: rgb(252, 255, 237);")
-        self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
+        # partitioning text in parser
+        self.parser.partition_text()
+
+    def setupUi(self):
+        self.setObjectName("MainWindow")
+        self.resize(1124, 749)
+        self.setStyleSheet("background-color: rgb(252, 255, 237);")
+        self.centralwidget = QtWidgets.QWidget(parent=self)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.centralwidget)
         self.verticalLayout_2.setContentsMargins(50, 50, 50, 20)
@@ -47,7 +57,7 @@ class Ui_MainWindow(object):
         self.textBrowser.setStyleSheet("border-color: rgb(255, 255, 255);")
         self.textBrowser.setObjectName("textBrowser")
         self.textBrowser.setFontPointSize(24)
-        self.textBrowser.setText(text)
+        self.textBrowser.setText(self.parser.get_next(self.loadMileStone, self.loadTextBrowser))
         self.gridLayout.addWidget(self.textBrowser, 0, 0, 1, 1)
         
         """End of important things to pay attention to."""
@@ -148,7 +158,7 @@ class Ui_MainWindow(object):
         self.progressBar.setTextVisible(False)
         self.progressBar.setObjectName("progressBar")
         self.horizontalLayout_2.addWidget(self.progressBar)
-        self.rightArrow = QtWidgets.QPushButton(parent=self.centralwidget, clicked = lambda: self.loadMileStone(MainWindow))
+        self.rightArrow = QtWidgets.QPushButton(parent=self.centralwidget, clicked = lambda: self.loadNextPartition())
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -169,16 +179,19 @@ class Ui_MainWindow(object):
         self.rightArrow.setObjectName("rightArrow")
         self.horizontalLayout_2.addWidget(self.rightArrow)
         self.verticalLayout_2.addLayout(self.horizontalLayout_2)
-        MainWindow.setCentralWidget(self.centralwidget)
+        self.setCentralWidget(self.centralwidget)
 
-        self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        self.retranslateUi()
+        QtCore.QMetaObject.connectSlotsByName(self)
 
-    def retranslateUi(self, MainWindow):
+    def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.setWindowTitle(_translate("MainWindow", "MainWindow"))
 
-    def loadMileStone(self, MainWindow):
+    def loadNextPartition(self):
+        self.textBrowser.setText(self.parser.get_next(self.loadMileStone, self.loadTextBrowser))
+
+    def loadMileStone(self):
         """hardcoded to take a break milestone for now"""
         takeBreakMilestone = QtWidgets.QWidget()
         ui = tab_m.Ui_takeBreakMilestone()
@@ -186,4 +199,17 @@ class Ui_MainWindow(object):
         self.textBrowser.hide()
         self.gridLayout.addWidget(takeBreakMilestone, 0, 1)
         self.gridLayout.update()
+
+    def loadTextBrowser(self):
+        """Check to see if text browser needs to be shown. Hide all other widgets in our grid except for our text browser"""
+        if self.textBrowser.isHidden() is not True:
+            return
+
+        # Iterate through everything in the grid layout
+        for index in range(self.gridLayout.count()):
+            self.gridLayout.itemAt(index).widget().hide()
+        
+        self.textBrowser.show()
+        self.gridLayout.update()
+            
 
