@@ -156,6 +156,8 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
 "    }")
         self.progressBar.setProperty("value", 24)
         self.progressBar.setTextVisible(False)
+        self.progressBar.setMaximum(self.parser.partition_size)
+        self.progressBar.setValue(0)
         self.progressBar.setObjectName("progressBar")
         self.horizontalLayout_2.addWidget(self.progressBar)
         self.rightArrow = QtWidgets.QPushButton(parent=self.centralwidget, clicked = lambda: self.loadNextPartition())
@@ -190,6 +192,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
 
     def loadNextPartition(self):
         self.textBrowser.setText(self.parser.get_next(self.loadMileStone, self.loadTextBrowser))
+        self.progressBar.setValue(self.parser.current_partition)
 
     def loadMileStone(self):
         """hardcoded to take a break milestone for now"""
