@@ -15,3 +15,7 @@ $ pip install -r requirements.txt
 
 To run the project:
 $ python3 scripts/main.py
+
+ParseFile.py Usage:
+$ python3 scripts/ParseFile.py <file type (txt or pdf)> <file name/path>
+Prints out the parsed and partitioned text to the console
