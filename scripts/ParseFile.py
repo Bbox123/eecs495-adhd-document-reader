@@ -115,6 +115,24 @@ class Partition_Text(object):
                 return self.partitions[self.current_partition - 1]          # return next partition
         else:                                                       # if no more partitions
             return None                                                 # return None (TODO: replace with front end call)
+        
+    # Return last partition or milestone
+    def get_last(self, loadTextBrowser):
+        ''' This function returns the last partition or milestone or None if there are no more partitions '''
+        if self.current_partition > 1: 
+            if self.milestone_counter > 1:           
+                # deincrement milestone counter
+                self.milestone_counter -= 1
+                self.current_partition -= 1                                 # increment current partition
+                # print(len(self.partitions[self.current_partition - 1].split())
+            elif self.milestone_counter == 1:
+                self.current_partition -= 1 
+            else:
+                self.milestone_counter = self.milestone_frequency
+            loadTextBrowser()                                   # call to switch back over to text browser if necessary 
+            return self.partitions[self.current_partition - 1]          # return next partition
+        else:                                                       # if no more partitions  
+            return None 
 
 ## Partition_Text usage
     # if using a txt or pdf file:

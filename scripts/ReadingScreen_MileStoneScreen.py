@@ -122,7 +122,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.verticalLayout_2.addLayout(self.horizontalLayout)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.leftArrow = QtWidgets.QPushButton(parent=self.centralwidget)
+        self.leftArrow = QtWidgets.QPushButton(parent=self.centralwidget, clicked = lambda: self.loadLastPartition())
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -139,9 +139,11 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
 "\n"
 "")
         self.leftArrow.setText("")
-        icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap("UI/icons/leftArrow.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
-        self.leftArrow.setIcon(icon3)
+        self.leftEnabled = QtGui.QIcon()
+        self.leftEnabled.addPixmap(QtGui.QPixmap("UI/icons/leftArrow.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        self.leftDisabled = QtGui.QIcon()
+        self.leftDisabled.addPixmap(QtGui.QPixmap("UI/icons/leftArrowGrayed.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        self.leftArrow.setIcon(self.leftDisabled)
         self.leftArrow.setIconSize(QtCore.QSize(150, 100))
         self.leftArrow.setObjectName("leftArrow")
         self.horizontalLayout_2.addWidget(self.leftArrow)
@@ -157,7 +159,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.progressBar.setProperty("value", 24)
         self.progressBar.setTextVisible(False)
         self.progressBar.setMaximum(self.parser.partition_size)
-        self.progressBar.setValue(0)
+        self.progressBar.setValue(1)
         self.progressBar.setObjectName("progressBar")
         self.horizontalLayout_2.addWidget(self.progressBar)
         self.rightArrow = QtWidgets.QPushButton(parent=self.centralwidget, clicked = lambda: self.loadNextPartition())
@@ -194,6 +196,15 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         """Get the next partition or milestone"""
         self.textBrowser.setText(self.parser.get_next(self.loadMileStone, self.loadTextBrowser))
         self.progressBar.setValue(self.parser.current_partition)
+        if self.parser.current_partition > 1:
+            self.leftArrow.setIcon(self.leftEnabled)
+
+    def loadLastPartition(self):
+        """Get the next partition or milestone"""
+        self.textBrowser.setText(self.parser.get_last(self.loadTextBrowser))
+        self.progressBar.setValue(self.parser.current_partition)
+        if self.parser.current_partition <= 1:
+            self.leftArrow.setIcon(self.leftDisabled)
 
     def loadMileStone(self):
         """hardcoded to take a break milestone for now"""
