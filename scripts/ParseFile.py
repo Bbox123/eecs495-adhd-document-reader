@@ -6,7 +6,10 @@ nltk.download('punkt')
 from nltk import sent_tokenize
 import os
 import re
+import shutil
+
 import ReadingScreen_MileStoneScreen as rs_ms
+from img_ocr import *
 
 # Class to partition text into strings of size partition_size
 class Partition_Text(object):
@@ -32,7 +35,11 @@ class Partition_Text(object):
             self.parse_txt(file_name)
         # Parse pdf file
         if file_type == "pdf":
-            self.parse_pdf(file_name)
+            is_pure_image = False
+            if is_pure_image:
+                self.parse_pdf_w_image(file_name)
+            else:
+                self.parse_pdf(file_name)
 
     def parse_txt(self, file_name):
         ''' This function takes in a file name and parses the txt file corresponding to that file name, then calls the partition_text function '''
@@ -54,6 +61,22 @@ class Partition_Text(object):
             # Note: This is how it used to work
             # self.text = "\n\n".join(pdf)    # string of text in file
             # self.partition_text()           # call partition_text function
+
+    def parse_pdf_w_image(self, file_name):
+        path = "var"
+        text = ""
+        if not os.path.exists(path):
+            os.mkdir(path)
+        else:
+            shutil.rmtree(path)           # Removes all the subdirectories!
+            os.mkdir(path)
+        pdf2imgs(file_name)
+        
+        for filename in sorted(os.listdir(path)):
+            full_file = os.path.join(path, filename)
+            text += img2str(full_file)
+            self.text = text
+            self.partition_text()
 
     def partition_text(self):
         ''' This function partitions the text into strings of size partition_size (or less) and stores them in a list '''

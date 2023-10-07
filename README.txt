@@ -5,6 +5,8 @@ Set up environment (do this in project directory):
 Make sure you have python3 installed:
 $ sudo apt-get update
 $ sudo apt-get install python3 python3-pip python3-venv python3-wheel python3-setuptools
+$ sudo apt install tesseract-ocr
+$ sudo apt install libtesseract-dev
 
 Create a virtual environment and activate it:
 $ python3 -m venv env
