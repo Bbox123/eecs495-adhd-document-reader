@@ -201,10 +201,15 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
 
     def loadLastPartition(self):
         """Get the next partition or milestone"""
-        self.textBrowser.setText(self.parser.get_last(self.loadTextBrowser))
-        self.progressBar.setValue(self.parser.current_partition)
-        if self.parser.current_partition <= 1:
+        if self.parser.current_partition > 2:
+            self.textBrowser.setText(self.parser.get_last(self.loadTextBrowser) )
+            self.progressBar.setValue(self.parser.current_partition)
+        elif self.parser.current_partition == 2:
             self.leftArrow.setIcon(self.leftDisabled)
+            self.textBrowser.setText(self.parser.get_last(self.loadTextBrowser))
+            self.progressBar.setValue(self.parser.current_partition)
+        
+        
 
     def loadMileStone(self):
         """hardcoded to take a break milestone for now"""
