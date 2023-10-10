@@ -8,7 +8,6 @@ import os
 import re
 import shutil
 
-import ReadingScreen_MileStoneScreen as rs_ms
 from img_ocr import *
 
 # Class to partition text into strings of size partition_size

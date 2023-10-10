@@ -1,7 +1,5 @@
 import sys
-from PyQt6 import QtCore, QtGui, QtWidgets
-from PyQt6.QtGui import QPainter, QMouseEvent, QCursor
-from PyQt6.QtCore import Qt, QPoint
+from PyQt6 import QtWidgets
 import MainWindow as mw
 
 class ADHDReader(QtWidgets.QMainWindow):
