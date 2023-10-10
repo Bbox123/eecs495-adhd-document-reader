@@ -22,7 +22,7 @@ ParseFile.py Usage:
 $ python3 scripts/ParseFile.py <file type (txt or pdf)> <file name/path>
 Prints out the parsed and partitioned text to the console
 
-## Alpha Release Usage Instructions:
+# Alpha Release Usage Instructions:
 Download the .zip containing our project files:
 (https://github.com/Bbox123/eecs495-adhd-document-reader/archive/refs/heads/main.zip)
 
