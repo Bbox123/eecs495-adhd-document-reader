@@ -45,9 +45,11 @@ Move the .zip file from your downloads directory into this environment:
 $ cp -R <source_directory> <dest_directory>
 
 ### Navigate and Unpack:
-$ sudo apt-get install unzip
-$ unzip eecs495-adhd-document-reader-main.zip
-$ mv eecs495-adhd-document-reader-main/* .
+Navigate to <dest_directory> and run the following commands 
+
+$ sudo apt-get install unzip  
+$ unzip eecs495-adhd-document-reader-main.zip  
+$ mv eecs495-adhd-document-reader-main/* .  
 $ rm -r eecs495-adhd-document-reader-main eecs495-adhd-document-reader-main.zip
 
 ### Setup:
