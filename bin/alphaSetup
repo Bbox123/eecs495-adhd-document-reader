@@ -15,3 +15,6 @@ source env/bin/activate
 
 # Install the required packages for the project:
 pip install -r requirements.txt
+
+# launch the project
+python3 scripts/main.py
