@@ -41,7 +41,7 @@ Download the .zip containing our project files:
 
 Setup a Linux environment of your choice (most of our team uses WSL)
 
-Move the .zip file from your downloads directory into this environment:
+Move the .zip file from your downloads directory into this environment:  
 $ cp -R <source_directory> <dest_directory>
 
 ### Navigate and Unpack:
