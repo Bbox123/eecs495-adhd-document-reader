@@ -1,0 +1,6 @@
+#!/bin/bash
+# ADHDReaderRun
+
+# Runs the application
+
+python3 scripts/main.py
