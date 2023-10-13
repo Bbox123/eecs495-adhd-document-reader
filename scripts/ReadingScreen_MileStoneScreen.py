@@ -209,8 +209,6 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
             self.textBrowser.setText(self.parser.get_last(self.loadTextBrowser))
             self.progressBar.setValue(self.parser.current_partition)
         
-        
-
     def loadMileStone(self):
         """hardcoded to take a break milestone for now"""
         takeBreakMilestone = QtWidgets.QWidget()

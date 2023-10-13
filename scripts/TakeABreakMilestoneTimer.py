@@ -1,4 +1,4 @@
-# Timer implementation generated from reading ui file 'designerUIFiles/milestones/takeABreakPartTwo.ui'
+# Form implementation generated from reading ui file 'designerUIFiles/milestones/takeABreakPartTwo.ui'
 #
 # Created by: PyQt6 UI code generator 6.5.0
 #
@@ -12,9 +12,10 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_Timer(object):
     def setupUi(self, Timer):
         Timer.setObjectName("Timer")
-        Timer.resize(838, 802)
+        Timer.resize(1051, 735)
         Timer.setStyleSheet("border-color: rgb(255, 255, 255);")
         self.gridLayout = QtWidgets.QGridLayout(Timer)
+        self.gridLayout.setContentsMargins(9, 9, -1, -1)
         self.gridLayout.setObjectName("gridLayout")
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setContentsMargins(-1, 0, -1, 20)
@@ -55,53 +56,24 @@ class Ui_Timer(object):
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.timerWidgetLayout.addItem(spacerItem1)
         self.timer = QtWidgets.QWidget(parent=Timer)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.timer.sizePolicy().hasHeightForWidth())
+        self.timer.setSizePolicy(sizePolicy)
         self.timer.setMinimumSize(QtCore.QSize(400, 400))
         self.timer.setStyleSheet("")
         self.timer.setObjectName("timer")
-        self.time = QtWidgets.QLabel(parent=self.timer)
-        self.time.setGeometry(QtCore.QRect(100, 150, 200, 100))
-        self.time.setStyleSheet("color: #000;\n"
-"font-family: Roboto;\n"
-"font-size: 75px;\n"
-"font-style: normal;\n"
-"font-weight: 400;\n"
-"line-height: normal;")
-        self.time.setObjectName("time")
-        self.sText = QtWidgets.QLabel(parent=self.timer)
-        self.sText.setGeometry(QtCore.QRect(300, 190, 21, 41))
-        font = QtGui.QFont()
-        font.setFamily("Roboto")
-        font.setPointSize(-1)
-        font.setBold(False)
-        font.setItalic(False)
-        font.setWeight(37)
-        font.setKerning(True)
-        self.sText.setFont(font)
-        self.sText.setStyleSheet("color: #324143;\n"
-"font-family: Roboto;\n"
-"font-size: 30px;\n"
-"font-style: normal;\n"
-"font-weight: 300;\n"
-"line-height: normal;")
-        self.sText.setObjectName("sText")
         self.circularProgress = QtWidgets.QFrame(parent=self.timer)
         self.circularProgress.setGeometry(QtCore.QRect(50, 50, 300, 300))
         self.circularProgress.setStyleSheet("QFrame {\n"
 "    border-radius: 150px;\n"
 "    background-color: qconicalgradient(cx:0.5, cy:0.5, angle:90, stop:0.749 rgba(255, 170, 255, 0), stop:.75 rgba(78, 134, 150, 255));\n"
+"    border-color: transparent;\n"
 "}")
         self.circularProgress.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
         self.circularProgress.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.circularProgress.setObjectName("circularProgress")
-        self.progressForeground = QtWidgets.QFrame(parent=self.circularProgress)
-        self.progressForeground.setGeometry(QtCore.QRect(10, 10, 280, 280))
-        self.progressForeground.setStyleSheet("QFrame {\n"
-"    border-radius: 140px;\n"
-"    background-color: rgb(255, 255, 255);\n"
-"}")
-        self.progressForeground.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
-        self.progressForeground.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
-        self.progressForeground.setObjectName("progressForeground")
         self.progressBackground = QtWidgets.QFrame(parent=self.timer)
         self.progressBackground.setGeometry(QtCore.QRect(10, 10, 375, 375))
         self.progressBackground.setStyleSheet("QFrame {\n"
@@ -111,10 +83,63 @@ class Ui_Timer(object):
         self.progressBackground.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.progressBackground.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.progressBackground.setObjectName("progressBackground")
+        self.progressForeground = QtWidgets.QFrame(parent=self.timer)
+        self.progressForeground.setGeometry(QtCore.QRect(60, 60, 280, 280))
+        self.progressForeground.setStyleSheet("QFrame {\n"
+"    border-radius: 140px;\n"
+"    background-color: rgb(255, 255, 255);\n"
+"    border-color: transparent;\n"
+"}")
+        self.progressForeground.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
+        self.progressForeground.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        self.progressForeground.setObjectName("progressForeground")
+        self.textContainer = QtWidgets.QFrame(parent=self.timer)
+        self.textContainer.setGeometry(QtCore.QRect(105, 160, 200, 100))
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.textContainer.sizePolicy().hasHeightForWidth())
+        self.textContainer.setSizePolicy(sizePolicy)
+        self.textContainer.setStyleSheet("background-color: transparent;\n"
+"border-color: transparent;")
+        self.textContainer.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
+        self.textContainer.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        self.textContainer.setLineWidth(1)
+        self.textContainer.setObjectName("textContainer")
+        self.gridLayout_2 = QtWidgets.QGridLayout(self.textContainer)
+        self.gridLayout_2.setSizeConstraint(QtWidgets.QLayout.SizeConstraint.SetFixedSize)
+        self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout_2.setSpacing(0)
+        self.gridLayout_2.setObjectName("gridLayout_2")
+        self.time = QtWidgets.QLabel(parent=self.textContainer)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.time.sizePolicy().hasHeightForWidth())
+        self.time.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setFamily("Roboto")
+        font.setPointSize(-1)
+        font.setBold(False)
+        font.setItalic(False)
+        font.setWeight(50)
+        self.time.setFont(font)
+        self.time.setStyleSheet("color: #000;\n"
+"font-family: Roboto;\n"
+"font-size: 65px;\n"
+"font-style: normal;\n"
+"font-weight: 400;\n"
+"line-height: normal;\n"
+"background-color: transparent;")
+        self.time.setScaledContents(False)
+        self.time.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.time.setWordWrap(False)
+        self.time.setObjectName("time")
+        self.gridLayout_2.addWidget(self.time, 0, 0, 1, 1)
         self.progressBackground.raise_()
         self.circularProgress.raise_()
-        self.time.raise_()
-        self.sText.raise_()
+        self.progressForeground.raise_()
+        self.textContainer.raise_()
         self.timerWidgetLayout.addWidget(self.timer)
         spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.timerWidgetLayout.addItem(spacerItem2)
@@ -126,7 +151,7 @@ class Ui_Timer(object):
         self.pauseRestartButtonsLayout.setObjectName("pauseRestartButtonsLayout")
         spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.pauseRestartButtonsLayout.addItem(spacerItem3)
-        self.pauseButton = QtWidgets.QPushButton(parent=Timer)
+        self.pauseButton = QtWidgets.QPushButton(parent=Timer, clicked = lambda: self.pauseTimer())
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -135,24 +160,24 @@ class Ui_Timer(object):
         self.pauseButton.setMinimumSize(QtCore.QSize(75, 75))
         self.pauseButton.setMaximumSize(QtCore.QSize(75, 16777215))
         self.pauseButton.setBaseSize(QtCore.QSize(40, 40))
-        font = QtGui.QFont()
-        font.setPointSize(40)
-        font.setBold(True)
-        font.setWeight(75)
-        self.pauseButton.setFont(font)
-        self.pauseButton.setStyleSheet("QPushButton {\n"
-"    border-color: rgb(255, 255, 255);\n"
-"    color: rgb(78, 134, 150);\n"
-"    background-color: rgb(200, 227, 232);\n"
-"    border: none;    \n"
-"    border-radius: 35px;\n"
-"    border-style: outset;\n"
-"    padding: 5px;\n"
-"}\n"
-"\n"
-"QPushButton::hover {\n"
-"    background-color: rgb(161, 197, 200);\n"
-"}")
+        self.pauseButton.setCheckable(True)
+        self.pauseButton.setStyleSheet("""QPushButton {
+                                        border-color: rgb(255, 255, 255);
+                                        color: rgb(78, 134, 150);
+                                        background-color: rgb(200, 227, 232);
+                                        border: none;    
+                                        border-radius: 35px;
+                                        border-style: outset;
+                                        padding: 5px;
+                                        font-size: 60px;
+                                        }
+                                        QPushButton::hover {
+                                        background-color: rgb(161, 197, 200);
+                                        }
+                                        QPushButton:checked {
+                                        background-color: rgb(100, 197, 200);       
+                                        }
+                                       """)
         self.pauseButton.setObjectName("pauseButton")
         self.pauseRestartButtonsLayout.addWidget(self.pauseButton, 0, QtCore.Qt.AlignmentFlag.AlignTop)
         self.restartButton = QtWidgets.QPushButton(parent=Timer)
@@ -178,7 +203,7 @@ class Ui_Timer(object):
 "}")
         self.restartButton.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("designerUIFiles/milestones/output-onlinepngtools.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon.addPixmap(QtGui.QPixmap("UI/milestoneUI/refresh-arrow-colorized.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.restartButton.setIcon(icon)
         self.restartButton.setIconSize(QtCore.QSize(55, 55))
         self.restartButton.setObjectName("restartButton")
@@ -196,11 +221,68 @@ class Ui_Timer(object):
         self.retranslateUi(Timer)
         QtCore.QMetaObject.connectSlotsByName(Timer)
 
+        self.timerWidget = QtCore.QTimer()
+        self.timeLeft = QtCore.QTime(0, 5) # 5 minutes
+
     def retranslateUi(self, Timer):
         _translate = QtCore.QCoreApplication.translate
-        Timer.setWindowTitle(_translate("Timer", "Timer"))
+        Timer.setWindowTitle(_translate("Timer", "Form"))
         self.title.setText(_translate("Timer", "Take a break."))
         self.subtitle.setText(_translate("Timer", "Time Left:"))
         self.time.setText(_translate("Timer", "00:00"))
-        self.sText.setText(_translate("Timer", "s"))
         self.pauseButton.setText(_translate("Timer", "ll"))
+
+    def startTimer(self):
+        self.setProgressBarValue(0)
+        time = "5:00"
+        self.time.setText(time)
+        self.timerWidget.timeout.connect(self.updateTimer) # every update calls this function
+        self.timerWidget.start(1000) # updates every second
+    
+    def updateTimer(self):
+        self.timeLeft = self.timeLeft.addSecs(-1)
+        # Get time remaining and create value to set progress
+        secondsPassed = self.timeLeft.secsTo(QtCore.QTime(0, 5))
+        value = float(secondsPassed) / 300.0
+        self.setProgressBarValue(value)
+        self.setTimeText(self.timeLeft.minute(), self.timeLeft.second())
+
+    def pauseTimer(self):
+        if self.timerWidget.isActive():
+            self.timerWidget.stop()
+        else:
+            self.timerWidget.timeout.connect(self.updateTimer) # every update calls this function
+            self.timerWidget.start(1000) # updates every second
+            
+    def setTimeText(self, minute, second):
+        time = f"{minute}:{second}"
+        if second < 10:
+            time = f"{minute}:0{second}"
+        self.time.setText(time)
+
+    def setProgressBarValue(self, value):
+
+        # Create a base stylesheet to replace values with
+        styleSheet = """
+        QFrame {
+                border-radius: 150px;
+                background-color: qconicalgradient(cx:0.5, cy:0.5, angle:90, stop:{STOP_1} rgba(255, 170, 255, 0), stop:{STOP_2} rgba(78, 134, 150, 255));
+                border-color: transparent;
+        }
+        """
+
+        # Get progress bar value, invert values
+        # stop works from 1.0 to 0.0 where 0.0 represents the center of the conical gradient and 1.0 represents the edge
+        progress = 1.0 - value
+
+        # Make new values
+        stop_1 = str(progress - 0.001)
+        stop_2 = str(progress)
+
+        # Set new values in style sheet
+        newStyleSheet = styleSheet.replace("{STOP_1}", stop_1).replace("{STOP_2}", stop_2)
+
+        # Apply style sheet to progress bar
+        self.circularProgress.setStyleSheet(newStyleSheet)
+
+    

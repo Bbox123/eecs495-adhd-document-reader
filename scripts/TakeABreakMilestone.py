@@ -15,6 +15,7 @@ class Ui_takeBreakMilestone(object):
         takeBreakMilestone.setObjectName("takeBreakMilestone")
         takeBreakMilestone.resize(1221, 749)
         takeBreakMilestone.setStyleSheet("border-color: rgb(255, 255, 255);")
+        self.mainMilestoneScreen = takeBreakMilestone
         self.gridLayout_2 = QtWidgets.QGridLayout(takeBreakMilestone)
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.horizontalLayout = QtWidgets.QHBoxLayout()
@@ -125,11 +126,14 @@ class Ui_takeBreakMilestone(object):
         timer = QtWidgets.QWidget()
         ui = timerUI.Ui_Timer()
         ui.setupUi(timer)
+        self.timerScreenMethods = ui
+        self.timerScreenWidget = timer
         readingBoxGridLayout.addWidget(timer, 0, 2)
-        readingBoxGridLayout.itemAt(2).widget().hide()
+        timer.hide()
 
     def goToTimerUI(self, readingBoxGridLayout: QtWidgets.QGridLayout):
-        readingBoxGridLayout.itemAt(1).widget().hide()
-        readingBoxGridLayout.itemAt(2).widget().show()
+        self.mainMilestoneScreen.hide()
+        self.timerScreenWidget.show()
         readingBoxGridLayout.update()
+        self.timerScreenMethods.startTimer()
 

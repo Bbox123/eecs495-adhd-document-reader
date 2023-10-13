@@ -23,11 +23,23 @@ class Ui_MainWindow(object):
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
         self.gridLayout.setObjectName("gridLayout")
 
+        # Creating drop shadow effects
+        self.shadow = QtWidgets.QGraphicsDropShadowEffect()
+        self.shadow.setBlurRadius(10)
+        self.shadow.setYOffset(5)
+        self.shadow.setXOffset(0)
+        self.shadow.setColor(QtGui.QColor(0, 0, 0, 90))
+
+        self.shadowSubmit = QtWidgets.QGraphicsDropShadowEffect()
+        self.shadowSubmit.setBlurRadius(10)
+        self.shadowSubmit.setYOffset(5)
+        self.shadowSubmit.setXOffset(0)
+        self.shadowSubmit.setColor(QtGui.QColor(0, 0, 0, 90))
+
         # This frame contains all of the UI layouts and is nested within the main window layout
         self.frame = QtWidgets.QFrame(self.centralwidget)
         self.frame.setStyleSheet(
                                 "background-color: rgb(101, 149, 163);\n"
-                                "box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);\n"
                                 "border-radius: 20px;\n"
                                 "margin: 25%;"
                         )
@@ -79,16 +91,15 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.importButton.sizePolicy().hasHeightForWidth())
         self.importButton.setSizePolicy(sizePolicy)
         self.importButton.setMaximumSize(QtCore.QSize(500, 150))
+        self.importButton.setGraphicsEffect(self.shadow)
         self.importButton.setStyleSheet("""
                                         QPushButton {
                                                 background-color: rgb(78, 134, 150);
-                                                box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
                                                 border-radius: 20px;
                                                 color: white;
                                                 font-size: 32px;
                                                 font-family: Inter;
                                                 font-weight: 300;
-                                                word-wrap: break-word;
                                         }
                                         
                                         QPushButton:hover { 
@@ -158,11 +169,11 @@ class Ui_MainWindow(object):
         self.submitButton.setSizePolicy(sizePolicy)
         self.submitButton.setMinimumSize(QtCore.QSize(0, 115))
         self.submitButton.setMaximumSize(QtCore.QSize(260, 200))
+        self.submitButton.setGraphicsEffect(self.shadowSubmit)
         self.submitButton.setStyleSheet("""
                                         QPushButton {
                                                 border-radius: 20px;
                                                 background: #FCFFED;
-                                                box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
                                                 color: #324143;
                                                 font-family: Inter;
                                                 font-size: 32px;

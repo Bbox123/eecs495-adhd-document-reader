@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>Timer</class>
+ <widget class="QWidget" name="Timer">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>838</width>
-    <height>802</height>
+    <width>1051</width>
+    <height>735</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,6 +17,12 @@
    <string notr="true">border-color: rgb(255, 255, 255);</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <property name="leftMargin">
+    <number>9</number>
+   </property>
+   <property name="topMargin">
+    <number>9</number>
+   </property>
    <item row="0" column="0">
     <layout class="QVBoxLayout" name="verticalLayout" stretch="1,2,1,0">
      <property name="spacing">
@@ -112,6 +118,12 @@ line-height: normal;</string>
        </item>
        <item>
         <widget class="QWidget" name="timer" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="minimumSize">
           <size>
            <width>400</width>
@@ -121,58 +133,6 @@ line-height: normal;</string>
          <property name="styleSheet">
           <string notr="true"/>
          </property>
-         <widget class="QLabel" name="time">
-          <property name="geometry">
-           <rect>
-            <x>100</x>
-            <y>150</y>
-            <width>200</width>
-            <height>100</height>
-           </rect>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">color: #000;
-font-family: Roboto;
-font-size: 75px;
-font-style: normal;
-font-weight: 400;
-line-height: normal;</string>
-          </property>
-          <property name="text">
-           <string>00:00</string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="sText">
-          <property name="geometry">
-           <rect>
-            <x>300</x>
-            <y>190</y>
-            <width>21</width>
-            <height>41</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>Roboto</family>
-            <pointsize>-1</pointsize>
-            <weight>37</weight>
-            <italic>false</italic>
-            <bold>false</bold>
-            <kerning>true</kerning>
-           </font>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">color: #324143;
-font-family: Roboto;
-font-size: 30px;
-font-style: normal;
-font-weight: 300;
-line-height: normal;</string>
-          </property>
-          <property name="text">
-           <string>s</string>
-          </property>
-         </widget>
          <widget class="QFrame" name="circularProgress">
           <property name="geometry">
            <rect>
@@ -186,6 +146,7 @@ line-height: normal;</string>
            <string notr="true">QFrame {
 	border-radius: 150px;
 	background-color: qconicalgradient(cx:0.5, cy:0.5, angle:90, stop:0.749 rgba(255, 170, 255, 0), stop:.75 rgba(78, 134, 150, 255));
+	border-color: transparent;
 }</string>
           </property>
           <property name="frameShape">
@@ -194,28 +155,6 @@ line-height: normal;</string>
           <property name="frameShadow">
            <enum>QFrame::Raised</enum>
           </property>
-          <widget class="QFrame" name="progressForeground">
-           <property name="geometry">
-            <rect>
-             <x>10</x>
-             <y>10</y>
-             <width>280</width>
-             <height>280</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QFrame {
-	border-radius: 140px;
-	background-color: rgb(255, 255, 255);
-}</string>
-           </property>
-           <property name="frameShape">
-            <enum>QFrame::NoFrame</enum>
-           </property>
-           <property name="frameShadow">
-            <enum>QFrame::Raised</enum>
-           </property>
-          </widget>
          </widget>
          <widget class="QFrame" name="progressBackground">
           <property name="geometry">
@@ -239,10 +178,122 @@ line-height: normal;</string>
            <enum>QFrame::Raised</enum>
           </property>
          </widget>
+         <widget class="QFrame" name="progressForeground">
+          <property name="geometry">
+           <rect>
+            <x>60</x>
+            <y>60</y>
+            <width>280</width>
+            <height>280</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QFrame {
+	border-radius: 140px;
+	background-color: rgb(255, 255, 255);
+	border-color: transparent;
+}</string>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::NoFrame</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+         </widget>
+         <widget class="QFrame" name="textContainer">
+          <property name="geometry">
+           <rect>
+            <x>70</x>
+            <y>160</y>
+            <width>200</width>
+            <height>100</height>
+           </rect>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: transparent;
+border-color: transparent;</string>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::NoFrame</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <property name="lineWidth">
+           <number>1</number>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_2">
+           <property name="sizeConstraint">
+            <enum>QLayout::SetFixedSize</enum>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <item row="0" column="0">
+            <widget class="QLabel" name="time">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="font">
+              <font>
+               <family>Roboto</family>
+               <pointsize>-1</pointsize>
+               <weight>50</weight>
+               <italic>false</italic>
+               <bold>false</bold>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">color: #000;
+font-family: Roboto;
+font-size: 65px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+background-color: transparent;</string>
+             </property>
+             <property name="text">
+              <string>00:00</string>
+             </property>
+             <property name="scaledContents">
+              <bool>false</bool>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
          <zorder>progressBackground</zorder>
          <zorder>circularProgress</zorder>
-         <zorder>time</zorder>
-         <zorder>sText</zorder>
+         <zorder>progressForeground</zorder>
+         <zorder>textContainer</zorder>
         </widget>
        </item>
        <item>
@@ -312,7 +363,7 @@ line-height: normal;</string>
          </property>
          <property name="font">
           <font>
-           <pointsize>40</pointsize>
+           <pointsize>-1</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
@@ -326,6 +377,7 @@ line-height: normal;</string>
 	border-radius: 35px;
     border-style: outset;
 	padding: 5px;
+	font-size: 40px;
 }
 
 QPushButton::hover {
@@ -377,7 +429,7 @@ QPushButton::hover {
          </property>
          <property name="icon">
           <iconset>
-           <normaloff>output-onlinepngtools.png</normaloff>output-onlinepngtools.png</iconset>
+           <normaloff>C:/Users/Owner/Desktop/QTDesignerFiles/Milestone-Take-a-Break/refresh-arrow-colorized.png</normaloff>C:/Users/Owner/Desktop/QTDesignerFiles/Milestone-Take-a-Break/refresh-arrow-colorized.png</iconset>
          </property>
          <property name="iconSize">
           <size>
