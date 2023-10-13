@@ -215,9 +215,8 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         """hardcoded to take a break milestone for now"""
         takeBreakMilestone = QtWidgets.QWidget()
         ui = tab_m.Ui_takeBreakMilestone()
-        ui.setupUi(takeBreakMilestone)
+        ui.setupUi(takeBreakMilestone, self.gridLayout)
         self.textBrowser.hide()
-        self.gridLayout.addWidget(takeBreakMilestone, 0, 1)
         self.gridLayout.update()
 
     def loadTextBrowser(self):

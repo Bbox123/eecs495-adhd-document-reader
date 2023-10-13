@@ -7,10 +7,11 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
+import TakeABreakMilestoneTimer as timerUI
 
 
 class Ui_takeBreakMilestone(object):
-    def setupUi(self, takeBreakMilestone):
+    def setupUi(self, takeBreakMilestone, readingBoxGridLayout: QtWidgets.QGridLayout):
         takeBreakMilestone.setObjectName("takeBreakMilestone")
         takeBreakMilestone.resize(1221, 749)
         takeBreakMilestone.setStyleSheet("border-color: rgb(255, 255, 255);")
@@ -43,7 +44,7 @@ class Ui_takeBreakMilestone(object):
                                 )
         self.title.setObjectName("title")
         self.mainUI.addWidget(self.title, 0, QtCore.Qt.AlignmentFlag.AlignHCenter|QtCore.Qt.AlignmentFlag.AlignTop)
-        self.startTimer = QtWidgets.QPushButton(parent=takeBreakMilestone)
+        self.startTimer = QtWidgets.QPushButton(parent=takeBreakMilestone, clicked = lambda: self.goToTimerUI(readingBoxGridLayout))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -81,15 +82,15 @@ class Ui_takeBreakMilestone(object):
         self.skipButton.setFont(font)
         self.skipButton.setSizePolicy(sizePolicy)
         self.skipButton.setStyleSheet("QPushButton {\n"
-"    border: none;    \n"
-"    color: #4E8696;\n"
-"    font-family: Inter;\n"
-"    font-size: 24px;\n"
-"    font-style: normal;\n"
-"    font-weight: 400;\n"
-"    line-height: normal;\n"
-"    text-decoration-line: underline;\n"
-"}")
+                                "    border: none;    \n"
+                                "    color: #4E8696;\n"
+                                "    font-family: Inter;\n"
+                                "    font-size: 24px;\n"
+                                "    font-style: normal;\n"
+                                "    font-weight: 400;\n"
+                                "    line-height: normal;\n"
+                                "    text-decoration-line: underline;\n"
+                                "}")
         self.skipButton.setObjectName("skipButton")
         self.mainUI.addWidget(self.skipButton)
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Preferred)
@@ -109,9 +110,26 @@ class Ui_takeBreakMilestone(object):
         self.retranslateUi(takeBreakMilestone)
         QtCore.QMetaObject.connectSlotsByName(takeBreakMilestone)
 
+        readingBoxGridLayout.addWidget(takeBreakMilestone, 0, 1)
+
+        self.addTimerUI(readingBoxGridLayout)
+
     def retranslateUi(self, takeBreakMilestone):
         _translate = QtCore.QCoreApplication.translate
         takeBreakMilestone.setWindowTitle(_translate("takeBreakMilestone", "Form"))
-        self.title.setText(_translate("takeBreakMilestone", "Halfway through!"))
+        self.title.setText(_translate("takeBreakMilestone", "Great job!"))
         self.startTimer.setText(_translate("takeBreakMilestone", "Take a timed break"))
         self.skipButton.setText(_translate("takeBreakMilestone", "Skip this milestone"))
+
+    def addTimerUI(self, readingBoxGridLayout: QtWidgets.QGridLayout):
+        timer = QtWidgets.QWidget()
+        ui = timerUI.Ui_Timer()
+        ui.setupUi(timer)
+        readingBoxGridLayout.addWidget(timer, 0, 2)
+        readingBoxGridLayout.itemAt(2).widget().hide()
+
+    def goToTimerUI(self, readingBoxGridLayout: QtWidgets.QGridLayout):
+        readingBoxGridLayout.itemAt(1).widget().hide()
+        readingBoxGridLayout.itemAt(2).widget().show()
+        readingBoxGridLayout.update()
+
