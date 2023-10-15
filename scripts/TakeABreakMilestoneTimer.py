@@ -11,6 +11,8 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 
 class Ui_Timer(object):
     def setupUi(self, Timer):
+        self.timerTime = 5
+        self.timerTimeText = "5:00"
         Timer.setObjectName("Timer")
         Timer.resize(1051, 735)
         Timer.setStyleSheet("border-color: rgb(255, 255, 255);")
@@ -180,7 +182,7 @@ class Ui_Timer(object):
                                        """)
         self.pauseButton.setObjectName("pauseButton")
         self.pauseRestartButtonsLayout.addWidget(self.pauseButton, 0, QtCore.Qt.AlignmentFlag.AlignTop)
-        self.restartButton = QtWidgets.QPushButton(parent=Timer)
+        self.restartButton = QtWidgets.QPushButton(parent=Timer, clicked = lambda: self.restartTimer())
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -222,7 +224,7 @@ class Ui_Timer(object):
         QtCore.QMetaObject.connectSlotsByName(Timer)
 
         self.timerWidget = QtCore.QTimer()
-        self.timeLeft = QtCore.QTime(0, 5) # 5 minutes
+        self.timeLeft = QtCore.QTime(0, self.timerTime) # 5 minutes
 
     def retranslateUi(self, Timer):
         _translate = QtCore.QCoreApplication.translate
@@ -234,7 +236,7 @@ class Ui_Timer(object):
 
     def startTimer(self):
         self.setProgressBarValue(0)
-        time = "5:00"
+        time = self.timerTimeText
         self.time.setText(time)
         self.timerWidget.timeout.connect(self.updateTimer) # every update calls this function
         self.timerWidget.start(1000) # updates every second
@@ -242,8 +244,8 @@ class Ui_Timer(object):
     def updateTimer(self):
         self.timeLeft = self.timeLeft.addSecs(-1)
         # Get time remaining and create value to set progress
-        secondsPassed = self.timeLeft.secsTo(QtCore.QTime(0, 5))
-        value = float(secondsPassed) / 300.0
+        secondsPassed = self.timeLeft.secsTo(QtCore.QTime(0, self.timerTime))
+        value = float(secondsPassed) / (self.timerTime * 60.0)
         self.setProgressBarValue(value)
         self.setTimeText(self.timeLeft.minute(), self.timeLeft.second())
 
@@ -251,8 +253,13 @@ class Ui_Timer(object):
         if self.timerWidget.isActive():
             self.timerWidget.stop()
         else:
-            self.timerWidget.timeout.connect(self.updateTimer) # every update calls this function
             self.timerWidget.start(1000) # updates every second
+
+    def restartTimer(self):
+        self.timeLeft = QtCore.QTime(0, 5) # 5 minutes
+        time = self.timerTimeText
+        self.time.setText(time)
+        self.setProgressBarValue(0)
             
     def setTimeText(self, minute, second):
         time = f"{minute}:{second}"
