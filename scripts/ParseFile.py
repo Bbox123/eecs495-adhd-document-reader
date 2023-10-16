@@ -1,4 +1,4 @@
-import pdftotext
+import fitz
 import sys
 import heapq
 import nltk
@@ -48,18 +48,12 @@ class Partition_Text(object):
 
     def parse_pdf(self, file_name):
         ''' This function takes in a file name and parses the pdf file corresponding to that file name, then calls the partition_text function '''
-        with open(file_name, "rb") as f:
-            pdf = pdftotext.PDF(f)          # list of strings of text in file
-
-            # Note: Added to handle columned pdfs, this used to work like below but it's not working anymore
-            # Generates a text file from the pdf, and then parses that text file
-            os.system("pdftotext " + file_name)     # run command line pdftotext
-            text = re.sub(".pdf",".txt",file_name)  # name of text file that pdftotext creates
-            self.parse_txt(text)                    # parse text file that pdftotext creates
-
-            # Note: This is how it used to work
-            # self.text = "\n\n".join(pdf)    # string of text in file
-            # self.partition_text()           # call partition_text function
+        with fitz.open(file_name) as doc:
+            text = ""
+            for page in doc:
+                text += page.get_text()
+            self.text = text
+            self.partition_text()
 
     def parse_pdf_w_image(self, file_name):
         path = "var"
