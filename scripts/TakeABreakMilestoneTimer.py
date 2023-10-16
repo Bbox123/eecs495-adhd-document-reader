@@ -183,7 +183,7 @@ class Ui_Timer(object):
                                         border-radius: 35px;
                                         border-style: outset;
                                         padding: 5px;
-                                        font-size: 60px;
+                                        font-size: 40px;
                                         }
                                         QPushButton:checked {
                                         background-color: rgb(161, 197, 200);      
@@ -199,6 +199,7 @@ class Ui_Timer(object):
         self.restartButton.setSizePolicy(sizePolicy)
         self.restartButton.setMinimumSize(QtCore.QSize(75, 75))
         self.restartButton.setMaximumSize(QtCore.QSize(75, 75))
+        self.restartButton.setCheckable(True)
         self.restartButton.setStyleSheet("""QPushButton {
                                             border-color: rgb(255, 255, 255);
                                             color: rgb(78, 134, 150);
@@ -208,6 +209,9 @@ class Ui_Timer(object):
                                             border-style: outset;
                                             padding: 5px;
                                         }
+                                         QPushButton:pressed {
+                                            background-color: rgb(161, 197, 200);
+                                         }
                                          """)
         self.restartButton.setText("")
         icon = QtGui.QIcon()
