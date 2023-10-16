@@ -185,11 +185,8 @@ class Ui_Timer(object):
                                         padding: 5px;
                                         font-size: 60px;
                                         }
-                                        QPushButton::hover {
-                                        background-color: rgb(161, 197, 200);
-                                        }
                                         QPushButton:checked {
-                                        background-color: rgb(100, 197, 200);       
+                                        background-color: rgb(161, 197, 200);      
                                         }
                                        """)
         self.pauseButton.setObjectName("pauseButton")
@@ -202,19 +199,16 @@ class Ui_Timer(object):
         self.restartButton.setSizePolicy(sizePolicy)
         self.restartButton.setMinimumSize(QtCore.QSize(75, 75))
         self.restartButton.setMaximumSize(QtCore.QSize(75, 75))
-        self.restartButton.setStyleSheet("QPushButton {\n"
-"    border-color: rgb(255, 255, 255);\n"
-"    color: rgb(78, 134, 150);\n"
-"    background-color: rgb(200, 227, 232);\n"
-"    border: none;    \n"
-"    border-radius: 35px;\n"
-"    border-style: outset;\n"
-"    padding: 5px;\n"
-"}\n"
-"\n"
-"QPushButton::hover {\n"
-"    background-color: rgb(161, 197, 200);\n"
-"}")
+        self.restartButton.setStyleSheet("""QPushButton {
+                                            border-color: rgb(255, 255, 255);
+                                            color: rgb(78, 134, 150);
+                                            background-color: rgb(200, 227, 232);
+                                            border: none;    
+                                            border-radius: 35px;
+                                            border-style: outset;
+                                            padding: 5px;
+                                        }
+                                         """)
         self.restartButton.setText("")
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("UI/milestoneUI/refresh-arrow-colorized.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
