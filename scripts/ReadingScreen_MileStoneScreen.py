@@ -41,8 +41,8 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.frame.setSizePolicy(sizePolicy)
         self.frame.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.frame.setStyleSheet("border: 10px solid #324143;\n"
-"background: #FFF;\n"
-"padding: -10 px;")
+                                "background: #FFF;\n"
+                                "padding: -10 px;")
         
         """
         This segment of code is crucial since this is how the text box widget is added.
@@ -66,15 +66,15 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.verticalLayout_4.setSpacing(15)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.Settings = QtWidgets.QToolButton(parent=self.centralwidget)
-        self.Settings.setStyleSheet("QToolButton {\n"
-"    border: none;    \n"
-"}\n"
-"\n"
-"QToolButton::hover {\n"
-"    background-color: rgb(191, 188, 172);\n"
-"}\n"
-"\n"
-"")
+        self.Settings.setStyleSheet("""
+                                    QToolButton {
+                                        border: none;    
+                                    }
+                                
+                                    QToolButton::hover {
+                                        background-color: rgb(191, 188, 172);
+                                    }
+                                """)
         self.Settings.setText("")
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("UI/icons/settings.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
@@ -213,7 +213,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         """hardcoded to take a break milestone for now"""
         takeBreakMilestone = QtWidgets.QWidget()
         ui = tab_m.Ui_takeBreakMilestone()
-        ui.setupUi(takeBreakMilestone, self.gridLayout)
+        ui.setupUi(takeBreakMilestone, self.gridLayout, self)
         self.textBrowser.hide()
         self.gridLayout.update()
 

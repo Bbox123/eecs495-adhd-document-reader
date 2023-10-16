@@ -11,7 +11,7 @@ import TakeABreakMilestoneTimer as timerUI
 
 
 class Ui_takeBreakMilestone(object):
-    def setupUi(self, takeBreakMilestone, readingBoxGridLayout: QtWidgets.QGridLayout):
+    def setupUi(self, takeBreakMilestone, readingBoxGridLayout: QtWidgets.QGridLayout, readingScreen):
         takeBreakMilestone.setObjectName("takeBreakMilestone")
         takeBreakMilestone.resize(1221, 749)
         takeBreakMilestone.setStyleSheet("border-color: rgb(255, 255, 255);")
@@ -69,7 +69,7 @@ class Ui_takeBreakMilestone(object):
                                 "}")
         self.startTimer.setObjectName("startTimer")
         self.mainUI.addWidget(self.startTimer)
-        self.skipButton = QtWidgets.QPushButton(parent=takeBreakMilestone)
+        self.skipButton = QtWidgets.QPushButton(parent=takeBreakMilestone, clicked = lambda: readingScreen.loadNextPartition())
         font = QtGui.QFont()
         font.setFamily("Inter")
         font.setPointSize(-1)
