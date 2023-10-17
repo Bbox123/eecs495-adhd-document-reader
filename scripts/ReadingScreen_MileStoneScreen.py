@@ -9,6 +9,7 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 import TakeABreakMilestone as tab_m
 import ParseFile
+import configureDocumentPopUp as config
 
 class Ui_ReadingScreen(QtWidgets.QMainWindow):
     
@@ -82,7 +83,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.Settings.setIconSize(QtCore.QSize(50, 50))
         self.Settings.setObjectName("Settings")
         self.verticalLayout_4.addWidget(self.Settings)
-        self.configDoc = QtWidgets.QToolButton(parent=self.centralwidget)
+        self.configDoc = QtWidgets.QToolButton(parent=self.centralwidget, clicked = lambda: self.loadConfigDocPopUp())
         self.configDoc.setStyleSheet("QToolButton {\n"
 "    border: none;    \n"
 "}\n"
@@ -228,5 +229,11 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         
         self.textBrowser.show()
         self.gridLayout.update()
+
+    def loadConfigDocPopUp(self):
+        configPopUp = QtWidgets.QMainWindow()
+        ui = config.Ui_MainWindow()
+        ui.setupUi(configPopUp)
+        configPopUp.show()
             
 
