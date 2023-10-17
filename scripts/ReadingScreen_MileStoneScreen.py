@@ -18,7 +18,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         super(Ui_ReadingScreen, self).__init__()
         self.adhdReader = adhdReader
         self.parser = parser
-        self.muted = True
+        self.muted = False
 
         # partitioning text in parser
         self.parser.partition_text()
@@ -120,6 +120,12 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.textToSpeech.setIconSize(QtCore.QSize(50, 50))
         self.textToSpeech.setObjectName("textToSpeech")
         self.verticalLayout_4.addWidget(self.textToSpeech)
+        self.textToSpeechLabel = QtWidgets.QLabel(parent=self.centralwidget)
+        self.textToSpeechLabel.setGeometry(QtCore.QRect(0, 0, 100, 50))
+        self.textToSpeechLabel.setObjectName("textToSpeechLabel")
+        self.textToSpeechLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.textToSpeechLabel.setText("TTS ON")
+        self.verticalLayout_4.addWidget(self.textToSpeechLabel)
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.verticalLayout_4.addItem(spacerItem)
         self.horizontalLayout.addLayout(self.verticalLayout_4)
@@ -252,8 +258,10 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         if self.muted:
             self.muted = False
             self.textToSpeech.setIcon(QtGui.QIcon("UI/icons/audio.png"))
+            self.textToSpeechLabel.setText("TTS ON")
             print("Unmuted")
         else:
             self.muted = True
             self.textToSpeech.setIcon(QtGui.QIcon("UI/icons/audio_off.png"))
+            self.textToSpeechLabel.setText("TTS OFF")
             print("Muted")
