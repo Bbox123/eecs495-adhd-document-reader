@@ -104,7 +104,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.configDoc.setIconSize(QtCore.QSize(50, 50))
         self.configDoc.setObjectName("configDoc")
         self.verticalLayout_4.addWidget(self.configDoc)
-        self.textToSpeech = QtWidgets.QToolButton(parent=self.centralwidget)
+        self.textToSpeech = QtWidgets.QToolButton(parent=self.centralwidget, clicked = lambda: self.toggleTTS())
         self.textToSpeech.setStyleSheet("QToolButton {\n"
 "    border: none;    \n"
 "}\n"
@@ -251,7 +251,9 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         """Toggle text to speech"""
         if self.muted:
             self.muted = False
+            self.textToSpeech.setIcon(QtGui.QIcon("UI/icons/audio.png"))
             print("Unmuted")
         else:
             self.muted = True
+            self.textToSpeech.setIcon(QtGui.QIcon("UI/icons/audio_off.png"))
             print("Muted")
