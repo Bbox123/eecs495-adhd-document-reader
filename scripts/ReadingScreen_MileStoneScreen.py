@@ -18,7 +18,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         super(Ui_ReadingScreen, self).__init__()
         self.adhdReader = adhdReader
         self.parser = parser
-        self.muted = True
+        self.muted = False
 
         # partitioning text in parser
         self.parser.partition_text()
