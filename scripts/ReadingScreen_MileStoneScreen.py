@@ -18,7 +18,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         super(Ui_ReadingScreen, self).__init__()
         self.adhdReader = adhdReader
         self.parser = parser
-        self.muted = False
+        self.muted = True
 
         # partitioning text in parser
         self.parser.partition_text()
@@ -115,16 +115,17 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
 "")
         self.textToSpeech.setText("")
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("UI/icons/audio.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon2.addPixmap(QtGui.QPixmap("UI/icons/audio_off.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.textToSpeech.setIcon(icon2)
         self.textToSpeech.setIconSize(QtCore.QSize(50, 50))
         self.textToSpeech.setObjectName("textToSpeech")
         self.verticalLayout_4.addWidget(self.textToSpeech)
         self.textToSpeechLabel = QtWidgets.QLabel(parent=self.centralwidget)
-        self.textToSpeechLabel.setGeometry(QtCore.QRect(0, 0, 100, 50))
+        self.textToSpeechLabel.setGeometry(QtCore.QRect(0, 0, 50, 50))
         self.textToSpeechLabel.setObjectName("textToSpeechLabel")
-        self.textToSpeechLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.textToSpeechLabel.setText("TTS ON")
+        # Not sure which color to use, (182, 194, 139) would match the other icons, but I think (127, 153, 0) is more readable
+        self.textToSpeechLabel.setStyleSheet("font-size: 12px; color: rgb(182, 194, 139); font-weight: 1000; font-family: Inter;")
+        self.textToSpeechLabel.setText("TTS OFF")
         self.verticalLayout_4.addWidget(self.textToSpeechLabel)
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.verticalLayout_4.addItem(spacerItem)
@@ -255,13 +256,16 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
             
     def toggleTTS(self):
         """Toggle text to speech"""
+        icon = QtGui.QIcon()
         if self.muted:
             self.muted = False
-            self.textToSpeech.setIcon(QtGui.QIcon("UI/icons/audio.png"))
+            icon.addPixmap(QtGui.QPixmap("UI/icons/audio.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+            self.textToSpeech.setIcon(icon)
             self.textToSpeechLabel.setText("TTS ON")
             print("Unmuted")
         else:
             self.muted = True
-            self.textToSpeech.setIcon(QtGui.QIcon("UI/icons/audio_off.png"))
+            icon.addPixmap(QtGui.QPixmap("UI/icons/audio_off.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+            self.textToSpeech.setIcon(icon)
             self.textToSpeechLabel.setText("TTS OFF")
             print("Muted")
