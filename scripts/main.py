@@ -1,6 +1,7 @@
 import sys
 from PyQt6 import QtWidgets
 import MainWindow as mw
+import configureDocumentPopUp as config
 
 class ADHDReader(QtWidgets.QMainWindow):
     def __init__(self):
@@ -15,6 +16,7 @@ class ADHDReader(QtWidgets.QMainWindow):
         self.stacked_widget.addWidget(MainWindow)
         self.setCentralWidget(self.stacked_widget)
         self.resize(1500, 900)
+        
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)

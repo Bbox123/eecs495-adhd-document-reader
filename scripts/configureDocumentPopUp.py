@@ -13,8 +13,18 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(700, 450)
+        MainWindow.setWindowFlags(QtCore.Qt.WindowType.FramelessWindowHint)
+        MainWindow.setContentsMargins(0, 0, 0, 0)
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         self.centralwidget.setObjectName("centralwidget")
+        self.centralwidget.setStyleSheet("""
+                                 QMainWindow {
+                                        background-color: transparent;
+                                        border-style: none;
+                                        color: transparent;   
+                                 }
+                                 
+                                 """)
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
         self.gridLayout.setObjectName("gridLayout")
         self.popUpFrame = QtWidgets.QFrame(parent=self.centralwidget)
@@ -26,15 +36,15 @@ class Ui_MainWindow(object):
         self.gridLayout_2 = QtWidgets.QGridLayout(self.popUpFrame)
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.layoutHolder_2 = QtWidgets.QHBoxLayout()
-        self.layoutHolder_2.setContentsMargins(-1, -1, 0, -1)
+        self.layoutHolder_2.setContentsMargins(0, 0, 0, 0)
         self.layoutHolder_2.setObjectName("layoutHolder_2")
         self.iconLayout_2 = QtWidgets.QVBoxLayout()
-        self.iconLayout_2.setContentsMargins(-1, 2, -1, -1)
+        self.iconLayout_2.setContentsMargins(0, 2, 0, 0)
         self.iconLayout_2.setSpacing(6)
         self.iconLayout_2.setObjectName("iconLayout_2")
         self.configDocIcon_2 = QtWidgets.QLabel(parent=self.popUpFrame)
         self.configDocIcon_2.setText("")
-        self.configDocIcon_2.setPixmap(QtGui.QPixmap("//wsl.localhost/Ubuntu/home/brandon/EECS495/group-project/UI/icons/doc.png"))
+        self.configDocIcon_2.setPixmap(QtGui.QPixmap("UI/icons/doc.png"))
         self.configDocIcon_2.setObjectName("configDocIcon_2")
         self.iconLayout_2.addWidget(self.configDocIcon_2, 0, QtCore.Qt.AlignmentFlag.AlignHCenter)
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
@@ -117,7 +127,7 @@ class Ui_MainWindow(object):
         self.closeButtonLayout_2.setObjectName("closeButtonLayout_2")
         self.closeButton_2 = QtWidgets.QToolButton(parent=self.popUpFrame)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("//wsl.localhost/Ubuntu/home/brandon/EECS495/group-project/UI/icons/icons8-close-48.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon.addPixmap(QtGui.QPixmap("UI/icons/icons8-close-48.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.closeButton_2.setIcon(icon)
         self.closeButton_2.setIconSize(QtCore.QSize(20, 20))
         self.closeButton_2.setObjectName("closeButton_2")
@@ -145,11 +155,3 @@ class Ui_MainWindow(object):
         self.closeButton_2.setText(_translate("MainWindow", "..."))
 
 
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec())

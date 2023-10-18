@@ -22,6 +22,9 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         # partitioning text in parser
         self.parser.partition_text()
 
+        # Create config doc pop up
+        self.instantiateConfigDocPopUp()
+
     def setupUi(self):
         self.setObjectName("MainWindow")
         self.resize(1124, 749)
@@ -83,7 +86,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.Settings.setIconSize(QtCore.QSize(50, 50))
         self.Settings.setObjectName("Settings")
         self.verticalLayout_4.addWidget(self.Settings)
-        self.configDoc = QtWidgets.QToolButton(parent=self.centralwidget, clicked = lambda: self.loadConfigDocPopUp())
+        self.configDoc = QtWidgets.QToolButton(parent=self.centralwidget, clicked = lambda: self.toggleConfigDocPopUp())
         self.configDoc.setStyleSheet("QToolButton {\n"
 "    border: none;    \n"
 "}\n"
@@ -230,10 +233,15 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.textBrowser.show()
         self.gridLayout.update()
 
-    def loadConfigDocPopUp(self):
-        configPopUp = QtWidgets.QMainWindow()
+    def toggleConfigDocPopUp(self):
+        if self.configPopUp.isVisible():
+            self.configPopUp.hide()
+        else:
+            self.configPopUp.show()
+    
+    def instantiateConfigDocPopUp(self):
+        self.configPopUp = QtWidgets.QMainWindow()
         ui = config.Ui_MainWindow()
-        ui.setupUi(configPopUp)
-        configPopUp.show()
-            
+        ui.setupUi(self.configPopUp)
+        self.configPopUp.hide() 
 
