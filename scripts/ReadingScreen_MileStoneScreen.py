@@ -240,19 +240,6 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         
         self.textBrowser.show()
         self.gridLayout.update()
-
-    def toggleConfigDocPopUp(self):
-        if self.configPopUp.isVisible():
-            self.configPopUp.hide()
-        else:
-            self.configPopUp.show()
-    
-    def instantiateConfigDocPopUp(self):
-        self.configPopUp = QtWidgets.QMainWindow()
-        ui = config.Ui_MainWindow()
-        ui.setupUi(self.configPopUp)
-        self.configPopUp.hide() 
-
             
     def toggleTTS(self):
         """Toggle text to speech"""
