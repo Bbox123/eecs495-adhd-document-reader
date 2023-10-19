@@ -80,6 +80,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
                                     }
                                 """)
         self.Settings.setText("")
+        self.Settings.setToolTip("Settings")
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("UI/icons/settings.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.Settings.setIcon(icon)
@@ -97,6 +98,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
 "\n"
 "")
         self.configDoc.setText("")
+        self.configDoc.setToolTip("Change document")
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap("UI/icons/doc.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.configDoc.setIcon(icon1)
@@ -118,6 +120,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.textToSpeech.setIcon(icon2)
         self.textToSpeech.setIconSize(QtCore.QSize(50, 50))
         self.textToSpeech.setObjectName("textToSpeech")
+        self.textToSpeech.setToolTip("Enable text-to-speech")
         self.verticalLayout_4.addWidget(self.textToSpeech)
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.verticalLayout_4.addItem(spacerItem)
