@@ -9,13 +9,22 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 
-class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(700, 450)
-        MainWindow.setWindowFlags(QtCore.Qt.WindowType.FramelessWindowHint)
-        MainWindow.setContentsMargins(0, 0, 0, 0)
-        self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
+class Ui_MainWindow(QtWidgets.QMainWindow):
+    def __init__(self, adhdReader: QtWidgets.QMainWindow):
+        super().__init__()
+        self.adhdReader = adhdReader
+        self.setupUi()
+
+    def showEvent(self, a0: QtGui.QShowEvent) -> None:
+        super().showEvent(a0)
+        self.centerPopUp
+    
+    def setupUi(self):
+        self.setObjectName("MainWindow")
+        self.resize(700, 450)
+        self.setWindowFlags(QtCore.Qt.WindowType.FramelessWindowHint)
+        self.setContentsMargins(0, 0, 0, 0)
+        self.centralwidget = QtWidgets.QWidget(parent=self)
         self.centralwidget.setObjectName("centralwidget")
         self.centralwidget.setStyleSheet("""
                                  QMainWindow {
@@ -79,7 +88,7 @@ class Ui_MainWindow(object):
         self.subtitle_2.setWordWrap(True)
         self.subtitle_2.setObjectName("subtitle_2")
         self.mainLayout_2.addWidget(self.subtitle_2, 0, QtCore.Qt.AlignmentFlag.AlignHCenter|QtCore.Qt.AlignmentFlag.AlignTop)
-        self.continueButton_2 = QtWidgets.QPushButton(parent=self.popUpFrame)
+        self.continueButton_2 = QtWidgets.QPushButton(parent=self.popUpFrame, clicked = lambda: self.test())
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -140,18 +149,35 @@ class Ui_MainWindow(object):
         self.layoutHolder_2.setStretch(2, 1)
         self.gridLayout_2.addLayout(self.layoutHolder_2, 0, 0, 1, 1)
         self.gridLayout.addWidget(self.popUpFrame, 0, 0, 1, 1)
-        MainWindow.setCentralWidget(self.centralwidget)
+        self.setCentralWidget(self.centralwidget)
 
-        self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        self.retranslateUi()
+        QtCore.QMetaObject.connectSlotsByName(self)
 
-    def retranslateUi(self, MainWindow):
+
+    def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.title_2.setText(_translate("MainWindow", "Select new document?"))
         self.subtitle_2.setText(_translate("MainWindow", "The current document information and your progress will be lost."))
         self.continueButton_2.setText(_translate("MainWindow", "Continue"))
         self.resumeReadingButton_2.setText(_translate("MainWindow", "Resume reading..."))
         self.closeButton_2.setText(_translate("MainWindow", "..."))
 
+    def centerPopUp(self):
+        screen = self.adhdReader.geometry()
 
+        popupSize = self.geometry()
+
+        # calculate central position
+        center_x = int((screen.width() - popupSize.width()) / 2)
+        center_y = int((screen.height() - popupSize.height()) / 2)
+
+        widgetWidth = self.frameGeometry().width()
+        widgetHeight = self.frameGeometry().height()
+
+        # move the popup to the center
+        self.setGeometry(center_x, center_y, widgetWidth, widgetHeight)
+
+        popupSize = self.geometry()
+        

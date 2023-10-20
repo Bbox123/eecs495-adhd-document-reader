@@ -237,14 +237,13 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.gridLayout.update()
 
     def toggleConfigDocPopUp(self):
+        """If the pop up is visible, hide it. Otherwise show it"""
         if self.configPopUp.isVisible():
             self.configPopUp.hide()
         else:
             self.configPopUp.show()
     
     def instantiateConfigDocPopUp(self):
-        self.configPopUp = QtWidgets.QMainWindow()
-        ui = config.Ui_MainWindow()
-        ui.setupUi(self.configPopUp)
+        self.configPopUp = config.Ui_MainWindow(self.adhdReader)
         self.configPopUp.hide() 
 
