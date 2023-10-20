@@ -16,7 +16,6 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.setupUi()
 
     def showEvent(self, a0: QtGui.QShowEvent) -> None:
-        super().showEvent(a0)
         self.centerPopUp
     
     def setupUi(self):
@@ -24,6 +23,13 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.resize(700, 450)
         self.setWindowFlags(QtCore.Qt.WindowType.FramelessWindowHint)
         self.setContentsMargins(0, 0, 0, 0)
+        self.setStyleSheet("""
+                                 QMainWindow {
+                                        background-color: none;
+                                        color: none;   
+                                 }
+                                 
+                                 """)
         self.centralwidget = QtWidgets.QWidget(parent=self)
         self.centralwidget.setObjectName("centralwidget")
         self.centralwidget.setStyleSheet("""
@@ -88,7 +94,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.subtitle_2.setWordWrap(True)
         self.subtitle_2.setObjectName("subtitle_2")
         self.mainLayout_2.addWidget(self.subtitle_2, 0, QtCore.Qt.AlignmentFlag.AlignHCenter|QtCore.Qt.AlignmentFlag.AlignTop)
-        self.continueButton_2 = QtWidgets.QPushButton(parent=self.popUpFrame, clicked = lambda: self.test())
+        self.continueButton_2 = QtWidgets.QPushButton(parent=self.popUpFrame, clicked = lambda: self.centerPopUp())
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -108,7 +114,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 "}")
         self.continueButton_2.setObjectName("continueButton_2")
         self.mainLayout_2.addWidget(self.continueButton_2, 0, QtCore.Qt.AlignmentFlag.AlignHCenter)
-        self.resumeReadingButton_2 = QtWidgets.QPushButton(parent=self.popUpFrame)
+        self.resumeReadingButton_2 = QtWidgets.QPushButton(parent=self.popUpFrame, clicked = lambda: self.close())
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -134,7 +140,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.closeButtonLayout_2.setContentsMargins(-1, 2, 2, -1)
         self.closeButtonLayout_2.setSpacing(10)
         self.closeButtonLayout_2.setObjectName("closeButtonLayout_2")
-        self.closeButton_2 = QtWidgets.QToolButton(parent=self.popUpFrame)
+        self.closeButton_2 = QtWidgets.QToolButton(parent=self.popUpFrame, clicked = lambda: self.close())
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("UI/icons/icons8-close-48.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.closeButton_2.setIcon(icon)
@@ -178,6 +184,4 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
         # move the popup to the center
         self.setGeometry(center_x, center_y, widgetWidth, widgetHeight)
-
-        popupSize = self.geometry()
         
