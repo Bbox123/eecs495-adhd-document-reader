@@ -18,8 +18,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
     def showEvent(self, a0: QtGui.QShowEvent) -> None:
         #this needs to be fixed
-        #self.centerPopUp()
-        pass
+        self.centerPopUp()
     
     def setupUi(self):
         self.setObjectName("MainWindow")
@@ -175,16 +174,17 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
     def centerPopUp(self):
         """Grab the current size of the screen to center the pop up in the middle"""
-        screen = self.adhdReader.geometry()
 
-        popupSize = self.geometry()
+        # get current location of screen
+        screen_center = self.adhdReader.frameGeometry().center()
 
-        # calculate central position
-        center_x = int((screen.width() - popupSize.width()) / 2)
-        center_y = int((screen.height() - popupSize.height()) / 2)
-
+        # get pop up data
         widgetWidth = self.frameGeometry().width()
         widgetHeight = self.frameGeometry().height()
+
+        # calculate central position
+        center_x = int(screen_center.x() - widgetWidth / 2)
+        center_y = int(screen_center.y() - widgetHeight / 2)
 
         # move the popup to the center
         self.setGeometry(center_x, center_y, widgetWidth, widgetHeight)
