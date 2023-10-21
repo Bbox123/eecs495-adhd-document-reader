@@ -10,13 +10,16 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 import MainWindow as mw
 
 class Ui_MainWindow(QtWidgets.QMainWindow):
-    def __init__(self, adhdReader: QtWidgets.QMainWindow):
+    def __init__(self, adhdReader: QtWidgets.QMainWindow, readingScreen):
         super().__init__()
+        self.readingScreen = readingScreen
         self.adhdReader = adhdReader
         self.setupUi()
 
     def showEvent(self, a0: QtGui.QShowEvent) -> None:
-        self.centerPopUp
+        #this needs to be fixed
+        #self.centerPopUp()
+        pass
     
     def setupUi(self):
         self.setObjectName("MainWindow")
@@ -114,7 +117,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 "}")
         self.continueButton_2.setObjectName("continueButton_2")
         self.mainLayout_2.addWidget(self.continueButton_2, 0, QtCore.Qt.AlignmentFlag.AlignHCenter)
-        self.resumeReadingButton_2 = QtWidgets.QPushButton(parent=self.popUpFrame, clicked = lambda: self.close())
+        self.resumeReadingButton_2 = QtWidgets.QPushButton(parent=self.popUpFrame, clicked = lambda: self.readingScreen.toggleConfigDocPopUp())
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -140,7 +143,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.closeButtonLayout_2.setContentsMargins(-1, 2, 2, -1)
         self.closeButtonLayout_2.setSpacing(10)
         self.closeButtonLayout_2.setObjectName("closeButtonLayout_2")
-        self.closeButton_2 = QtWidgets.QToolButton(parent=self.popUpFrame, clicked = lambda: self.close())
+        self.closeButton_2 = QtWidgets.QToolButton(parent=self.popUpFrame, clicked = lambda: self.readingScreen.toggleConfigDocPopUp())
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("UI/icons/icons8-close-48.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.closeButton_2.setIcon(icon)
