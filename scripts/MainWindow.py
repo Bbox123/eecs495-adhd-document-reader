@@ -9,15 +9,19 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
-import ReadingScreen_MileStoneScreen as rs_ms
 import ParseFile as pf
 
-class Ui_MainWindow(object):
-    def setupUi(self, MainWindow, adhdReader):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1500, 900)
-        MainWindow.setStyleSheet("background-color: rgb(252, 255, 237);")
-        self.centralwidget = QtWidgets.QWidget(MainWindow)
+class Ui_MainWindow(QtWidgets.QMainWindow):
+    def __init__(self, adhdReader: QtWidgets.QMainWindow):
+        super().__init__()
+        self.adhdReader = adhdReader
+        self.setupUi()
+
+    def setupUi(self):
+        self.setObjectName("MainWindow")
+        self.resize(1500, 900)
+        self.setStyleSheet("background-color: rgb(252, 255, 237);")
+        self.centralwidget = QtWidgets.QWidget(self)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
@@ -84,7 +88,7 @@ class Ui_MainWindow(object):
         self.input_options_layout.addItem(spacerItem)
 
         # The 'Upload from computer' button
-        self.importButton = QtWidgets.QPushButton(self.frame, clicked = lambda: self.importFile(adhdReader))
+        self.importButton = QtWidgets.QPushButton(self.frame, clicked = lambda: self.importFile())
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -161,7 +165,7 @@ class Ui_MainWindow(object):
         self.submit_layout.addItem(spacerItem3)
 
         # Submit button for the copy paste text box
-        self.submitButton = QtWidgets.QPushButton(self.frame, clicked = lambda: self.collectTextFromTextBox(self.copyPasteInput.toPlainText(), adhdReader))
+        self.submitButton = QtWidgets.QPushButton(self.frame, clicked = lambda: self.collectTextFromTextBox(self.copyPasteInput.toPlainText()))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -191,15 +195,15 @@ class Ui_MainWindow(object):
         self.vertical_layout.addLayout(self.submit_layout)
         self.gridLayout_3.addLayout(self.vertical_layout, 0, 0, 1, 1)
         self.gridLayout.addWidget(self.frame, 1, 1, 1, 1)
-        MainWindow.setCentralWidget(self.centralwidget)
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
+        self.setCentralWidget(self.centralwidget)
+        self.statusbar = QtWidgets.QStatusBar(self)
         self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
-        self.setupTitleBar(adhdReader)
-        self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        self.setStatusBar(self.statusbar)
+        self.setupTitleBar()
+        self.retranslateUi()
+        QtCore.QMetaObject.connectSlotsByName(self)
 
-    def setupTitleBar(self, adhdReader):
+    def setupTitleBar(self):
         self.titleBar = QtWidgets.QWidget(parent=self.centralwidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -304,16 +308,16 @@ class Ui_MainWindow(object):
         self.header.addLayout(self.gridLayout_2)
         self.gridLayout.addWidget(self.titleBar, 0, 1, 1, 1)
 
-    def retranslateUi(self, MainWindow):
+    def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "ADHD Reader"))
+        self.setWindowTitle(_translate("MainWindow", "ADHD Reader"))
         self.headerText.setText(_translate("MainWindow", "Input a reading to get started:"))
         self.importButton.setText(_translate("MainWindow", "Upload from computer"))
         self.copyPasteInput.setPlainText(_translate("MainWindow", "Paste into text box..."))
         self.submitButton.setText(_translate("MainWindow", "Submit"))
         self.Title.setText(_translate("MainWindow", "ADHD Reader"))
 
-    def collectTextFromTextBox(self, inputText, adhdReader):
+    def collectTextFromTextBox(self, inputText):
         """inputText contains all the text that was placed in the text box before submit was clicked"""
         # If user clicks submit and they haven't added any text, return
         if (len(inputText) == 0 or inputText == "Paste into text box..."):
@@ -323,9 +327,9 @@ class Ui_MainWindow(object):
         parser = pf.Partition_Text(text=inputText)              # create parser
 
         # Change to reading screen 
-        self.goToReadingScreen(adhdReader, parser)           # pass in parser object
+        self.adhdReader.goToReadingScreen(parser)        # pass in parser object
 
-    def importFile(self, adhdReader):
+    def importFile(self):
         """Open the file dialog to import a .txt or .pdf"""
         # This method returns a tuple, but the ', _' syntax allows us to just grab the first index of it which has the file path
         filepath, _ = QtWidgets.QFileDialog.getOpenFileName(
@@ -343,13 +347,6 @@ class Ui_MainWindow(object):
         parser.parse_file(filepath.split(".")[-1], filepath)    # parse file
 
         # Change to reading screen
-        self.goToReadingScreen(adhdReader, parser)
+        self.adhdReader.goToReadingScreen(parser)
 
-    def goToReadingScreen(self, adhdReader, parser):
-        """Take the document or text and head to the reading screen to display it!"""
-        ui_rs = rs_ms.Ui_ReadingScreen(adhdReader, parser)
-        ui_rs.setupUi()
-
-        adhdReader.stacked_widget.addWidget(ui_rs)
-        adhdReader.stacked_widget.setCurrentIndex(1)
 

@@ -7,7 +7,7 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
-
+import MainWindow as mw
 
 class Ui_MainWindow(QtWidgets.QMainWindow):
     def __init__(self, adhdReader: QtWidgets.QMainWindow):
@@ -94,7 +94,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.subtitle_2.setWordWrap(True)
         self.subtitle_2.setObjectName("subtitle_2")
         self.mainLayout_2.addWidget(self.subtitle_2, 0, QtCore.Qt.AlignmentFlag.AlignHCenter|QtCore.Qt.AlignmentFlag.AlignTop)
-        self.continueButton_2 = QtWidgets.QPushButton(parent=self.popUpFrame, clicked = lambda: self.centerPopUp())
+        self.continueButton_2 = QtWidgets.QPushButton(parent=self.popUpFrame, clicked = lambda: self.returnToMainMenu())
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -171,6 +171,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.closeButton_2.setText(_translate("MainWindow", "..."))
 
     def centerPopUp(self):
+        """Grab the current size of the screen to center the pop up in the middle"""
         screen = self.adhdReader.geometry()
 
         popupSize = self.geometry()
@@ -184,4 +185,8 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
         # move the popup to the center
         self.setGeometry(center_x, center_y, widgetWidth, widgetHeight)
+        
+    def returnToMainMenu(self):
+        self.adhdReader.goToMainMenu()
+        self.close()
         

@@ -25,6 +25,8 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         # Create config doc pop up
         self.instantiateConfigDocPopUp()
 
+        self.setupUi()
+
     def setupUi(self):
         self.setObjectName("MainWindow")
         self.resize(1124, 749)
