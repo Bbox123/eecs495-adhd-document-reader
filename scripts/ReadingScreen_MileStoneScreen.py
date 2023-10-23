@@ -45,7 +45,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         sizePolicy.setHeightForWidth(self.frame.sizePolicy().hasHeightForWidth())
         self.frame.setSizePolicy(sizePolicy)
         self.frame.setMaximumSize(QtCore.QSize(16777215, 16777215))
-        self.frame.setStyleSheet("border: 10px solid #324143;\n"
+        self.frame.setStyleSheet("border: 00px solid #324143;\n"
 "background: #FFF;\n"
 "padding: -10 px;")
         
@@ -63,7 +63,14 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.textBrowser.setObjectName("textBrowser")
         self.textBrowser.setFontPointSize(24)
         self.textBrowser.setText(self.parser.get_next(self.loadMileStone, self.loadTextBrowser))
-        self.gridLayout.addWidget(self.textBrowser, 0, 0, 1, 1)
+        self.backgroundFrame = QtWidgets.QFrame(self)
+        self.backgroundFrame.setFixedSize(75,50)
+        self.backgroundFrame.setStyleSheet("QFrame {border-radius: 20px; \n"
+                                               "background-color: rgb(255, 255, 255); \n"
+                                               "border: 3px solid rgb(182, 194, 139)}")
+        self.backgroundFrame.setGraphicsEffect(QtWidgets.QGraphicsOpacityEffect(self.backgroundFrame))
+        self.gridLayout.addWidget(self.backgroundFrame, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.textBrowser, 1, 0, 1, 1)
         
         """End of important things to pay attention to."""
         self.horizontalLayout.addWidget(self.frame)
@@ -85,7 +92,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("UI/icons/settings.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.Settings.setIcon(icon)
-        self.Settings.setIconSize(QtCore.QSize(50, 50))
+        self.Settings.setIconSize(QtCore.QSize(75, 50))
         self.Settings.setObjectName("Settings")
         self.verticalLayout_4.addWidget(self.Settings)
         self.configDoc = QtWidgets.QToolButton(parent=self.centralwidget, clicked = lambda: self.toggleConfigDocPopUp())
@@ -106,16 +113,16 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.configDoc.setIconSize(QtCore.QSize(50, 50))
         self.configDoc.setObjectName("configDoc")
         self.verticalLayout_4.addWidget(self.configDoc)
-        self.textToSpeech = QtWidgets.QToolButton(parent=self.centralwidget, clicked = lambda: self.toggleTTS())
-        self.textToSpeech.setStyleSheet("QToolButton {\n"
+        self.textToSpeech = QtWidgets.QPushButton(parent=self.centralwidget, clicked = lambda: self.toggleTTS())
+        self.textToSpeech.setStyleSheet("QPushButton {\n"
 "    border: none;    \n"
+"    text-align: bottom;\n"
 "}\n"
 "\n"
-"QToolButton::hover {\n"
+"QPushButton::hover {\n"
 "    background-color: rgb(191, 188, 172);\n"
 "}\n"
 "")
-        self.textToSpeech.setText("")
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap("UI/icons/audio_off.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.textToSpeech.setIcon(icon2)
@@ -260,13 +267,45 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         icon = QtGui.QIcon()
         if self.muted:
             self.muted = False
-            icon.addPixmap(QtGui.QPixmap("UI/icons/audio.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+            self.textToSpeech.setStyleSheet("QPushButton {\n"
+"    border: none;    \n"
+"    background-color: rgb(182, 194, 139);\n"
+"    border-radius: 20px;\n"
+"    text-align: top;\n"
+"}\n"
+"\n"
+"QPushButton::hover {\n"
+"    background-color: rgb(191, 188, 172);\n"
+"}\n"
+"")
+            self.textToSpeech.setFixedHeight(200)
+            icon.addPixmap(QtGui.QPixmap("UI/icons/speaker.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
             self.textToSpeech.setIcon(icon)
             self.textToSpeechLabel.setText("TTS ON")
             print("Unmuted")
+            self.backgroundFrame.setFixedWidth(300)
+            self.backgroundFrame.setStyleSheet("QFrame {border-radius: 20px; \n"
+                                               "background-color: rgb(182, 194, 139)}")
         else:
             self.muted = True
             icon.addPixmap(QtGui.QPixmap("UI/icons/audio_off.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
             self.textToSpeech.setIcon(icon)
             self.textToSpeechLabel.setText("TTS OFF")
+            self.textToSpeech.setStyleSheet("QPushButton {\n"
+"    border: none;    \n"
+"}\n"
+"\n"
+"QPushButton::hover {\n"
+"    background-color: rgb(191, 188, 172);\n"
+"}\n"
+"\n"
+"QPushButton{\n"
+"    border-radius: 20px;\n"
+"}\n"
+"")
+            self.textToSpeech.setFixedHeight(50)
             print("Muted")
+            self.backgroundFrame.setFixedWidth(75)
+            self.backgroundFrame.setStyleSheet("QFrame {border-radius: 20px; \n"
+                                               "background-color: rgb(255, 255, 255); \n"
+                                               "border: 3px solid rgb(182, 194, 139)}")
