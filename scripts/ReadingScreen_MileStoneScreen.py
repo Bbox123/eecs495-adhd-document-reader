@@ -25,6 +25,8 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         # Create config doc pop up
         self.instantiateConfigDocPopUp()
 
+        self.setupUi()
+
     def setupUi(self):
         self.setObjectName("MainWindow")
         self.resize(1124, 749)
@@ -47,6 +49,14 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.frame.setStyleSheet("border: 10px solid #324143;\n"
                                 "background: #FFF;\n"
                                 "padding: -10 px;")
+        
+        # Manually build our grey screen overlay
+        self.overlay = QtWidgets.QFrame(self)
+        self.overlay.setStyleSheet("background-color: rgba(151, 151, 151, 210);")
+        self.overlay.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
+        self.overlay.setFrameShadow(QtWidgets.QFrame.Shadow.Plain)
+        self.overlay.setGeometry(self.adhdReader.rect())
+        self.overlay.hide()
         
         """
         This segment of code is crucial since this is how the text box widget is added.
@@ -191,7 +201,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.horizontalLayout_2.addWidget(self.rightArrow)
         self.verticalLayout_2.addLayout(self.horizontalLayout_2)
         self.setCentralWidget(self.centralwidget)
-
+        
         self.retranslateUi()
         QtCore.QMetaObject.connectSlotsByName(self)
 
@@ -240,10 +250,13 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         """If the pop up is visible, hide it. Otherwise show it"""
         if self.configPopUp.isVisible():
             self.configPopUp.hide()
+            self.overlay.hide()
         else:
+            self.overlay.setGeometry(self.adhdReader.rect())
+            self.overlay.show()
             self.configPopUp.show()
     
     def instantiateConfigDocPopUp(self):
-        self.configPopUp = config.Ui_MainWindow(self.adhdReader)
+        self.configPopUp = config.Ui_MainWindow(self.adhdReader, self)
         self.configPopUp.hide() 
 
