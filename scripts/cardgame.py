@@ -1,7 +1,18 @@
-from PyQt6.QtCore import Qt, QTimer
+from PyQt6.QtCore import Qt, QTimer, QEventLoop
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QApplication, QWidget, QGridLayout, QPushButton
 import random
+
+
+def blocking_delay(milliseconds):
+    loop = QEventLoop()
+    timer = QTimer()
+
+    timer.timeout.connect(loop.quit)
+    timer.start(milliseconds)
+
+    loop.exec()
+
 
 class CardMatchingGame(QWidget):
     def __init__(self):
@@ -62,7 +73,8 @@ class CardMatchingGame(QWidget):
                 pass
         else:
             # Delay to let the player see the cards before hiding them
-            QTimer.singleShot(1000, self.hideSelectedCards)
+            blocking_delay(1000)
+            self.hideSelectedCards()
 
     def hideSelectedCards(self):
         for card in self.selected_cards:
