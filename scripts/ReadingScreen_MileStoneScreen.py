@@ -10,6 +10,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 import TakeABreakMilestone as tab_m
 import ParseFile
 import configureDocumentPopUp as config
+import TextToSpeech as tts
 
 class Ui_ReadingScreen(QtWidgets.QMainWindow):
     
@@ -18,6 +19,8 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         super(Ui_ReadingScreen, self).__init__()
         self.adhdReader = adhdReader
         self.parser = parser
+        self.muted = True
+        self.paused = True
 
         # partitioning text in parser
         self.parser.partition_text()
@@ -46,9 +49,9 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         sizePolicy.setHeightForWidth(self.frame.sizePolicy().hasHeightForWidth())
         self.frame.setSizePolicy(sizePolicy)
         self.frame.setMaximumSize(QtCore.QSize(16777215, 16777215))
-        self.frame.setStyleSheet("border: 10px solid #324143;\n"
-                                "background: #FFF;\n"
-                                "padding: -10 px;")
+        self.frame.setStyleSheet("border: 00px solid #324143;\n"
+"background: #FFF;\n"
+"padding: -10 px;")
         
         # Manually build our grey screen overlay
         self.overlay = QtWidgets.QFrame(self)
@@ -72,7 +75,17 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.textBrowser.setObjectName("textBrowser")
         self.textBrowser.setFontPointSize(24)
         self.textBrowser.setText(self.parser.get_next(self.loadMileStone, self.loadTextBrowser))
-        self.gridLayout.addWidget(self.textBrowser, 0, 0, 1, 1)
+        self.backgroundFrame = QtWidgets.QFrame(self)
+        self.backgroundFrame.setFixedSize(81,50)
+        self.backgroundFrame.setStyleSheet("QFrame {border-radius: 25px; \n"
+                                               "background-color: rgb(255, 255, 255); \n"
+                                               "border: 3px solid rgb(182, 194, 139)}")
+        self.backgroundFrame.setGraphicsEffect(QtWidgets.QGraphicsOpacityEffect(self.backgroundFrame))
+        self.backgroundFrame.setLayout(QtWidgets.QHBoxLayout())
+        self.backgroundFrame.layout().setContentsMargins(12.5,0,12.5,0)
+        self.backgroundFrame.layout().setSpacing(15)
+        self.gridLayout.addWidget(self.backgroundFrame, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.textBrowser, 1, 0, 1, 1)
         
         """End of important things to pay attention to."""
         self.horizontalLayout.addWidget(self.frame)
@@ -80,15 +93,15 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.verticalLayout_4.setSpacing(15)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.Settings = QtWidgets.QToolButton(parent=self.centralwidget)
-        self.Settings.setStyleSheet("""
-                                    QToolButton {
-                                        border: none;    
-                                    }
-                                
-                                    QToolButton::hover {
-                                        background-color: rgb(191, 188, 172);
-                                    }
-                                """)
+        self.Settings.setStyleSheet("QToolButton {\n"
+"    border: none;    \n"
+"}\n"
+"\n"
+"QToolButton::hover {\n"
+"    background-color: rgb(191, 188, 172);\n"
+"}\n"
+"\n"
+"")
         self.Settings.setText("")
         self.Settings.setToolTip("Settings")
         icon = QtGui.QIcon()
@@ -115,23 +128,68 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.configDoc.setIconSize(QtCore.QSize(50, 50))
         self.configDoc.setObjectName("configDoc")
         self.verticalLayout_4.addWidget(self.configDoc)
-        self.textToSpeech = QtWidgets.QToolButton(parent=self.centralwidget)
-        self.textToSpeech.setStyleSheet("QToolButton {\n"
+        self.textToSpeech = QtWidgets.QPushButton(parent=self.centralwidget, clicked = lambda: self.toggleTTS())
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap("UI/icons/audio_off.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        self.textToSpeech.setIcon(icon2)
+        self.textToSpeech.setIconSize(QtCore.QSize(44, 44))
+        
+        self.ttsOffStyle = "QPushButton {\n" \
+"    border: none;    \n" \
+"    background-color: rgba(255, 255, 255, 0);\n" \
+"    border-radius: 11px;\n" \
+"}\n" \
+"\n" \
+"QPushButton::hover {\n" \
+"    background-color: rgb(191, 188, 172);\n" \
+"}\n" \
+""
+        self.ttsOnStyle = "QPushButton {\n" \
+"    border: none;    \n" \
+"    background-color: rgba(255, 255, 255, 0);\n" \
+"    border-radius: 11px;\n" \
+"}\n" \
+"\n" \
+"QPushButton::hover {\n" \
+"    background-color: rgb(127, 153, 0);\n" \
+"}\n" \
+""
+        self.textToSpeech.setStyleSheet(self.ttsOffStyle)
+        self.textToSpeech.setObjectName("textToSpeech")
+        self.textToSpeech.setToolTip("Enable text-to-speech")
+        self.textToSpeech.setFixedSize(44, 44)
+        self.backgroundFrame.layout().addWidget(self.textToSpeech)
+        self.textToSpeechLabel = QtWidgets.QLabel(parent=self.centralwidget)
+        self.textToSpeechLabel.setFixedSize(200,50)
+        self.textToSpeechLabel.setObjectName("textToSpeechLabel")
+        # Not sure which color to use, (182, 194, 139) would match the other icons, but I think (127, 153, 0) is more readable
+        self.textToSpeechLabel.setStyleSheet("font-size: 17px; color: rgb(255, 255, 255); font-weight: 750; font-family: Inter; font-style: italic;")
+        # self.textToSpeechLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.textToSpeechLabel.setText("Text-to-speech Enabled")
+        self.backgroundFrame.layout().addWidget(self.textToSpeechLabel)
+        self.playPause = QtWidgets.QToolButton(parent=self.centralwidget, clicked = lambda: self.playPauseTTS())
+        self.playPause.setFixedSize(44, 44)
+        self.playPause.setStyleSheet("QToolButton {\n"
 "    border: none;    \n"
+"    background-color: rgb(182, 194, 139);\n"
+"    border-radius: 11px;\n"
 "}\n"
 "\n"
 "QToolButton::hover {\n"
-"    background-color: rgb(191, 188, 172);\n"
+"    background-color: rgb(127, 153, 0);\n"
 "}\n"
+"\n"
 "")
-        self.textToSpeech.setText("")
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("UI/icons/audio.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
-        self.textToSpeech.setIcon(icon2)
-        self.textToSpeech.setIconSize(QtCore.QSize(50, 50))
-        self.textToSpeech.setObjectName("textToSpeech")
-        self.textToSpeech.setToolTip("Enable text-to-speech")
-        self.verticalLayout_4.addWidget(self.textToSpeech)
+        self.playPause.setText("")
+        self.playPause.setToolTip("Play/Pause")
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap("UI/icons/play.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        self.playPause.setIcon(icon3)
+        self.playPause.setIconSize(QtCore.QSize(44, 44))
+        self.playPause.setObjectName("playPause")
+        self.backgroundFrame.layout().addWidget(self.playPause)
+        self.playPause.hide()
+        self.textToSpeechLabel.hide()
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.verticalLayout_4.addItem(spacerItem)
         self.horizontalLayout.addLayout(self.verticalLayout_4)
@@ -230,7 +288,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         """hardcoded to take a break milestone for now"""
         takeBreakMilestone = QtWidgets.QWidget()
         ui = tab_m.Ui_takeBreakMilestone()
-        ui.setupUi(takeBreakMilestone, self.gridLayout, self)
+        ui.setupUi(takeBreakMilestone, self.gridLayout)
         self.textBrowser.hide()
         self.gridLayout.update()
 
@@ -259,4 +317,42 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
     def instantiateConfigDocPopUp(self):
         self.configPopUp = config.Ui_MainWindow(self.adhdReader, self)
         self.configPopUp.hide() 
+            
+    def toggleTTS(self):
+        """Toggle text to speech"""
+        icon = QtGui.QIcon()
+        if self.muted:
+            self.muted = False
+            self.textToSpeech.setStyleSheet(self.ttsOnStyle)
+            icon.addPixmap(QtGui.QPixmap("UI/icons/speaker.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+            self.textToSpeech.setIcon(icon)
+            self.backgroundFrame.setFixedWidth(380)
+            self.backgroundFrame.setStyleSheet("QFrame {border-radius: 25px; \n"
+                                               "background-color: rgb(182, 194, 139)}")
+            self.textToSpeechLabel.show()
+            self.playPause.show()
+        else:
+            self.muted = True
+            self.textToSpeech.setStyleSheet(self.ttsOffStyle)
+            icon.addPixmap(QtGui.QPixmap("UI/icons/audio_off.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+            self.textToSpeech.setIcon(icon)
+            self.backgroundFrame.setFixedWidth(81)
+            self.backgroundFrame.setStyleSheet("QFrame {border-radius: 25px; \n"
+                                               "background-color: rgb(255, 255, 255); \n"
+                                               "border: 3px solid rgb(182, 194, 139)}")
+            self.textToSpeechLabel.hide()
+            self.playPause.hide()
 
+    def playPauseTTS(self):
+        """Toggle play/pause"""
+        icon = QtGui.QIcon()
+        if self.paused:
+            icon.addPixmap(QtGui.QPixmap("UI/icons/pause.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+            self.playPause.setIcon(icon)
+            tts.text2aud(self.textBrowser.toPlainText(), 0)
+            self.paused = False
+        else:
+            icon.addPixmap(QtGui.QPixmap("UI/icons/play.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+            self.playPause.setIcon(icon)
+            tts.audio_stop()
+            self.paused = True
