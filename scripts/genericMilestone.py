@@ -9,20 +9,27 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 
-class Ui_Generic_Milestone(object):
-    def setupUi(self, genericMilestone):
-        genericMilestone.setObjectName("genericMilestone")
-        genericMilestone.resize(1221, 749)
-        genericMilestone.setStyleSheet("border-color: rgb(255, 255, 255);")
-        self.gridLayout_2 = QtWidgets.QGridLayout(genericMilestone)
+class Ui_Generic_Milestone(QtWidgets.QWidget):
+    
+    def __init__(self, readingBoxGridLayout: QtWidgets.QGridLayout, readingScreen):
+        super().__init__()
+        self.readingScreen = readingScreen
+        self.readingBoxGridLayout = readingBoxGridLayout
+        self.setupUi()
+
+    def setupUi(self):
+        self.setObjectName("genericMilestone")
+        self.resize(1221, 749)
+        self.setStyleSheet("border-color: rgb(255, 255, 255);")
+        self.gridLayout_2 = QtWidgets.QGridLayout(parent=self)
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setContentsMargins(-1, 20, 0, -1)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.verticalLayout = QtWidgets.QVBoxLayout()
-        self.verticalLayout.setContentsMargins(-1, -1, 0, -1)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.fireworks1 = QtWidgets.QLabel(parent=genericMilestone)
+        self.fireworks1 = QtWidgets.QLabel(parent=self)
         self.fireworks1.setStyleSheet("border-color: rgb(255, 255, 255);")
         self.fireworks1.setText("")
         self.fireworks1.setPixmap(QtGui.QPixmap("designerUIFiles/milestones/../../Downloads/fireworks1.png"))
@@ -30,13 +37,13 @@ class Ui_Generic_Milestone(object):
         self.verticalLayout.addWidget(self.fireworks1, 0, QtCore.Qt.AlignmentFlag.AlignHCenter|QtCore.Qt.AlignmentFlag.AlignTop)
         self.horizontalLayout.addLayout(self.verticalLayout)
         self.mainUI = QtWidgets.QVBoxLayout()
-        self.mainUI.setContentsMargins(-1, 50, -1, 20)
+        self.mainUI.setContentsMargins(0, 20, 0, 0)
         self.mainUI.setObjectName("mainUI")
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.horizontalLayout_4.addItem(spacerItem)
-        self.label = QtWidgets.QLabel(parent=genericMilestone)
+        self.label = QtWidgets.QLabel(parent=self)
         self.label.setStyleSheet("width: 645px;\n"
 "font: 45pt \"Niramit\";\n"
 "height: 76px;\n"
@@ -55,7 +62,7 @@ class Ui_Generic_Milestone(object):
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         spacerItem2 = QtWidgets.QSpacerItem(561, 20, QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem2)
-        self.milestoneNum = QtWidgets.QLabel(parent=genericMilestone)
+        '''self.milestoneNum = QtWidgets.QLabel(parent=self)
         self.milestoneNum.setStyleSheet("color: #4E8696;\n"
 "font-family: Inter;\n"
 "font-size: 40px;\n"
@@ -65,7 +72,7 @@ class Ui_Generic_Milestone(object):
 "border-color: rgb(255, 255, 255);")
         self.milestoneNum.setObjectName("milestoneNum")
         self.horizontalLayout_2.addWidget(self.milestoneNum)
-        self.of = QtWidgets.QLabel(parent=genericMilestone)
+        self.of = QtWidgets.QLabel(parent=self)
         self.of.setStyleSheet("color: #4E8696;\n"
 "font-family: Inter;\n"
 "font-size: 40px;\n"
@@ -76,7 +83,8 @@ class Ui_Generic_Milestone(object):
 "width: 50;")
         self.of.setObjectName("of")
         self.horizontalLayout_2.addWidget(self.of)
-        self.milestoneTotal = QtWidgets.QLabel(parent=genericMilestone)
+        '''
+        self.milestoneTotal = QtWidgets.QLabel(parent=self)
         self.milestoneTotal.setStyleSheet("color: #4E8696;\n"
 "font-family: Inter;\n"
 "font-size: 40px;\n"
@@ -85,6 +93,7 @@ class Ui_Generic_Milestone(object):
 "line-height: normal;\n"
 "border-color: rgb(255, 255, 255);")
         self.milestoneTotal.setObjectName("milestoneTotal")
+        self.milestoneTotal.setAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter)
         self.horizontalLayout_2.addWidget(self.milestoneTotal)
         spacerItem3 = QtWidgets.QSpacerItem(561, 20, QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem3)
@@ -93,7 +102,7 @@ class Ui_Generic_Milestone(object):
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
         spacerItem4 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.horizontalLayout_5.addItem(spacerItem4)
-        self.label_2 = QtWidgets.QLabel(parent=genericMilestone)
+        self.label_2 = QtWidgets.QLabel(parent=self)
         self.label_2.setObjectName("label_2")
         self.horizontalLayout_5.addWidget(self.label_2)
         spacerItem5 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
@@ -103,7 +112,7 @@ class Ui_Generic_Milestone(object):
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         spacerItem6 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem6)
-        self.startTimer = QtWidgets.QPushButton(parent=genericMilestone)
+        self.startTimer = QtWidgets.QPushButton(parent=self)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -131,15 +140,16 @@ class Ui_Generic_Milestone(object):
         spacerItem7 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem7)
         self.mainUI.addLayout(self.horizontalLayout_3)
-        self.skipButton = QtWidgets.QPushButton(parent=genericMilestone)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
+        self.skipButton = QtWidgets.QPushButton(parent=self)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.skipButton.sizePolicy().hasHeightForWidth())
         self.skipButton.setSizePolicy(sizePolicy)
+        self.skipButton.setMinimumHeight(40)
         font = QtGui.QFont()
         font.setFamily("Inter")
-        font.setPointSize(-1)
+        font.setPointSize(20)
         font.setBold(False)
         font.setItalic(False)
         font.setUnderline(True)
@@ -162,7 +172,7 @@ class Ui_Generic_Milestone(object):
         self.horizontalLayout.addLayout(self.mainUI)
         self.verticalLayout_3 = QtWidgets.QVBoxLayout()
         self.verticalLayout_3.setObjectName("verticalLayout_3")
-        self.fireworks2 = QtWidgets.QLabel(parent=genericMilestone)
+        self.fireworks2 = QtWidgets.QLabel(parent=self)
         self.fireworks2.setStyleSheet("border-color: rgb(255, 255, 255);")
         self.fireworks2.setText("")
         self.fireworks2.setPixmap(QtGui.QPixmap("designerUIFiles/milestones/../../Downloads/fireworks2.png"))
@@ -171,26 +181,17 @@ class Ui_Generic_Milestone(object):
         self.horizontalLayout.addLayout(self.verticalLayout_3)
         self.gridLayout_2.addLayout(self.horizontalLayout, 0, 0, 1, 1)
 
-        self.retranslateUi(genericMilestone)
-        QtCore.QMetaObject.connectSlotsByName(genericMilestone)
+        self.label_2.setPixmap(QtGui.QPixmap("UI/icons/map.png"))
 
-    def retranslateUi(self, genericMilestone):
+        self.retranslateUi()
+        QtCore.QMetaObject.connectSlotsByName(self)
+
+        self.readingBoxGridLayout.addWidget(self, 0, 1)
+
+    def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
-        genericMilestone.setWindowTitle(_translate("genericMilestone", "Form"))
         self.label.setText(_translate("genericMilestone", "You\'ve reached milestone"))
-        self.milestoneNum.setText(_translate("genericMilestone", "X"))
-        self.of.setText(_translate("genericMilestone", "of"))
-        self.milestoneTotal.setText(_translate("genericMilestone", "X "))
-        self.label_2.setText(_translate("genericMilestone", "<html><head/><body><p><img src=\":/testPrefix/map.png\"/></p></body></html>"))
+        self.milestoneTotal.setText(_translate("genericMilestone", "X of X"))
         self.startTimer.setText(_translate("genericMilestone", "[continue to milestone prompt]"))
         self.skipButton.setText(_translate("genericMilestone", "Skip this milestone"))
 
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    genericMilestone = QtWidgets.QWidget()
-    ui = Ui_Generic_Milestone()
-    ui.setupUi(genericMilestone)
-    genericMilestone.show()
-    sys.exit(app.exec())
