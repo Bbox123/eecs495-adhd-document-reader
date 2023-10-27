@@ -198,6 +198,9 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         sizePolicy.setHeightForWidth(self.fontSlider.sizePolicy().hasHeightForWidth())
         self.fontSlider.setSizePolicy(sizePolicy)
         self.fontSlider.setMinimumSize(QtCore.QSize(300, 0))
+        self.fontSlider.setMinimum(1)
+        self.fontSlider.setMaximum(100)
+        self.fontSlider.setValue(24)
         self.fontSlider.setStyleSheet("QSlider {\n"
 "    border: none;\n"
 "}\n"
@@ -263,6 +266,11 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         sizePolicy.setHeightForWidth(self.fontStyleDropDown.sizePolicy().hasHeightForWidth())
         self.fontStyleDropDown.setSizePolicy(sizePolicy)
         self.fontStyleDropDown.setMinimumSize(QtCore.QSize(300, 0))
+        self.font_db = QtGui.QFontDatabase
+        # The current font we use
+        self.fontStyleDropDown.addItem("Inter")
+        # We can add custom ones that are for individuals with dyslexia by manually adding them to this project and implementing here
+        self.fontStyleDropDown.addItems(self.font_db.families())
         self.fontStyleDropDown.setStyleSheet("QComboBox {\n"
 "    border: 2px solid #B6C28B;\n"
 "}")
@@ -521,6 +529,9 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.retranslateUi()
         QtCore.QMetaObject.connectSlotsByName(self)
 
+        self.fontSlider.valueChanged[int].connect(self.changeFontSize)
+        self.fontStyleDropDown.currentTextChanged[str].connect(self.changeFontStyle)
+
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
         self.setWindowTitle(_translate("MainWindow", "MainWindow"))
@@ -561,3 +572,39 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
         # move the popup to the center
         self.setGeometry(center_x, center_y, widgetWidth, widgetHeight)
+
+    def changeFontSize(self, value):
+        
+        fontSize = f"{value}px"
+
+        fontStyle = self.fontStyleDropDown.currentText()
+
+        newStyleSheet = ("""
+                        font-family: {STYLE};
+                        font-size:{SIZE};
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: normal;
+                        border: none;
+                         """)
+        
+        newStyleSheet = newStyleSheet.replace("{SIZE}", fontSize).replace("{STYLE}", fontStyle)
+        self.sampleText.setStyleSheet(newStyleSheet)
+
+    def changeFontStyle(self, fontStyle):
+
+        fontSize = f"{self.fontSlider.value()}px"
+
+        newStyleSheet = ("""
+                        font-family: {STYLE};
+                        font-size: {SIZE};
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: normal;
+                        border: none;
+                         """)
+        
+        newStyleSheet = newStyleSheet.replace("{SIZE}", fontSize).replace("{STYLE}", fontStyle)
+        self.sampleText.setStyleSheet(newStyleSheet)
+        
+        
