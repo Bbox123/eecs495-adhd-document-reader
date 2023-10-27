@@ -72,7 +72,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
                                                "border: 3px solid rgb(182, 194, 139)}")
         self.backgroundFrame.setGraphicsEffect(QtWidgets.QGraphicsOpacityEffect(self.backgroundFrame))
         self.backgroundFrame.setLayout(QtWidgets.QHBoxLayout())
-        self.backgroundFrame.layout().setContentsMargins(12.5,0,12.5,0)
+        self.backgroundFrame.layout().setContentsMargins(12,0,12,0)
         self.backgroundFrame.layout().setSpacing(15)
         self.gridLayout.addWidget(self.backgroundFrame, 0, 0, 1, 1)
         self.gridLayout.addWidget(self.textBrowser, 1, 0, 1, 1)
@@ -280,6 +280,11 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         ui = tab_m.Ui_takeBreakMilestone()
         ui.setupUi(takeBreakMilestone, self.gridLayout)
         self.textBrowser.hide()
+        # hiding tts button and label
+        self.muted = False
+        self.toggleTTS()
+        self.backgroundFrame.hide()
+        self.textToSpeech.hide()
         self.gridLayout.update()
 
     def loadTextBrowser(self):
@@ -290,6 +295,10 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         # Iterate through everything in the grid layout
         for index in range(self.gridLayout.count()):
             self.gridLayout.itemAt(index).widget().hide()
+
+        if self.backgroundFrame.isHidden() is not True:
+            self.backgroundFrame.show()
+            self.textToSpeech.show()
         
         self.textBrowser.show()
         self.gridLayout.update()
