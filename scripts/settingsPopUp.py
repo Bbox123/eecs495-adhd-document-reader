@@ -9,12 +9,22 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 
-class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1000, 650)
-        MainWindow.setWindowFlags(QtCore.Qt.WindowType.FramelessWindowHint)
-        self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
+class Ui_MainWindow(QtWidgets.QMainWindow):
+    
+    def __init__(self, adhdReader: QtWidgets.QMainWindow, readingScreen):
+        super().__init__()
+        self.readingScreen = readingScreen
+        self.adhdReader = adhdReader
+        self.setupUi()
+
+    def showEvent(self, a0: QtGui.QShowEvent) -> None:
+        self.centerPopUp()
+
+    def setupUi(self):
+        self.setObjectName("MainWindow")
+        self.resize(1000, 650)
+        self.setWindowFlags(QtCore.Qt.WindowType.FramelessWindowHint)
+        self.centralwidget = QtWidgets.QWidget(parent=self)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.centralwidget)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
@@ -58,7 +68,7 @@ class Ui_MainWindow(object):
 "line-height: normal;")
         self.settingsLabel.setObjectName("settingsLabel")
         self.horizontalLayout_2.addWidget(self.settingsLabel)
-        self.closeButton = QtWidgets.QToolButton(parent=self.titleLayout)
+        self.closeButton = QtWidgets.QToolButton(parent=self.titleLayout, clicked = lambda: self.readingScreen.togglePopUp(self))
         self.closeButton.setStyleSheet("color: #FFF;")
         self.closeButton.setText("")
         icon1 = QtGui.QIcon()
@@ -506,14 +516,14 @@ class Ui_MainWindow(object):
         self.gridLayout_2.setRowStretch(0, 1)
         self.gridLayout_2.setRowStretch(1, 9)
         self.verticalLayout_2.addWidget(self.frame)
-        MainWindow.setCentralWidget(self.centralwidget)
+        self.setCentralWidget(self.centralwidget)
 
-        self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        self.retranslateUi()
+        QtCore.QMetaObject.connectSlotsByName(self)
 
-    def retranslateUi(self, MainWindow):
+    def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.settingsLabel.setText(_translate("MainWindow", "Settings"))
         self.settingsTitle.setText(_translate("MainWindow", "Text"))
         self.sampleText.setText(_translate("MainWindow", "This is sample text."))
@@ -535,12 +545,19 @@ class Ui_MainWindow(object):
         self.readingComp.setText(_translate("MainWindow", "Reading Comprehension Questions"))
         self.rewardAudio.setText(_translate("MainWindow", "Reward Audio"))
 
+    def centerPopUp(self):
+        """Grab the current size of the screen to center the pop up in the middle"""
 
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec())
+        # get current location of screen
+        screen_center = self.adhdReader.frameGeometry().center()
+
+        # get pop up data
+        widgetWidth = self.frameGeometry().width()
+        widgetHeight = self.frameGeometry().height()
+
+        # calculate central position
+        center_x = int(screen_center.x() - widgetWidth / 2)
+        center_y = int(screen_center.y() - widgetHeight / 2)
+
+        # move the popup to the center
+        self.setGeometry(center_x, center_y, widgetWidth, widgetHeight)
