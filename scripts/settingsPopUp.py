@@ -573,8 +573,9 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         # move the popup to the center
         self.setGeometry(center_x, center_y, widgetWidth, widgetHeight)
 
+    # TODO: new font size needs to be stored and applied upong clicking the close button on the pop up
     def changeFontSize(self, value):
-        
+        '''Change the font size, also change the sample text.'''
         fontSize = f"{value}px"
 
         fontStyle = self.fontStyleDropDown.currentText()
@@ -591,8 +592,9 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         newStyleSheet = newStyleSheet.replace("{SIZE}", fontSize).replace("{STYLE}", fontStyle)
         self.sampleText.setStyleSheet(newStyleSheet)
 
+    # TODO: new font style needs to be stored and applied upong clicking the close button on the pop up
     def changeFontStyle(self, fontStyle):
-
+        '''Change the font style, also change the sample text.'''
         fontSize = f"{self.fontSlider.value()}px"
 
         newStyleSheet = ("""
