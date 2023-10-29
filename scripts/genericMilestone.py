@@ -9,6 +9,7 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 import TakeABreakMilestoneTimer as m_timer
 import random
+import settings
 
 
 class Ui_Generic_Milestone(QtWidgets.QWidget):
@@ -17,6 +18,8 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
         super().__init__()
         self.readingScreen = readingScreen
         self.readingBoxGridLayout = readingBoxGridLayout
+        self.settings:settings = readingScreen.adhdReader.settings
+        self.mileStoneChoice = ""
         self.setupUi()
         self.determineMileStone()
 
@@ -211,19 +214,22 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
         self.chooseMilestone()
 
         # based off choice, update button text
-        self.startButton.setText("Take a Break Milestone")
-
-        # store milestone choice to be acted upon when the user clicks the start button
+        self.startButton.setText(self.mileStoneChoice)
 
     def chooseMilestone(self):
-        """roll a random number and choose from list of permitted milestones, return a string or index of the correct milestone"""
-        choice = random.randint(0, 4)
-        # TODO: finish implementation
+        """roll a random number and choose from list of permitted milestones, set the choice to be used"""
+        mileStoneChoices = []
+
+        for milestone, enabled in self.settings.Milestones["enabled"].items():
+            if enabled:
+                mileStoneChoices.append(milestone)
+        
+        self.mileStoneChoice = mileStoneChoices[random.randrange(0, len(mileStoneChoices))]
 
     def goToMilestone(self):
         """Setup milestone in grid layout and call any milestone specific methods"""
         milestoneWidget = None
-        if True:
+        if self.mileStoneChoice == "Timed Break":
                 milestoneWidget = m_timer.Ui_Timer()
                 self.addMilestoneToGrid(milestoneWidget)
                 milestoneWidget.startTimer()
@@ -234,7 +240,7 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
          # column 1 has the text partitioner, and column 2 has the generic milestone screen
          self.readingBoxGridLayout.addWidget(milestoneWidget, 0, 2)
          
-         # hiding the generic milestone allows the widget to take its place as if the generic widget was never there
+         # hiding the generic milestone allows the widget to take its place as if the generic milestone was never there
          self.hide()
          milestoneWidget.show()
 
