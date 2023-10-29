@@ -286,11 +286,8 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
             self.progressBar.setValue(self.parser.current_partition)
         
     def loadMileStone(self):
-        """hardcoded to take a break milestone for now"""
+        """Load generic milestone screen."""
         self.mileStoneScreen = mileStoneScreen.Ui_Generic_Milestone(self.gridLayout, self)
-        '''takeBreakMilestone = QtWidgets.QWidget()
-        ui = tab_m.Ui_takeBreakMilestone()
-        ui.setupUi(takeBreakMilestone, self.gridLayout, self)'''
         self.textBrowser.hide()
         self.gridLayout.update()
 

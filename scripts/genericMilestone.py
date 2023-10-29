@@ -7,6 +7,8 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
+import TakeABreakMilestoneTimer as m_timer
+import random
 
 
 class Ui_Generic_Milestone(QtWidgets.QWidget):
@@ -16,6 +18,7 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
         self.readingScreen = readingScreen
         self.readingBoxGridLayout = readingBoxGridLayout
         self.setupUi()
+        self.determineMileStone()
 
     def setupUi(self):
         self.setObjectName("genericMilestone")
@@ -112,15 +115,15 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         spacerItem6 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem6)
-        self.startTimer = QtWidgets.QPushButton(parent=self)
+        self.startButton = QtWidgets.QPushButton(parent=self, clicked = lambda: self.goToMilestone())
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.startTimer.sizePolicy().hasHeightForWidth())
-        self.startTimer.setSizePolicy(sizePolicy)
-        self.startTimer.setMinimumSize(QtCore.QSize(444, 95))
-        self.startTimer.setMaximumSize(QtCore.QSize(16777215, 100))
-        self.startTimer.setStyleSheet("QPushButton {\n"
+        sizePolicy.setHeightForWidth(self.startButton.sizePolicy().hasHeightForWidth())
+        self.startButton.setSizePolicy(sizePolicy)
+        self.startButton.setMinimumSize(QtCore.QSize(444, 95))
+        self.startButton.setMaximumSize(QtCore.QSize(16777215, 100))
+        self.startButton.setStyleSheet("QPushButton {\n"
 "    border: none;    \n"
 "    background-color: rgb(78, 134, 150);\n"
 "    border-radius: 20px;\n"
@@ -135,12 +138,12 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
 "QPushButton::hover {\n"
 "    background-color: rgb(46, 79, 88);\n"
 "}")
-        self.startTimer.setObjectName("startTimer")
-        self.horizontalLayout_3.addWidget(self.startTimer)
+        self.startButton.setObjectName("startButton")
+        self.horizontalLayout_3.addWidget(self.startButton)
         spacerItem7 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem7)
         self.mainUI.addLayout(self.horizontalLayout_3)
-        self.skipButton = QtWidgets.QPushButton(parent=self)
+        self.skipButton = QtWidgets.QPushButton(parent=self, clicked = lambda: self.readingScreen.loadNextPartition())
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -192,6 +195,51 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
         _translate = QtCore.QCoreApplication.translate
         self.label.setText(_translate("genericMilestone", "You\'ve reached milestone"))
         self.milestoneTotal.setText(_translate("genericMilestone", "X of X"))
-        self.startTimer.setText(_translate("genericMilestone", "[continue to milestone prompt]"))
+        self.startButton.setText(_translate("genericMilestone", "[continue to milestone prompt]"))
         self.skipButton.setText(_translate("genericMilestone", "Skip this milestone"))
+
+    def determineMileStone(self):
+        """Determine which milestone will be used and update UI to reflect milestone progress"""
+        # grab total amount of milestones
+        count = self.readingScreen.parser.milestone_running_count
+        total = self.readingScreen.parser.milestone_total
+
+        # update total
+        self.milestoneTotal.setText(f"{count} of {total}")
+
+        # choose milestone based on settings TODO: implement settings backend so that we can check settings here
+        self.chooseMilestone()
+
+        # based off choice, update button text
+        self.startButton.setText("Take a Break Milestone")
+
+        # store milestone choice to be acted upon when the user clicks the start button
+
+    def chooseMilestone(self):
+        """roll a random number and choose from list of permitted milestones, return a string or index of the correct milestone"""
+        choice = random.randint(0, 4)
+        # TODO: finish implementation
+
+    def goToMilestone(self):
+        """Setup milestone in grid layout and call any milestone specific methods"""
+        milestoneWidget = None
+        if True:
+                milestoneWidget = m_timer.Ui_Timer()
+                self.addMilestoneToGrid(milestoneWidget)
+                milestoneWidget.startTimer()
+
+    def addMilestoneToGrid(self, milestoneWidget):
+         """Add milestone to reading screen grid and update layout to show changes"""
+         # add milestone widget to row 0 column 2 in grid layout
+         # column 1 has the text partitioner, and column 2 has the generic milestone screen
+         self.readingBoxGridLayout.addWidget(milestoneWidget, 0, 2)
+         
+         # hiding the generic milestone allows the widget to take its place as if the generic widget was never there
+         self.hide()
+         milestoneWidget.show()
+
+         # update reading screen box to reflect changes
+         self.readingBoxGridLayout.update()
+                
+
 
