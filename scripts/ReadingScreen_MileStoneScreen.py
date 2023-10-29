@@ -10,6 +10,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 import TakeABreakMilestone as tab_m
 import ParseFile
 import configureDocumentPopUp as config
+import settingsPopUp as settings
 import TextToSpeech as tts
 
 class Ui_ReadingScreen(QtWidgets.QMainWindow):
@@ -25,8 +26,8 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         # partitioning text in parser
         self.parser.partition_text()
 
-        # Create config doc pop up
-        self.instantiateConfigDocPopUp()
+        # Create pop ups
+        self.instantiatePopUps()
 
         self.setupUi()
 
@@ -92,7 +93,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.verticalLayout_4 = QtWidgets.QVBoxLayout()
         self.verticalLayout_4.setSpacing(15)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
-        self.Settings = QtWidgets.QToolButton(parent=self.centralwidget)
+        self.Settings = QtWidgets.QToolButton(parent=self.centralwidget, clicked = lambda: self.togglePopUp(self.settingsPopUp))
         self.Settings.setStyleSheet("QToolButton {\n"
 "    border: none;    \n"
 "}\n"
@@ -110,7 +111,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.Settings.setIconSize(QtCore.QSize(50, 50))
         self.Settings.setObjectName("Settings")
         self.verticalLayout_4.addWidget(self.Settings)
-        self.configDoc = QtWidgets.QToolButton(parent=self.centralwidget, clicked = lambda: self.toggleConfigDocPopUp())
+        self.configDoc = QtWidgets.QToolButton(parent=self.centralwidget, clicked = lambda: self.togglePopUp(self.configPopUp))
         self.configDoc.setStyleSheet("QToolButton {\n"
 "    border: none;    \n"
 "}\n"
@@ -304,19 +305,22 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.textBrowser.show()
         self.gridLayout.update()
 
-    def toggleConfigDocPopUp(self):
+    def instantiatePopUps(self):
+        self.configPopUp = config.Ui_MainWindow(self.adhdReader, self)
+        self.configPopUp.hide()
+
+        self.settingsPopUp = settings.Ui_MainWindow(self.adhdReader, self)
+        self.settingsPopUp.hide() 
+
+    def togglePopUp(self, popUp: QtWidgets.QMainWindow):
         """If the pop up is visible, hide it. Otherwise show it"""
-        if self.configPopUp.isVisible():
-            self.configPopUp.hide()
+        if popUp.isVisible():
+            popUp.hide()
             self.overlay.hide()
         else:
             self.overlay.setGeometry(self.adhdReader.rect())
             self.overlay.show()
-            self.configPopUp.show()
-    
-    def instantiateConfigDocPopUp(self):
-        self.configPopUp = config.Ui_MainWindow(self.adhdReader, self)
-        self.configPopUp.hide() 
+            popUp.show()
             
     def toggleTTS(self):
         """Toggle text to speech"""
