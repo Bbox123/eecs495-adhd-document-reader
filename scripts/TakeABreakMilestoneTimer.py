@@ -9,8 +9,12 @@
 from PyQt6 import QtCore, QtGui, QtWidgets, QtMultimedia
 
 
-class Ui_Timer(object):
-    def setupUi(self, Timer):
+class Ui_Timer(QtWidgets.QWidget):
+    def __init__(self):
+        super(Ui_Timer, self).__init__()
+        self.setupUi()
+
+    def setupUi(self):
         # setting time and text for timer
         self.timerTime = QtCore.QTime(0, 5)
         self.timerTimeText = "5:00"
@@ -21,17 +25,17 @@ class Ui_Timer(object):
         self.audioOutput = QtMultimedia.QAudioOutput()
         self.mediaPlayer.setAudioOutput(self.audioOutput)
 
-        Timer.setObjectName("Timer")
-        Timer.resize(1051, 735)
-        Timer.setStyleSheet("border-color: rgb(255, 255, 255);")
-        self.gridLayout = QtWidgets.QGridLayout(Timer)
+        self.setObjectName("Timer")
+        self.resize(1051, 735)
+        self.setStyleSheet("border-color: rgb(255, 255, 255);")
+        self.gridLayout = QtWidgets.QGridLayout(self)
         self.gridLayout.setContentsMargins(9, 9, -1, -1)
         self.gridLayout.setObjectName("gridLayout")
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setContentsMargins(-1, 0, -1, 20)
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.titleLayout = QtWidgets.QFrame(parent=Timer)
+        self.titleLayout = QtWidgets.QFrame(parent=self)
         self.titleLayout.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.titleLayout.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.titleLayout.setObjectName("titleLayout")
@@ -67,7 +71,7 @@ class Ui_Timer(object):
         self.timerWidgetLayout.setObjectName("timerWidgetLayout")
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.timerWidgetLayout.addItem(spacerItem1)
-        self.timer = QtWidgets.QWidget(parent=Timer)
+        self.timer = QtWidgets.QWidget(parent=self)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -120,7 +124,7 @@ class Ui_Timer(object):
         self.textContainer.setObjectName("textContainer")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.textContainer)
         self.gridLayout_2.setSizeConstraint(QtWidgets.QLayout.SizeConstraint.SetFixedSize)
-        self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout_2.setContentsMargins(25, 0, 0, 0)
         self.gridLayout_2.setSpacing(0)
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.time = QtWidgets.QLabel(parent=self.textContainer)
@@ -131,7 +135,7 @@ class Ui_Timer(object):
         self.time.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
         font.setFamily("Roboto")
-        font.setPointSize(-1)
+        font.setPointSize(0)
         font.setBold(False)
         font.setItalic(False)
         font.setWeight(50)
@@ -146,7 +150,7 @@ class Ui_Timer(object):
                                 background-color: transparent;
                                 """)
         self.time.setScaledContents(False)
-        self.time.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.time.setAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter)
         self.time.setWordWrap(False)
         self.time.setObjectName("time")
         self.gridLayout_2.addWidget(self.time, 0, 0, 1, 1)
@@ -165,7 +169,7 @@ class Ui_Timer(object):
         self.pauseRestartButtonsLayout.setObjectName("pauseRestartButtonsLayout")
         spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.pauseRestartButtonsLayout.addItem(spacerItem3)
-        self.pauseButton = QtWidgets.QPushButton(parent=Timer, clicked = lambda: self.pauseTimer())
+        self.pauseButton = QtWidgets.QPushButton(parent=self, clicked = lambda: self.pauseTimer())
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -191,7 +195,7 @@ class Ui_Timer(object):
                                        """)
         self.pauseButton.setObjectName("pauseButton")
         self.pauseRestartButtonsLayout.addWidget(self.pauseButton, 0, QtCore.Qt.AlignmentFlag.AlignTop)
-        self.restartButton = QtWidgets.QPushButton(parent=Timer, clicked = lambda: self.restartTimer())
+        self.restartButton = QtWidgets.QPushButton(parent=self, clicked = lambda: self.restartTimer())
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -230,15 +234,15 @@ class Ui_Timer(object):
         self.verticalLayout.setStretch(2, 1)
         self.gridLayout.addLayout(self.verticalLayout, 0, 0, 1, 1)
 
-        self.retranslateUi(Timer)
-        QtCore.QMetaObject.connectSlotsByName(Timer)
+        self.retranslateUi()
+        QtCore.QMetaObject.connectSlotsByName(self)
 
         self.timerWidget = QtCore.QTimer()
         self.timeLeft = self.timerTime # 5 minutes
 
-    def retranslateUi(self, Timer):
+    def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
-        Timer.setWindowTitle(_translate("Timer", "Form"))
+        self.setWindowTitle(_translate("Timer", "Form"))
         self.title.setText(_translate("Timer", "Take a break."))
         self.subtitle.setText(_translate("Timer", "Time Left:"))
         self.time.setText(_translate("Timer", "00:00"))
