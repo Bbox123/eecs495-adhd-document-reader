@@ -14,9 +14,31 @@ def blocking_delay(milliseconds):
     loop.exec()
 
 
+class ConfigCardMatching:
+    def __init__(self, x: int=4, y: int=4, num: int=4):
+        """initialize the card board
+        
+        Keyword arguments:
+        x: height (axis=0)
+        y: width (axis=1)
+        num: how many different cards
+        num|(x*y) is required, otherwise error occurs
+        
+        """
+        assert x*y%num == 0
+        self.x = x
+        self.y = y
+        self.num = num
+        self.symbols = (list(map(str, range(1,num+1)))) * int(x*y/num)
+        self.pairs_for_win = int(x*y/2)
+        
+
+
+
 class CardMatchingGame(QWidget):
-    def __init__(self):
+    def __init__(self, config: ConfigCardMatching=ConfigCardMatching()):
         super().__init__()
+        self.config = config
         self.initUI()
 
     def initUI(self):
@@ -24,8 +46,8 @@ class CardMatchingGame(QWidget):
         self.cards = []
 
         # Initialize the cards with numbers
-        for row in range(4):
-            for col in range(4):
+        for row in range(self.config.x):
+            for col in range(self.config.y):
                 card = QPushButton('', self)
                 card.setFixedSize(100, 100)
                 card.setIconSize(card.size())
@@ -41,7 +63,7 @@ class CardMatchingGame(QWidget):
 
     def shuffleAndHideCards(self):
         
-        symbols = ['1', '1', '2', '2', '3', '3', '4', '4','1', '1', '2', '2', '3', '3', '4', '4']
+        symbols = self.config.symbols
         random.shuffle(symbols)
         for card, symbol in zip(self.cards, symbols):
             card.setIcon(QIcon())  # Clear the card
@@ -67,10 +89,10 @@ class CardMatchingGame(QWidget):
             card1.setStyleSheet("background-color: green;")
             card2.setStyleSheet("background-color: green;")
 
-            if self.matched_pairs == 8:
+            if self.matched_pairs == self.config.pairs_for_win:
                 # win msg
+                print("you win!")
                 
-                pass
         else:
             # Delay to let the player see the cards before hiding them
             blocking_delay(1000)
@@ -85,6 +107,7 @@ class CardMatchingGame(QWidget):
 if __name__ == "__main__":
     import sys
     app = QApplication(sys.argv)
-    game = CardMatchingGame()
+    config = ConfigCardMatching(4,6,6)
+    game = CardMatchingGame(config)
     game.show()
     sys.exit(app.exec())
