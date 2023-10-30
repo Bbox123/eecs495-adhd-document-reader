@@ -21,6 +21,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.parser = parser
         self.muted = True
         self.paused = True
+        self.ttsLoaded = False
 
         # partitioning text in parser
         self.parser.partition_text()
@@ -273,6 +274,10 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.progressBar.setValue(self.parser.current_partition)
         if self.parser.current_partition > 1:
             self.leftArrow.setIcon(self.leftEnabled)
+        tts.audio_unload()
+        self.ttsLoaded = False
+        if self.paused == False:
+            self.playPauseTTS()
 
     def loadLastPartition(self):
         """Get the next partition or milestone"""
@@ -283,12 +288,13 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
             self.leftArrow.setIcon(self.leftDisabled)
             self.textBrowser.setText(self.parser.get_last(self.loadTextBrowser))
             self.progressBar.setValue(self.parser.current_partition)
+        tts.audio_unload()
+        self.ttsLoaded = False
+        if self.paused == False:
+            self.playPauseTTS()
         
     def loadMileStone(self):
         """hardcoded to take a break milestone for now"""
-        takeBreakMilestone = QtWidgets.QWidget()
-        ui = tab_m.Ui_takeBreakMilestone()
-        ui.setupUi(takeBreakMilestone, self.gridLayout, self)
         self.textBrowser.hide()
         # hiding tts button and label
         self.muted = False
@@ -296,6 +302,10 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.backgroundFrame.hide()
         self.textToSpeech.hide()
         self.gridLayout.update()
+        takeBreakMilestone = QtWidgets.QWidget()
+        ui = tab_m.Ui_takeBreakMilestone()
+        ui.setupUi(takeBreakMilestone, self.gridLayout, self)
+        
 
     def loadTextBrowser(self):
         """Check to see if text browser needs to be shown. Hide all other widgets in our grid except for our text browser"""
@@ -305,12 +315,10 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         # Iterate through everything in the grid layout
         for index in range(self.gridLayout.count()):
             self.gridLayout.itemAt(index).widget().hide()
-
-        if self.backgroundFrame.isHidden() is not True:
-            self.backgroundFrame.show()
-            self.textToSpeech.show()
         
         self.textBrowser.show()
+        self.backgroundFrame.show()
+        self.textToSpeech.show()
         self.gridLayout.update()
 
     def toggleConfigDocPopUp(self):
@@ -356,12 +364,30 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         """Toggle play/pause"""
         icon = QtGui.QIcon()
         if self.paused:
+            self.timer = QtCore.QTimer() # Timer for when to stop audio
+            self.timer.timeout.connect(self.endAudio)
+            if self.ttsLoaded == False:
+                tts.text2aud(self.textBrowser.toPlainText(), 0)
+                self.ttsLoaded = True
+                self.audioLength = int(tts.get_audio_length() * 1000)
+            else:
+                tts.audio_unpause()
             icon.addPixmap(QtGui.QPixmap("UI/icons/pause.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
             self.playPause.setIcon(icon)
-            tts.text2aud(self.textBrowser.toPlainText(), 0)
             self.paused = False
+            self.timer.start(self.audioLength - int(tts.get_audio_pos()))
+            
         else:
+            self.timer.stop()
             icon.addPixmap(QtGui.QPixmap("UI/icons/play.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
             self.playPause.setIcon(icon)
-            tts.audio_stop()
+            tts.audio_pause()
             self.paused = True
+        
+    def endAudio(self):
+        """End audio"""
+        while tts.get_audio_playing():
+            pass
+        self.paused = False
+        self.playPauseTTS()
+        tts.audio_rewind()
