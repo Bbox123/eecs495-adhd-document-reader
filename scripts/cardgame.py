@@ -34,8 +34,6 @@ class ConfigCardMatching:
         self.pairs_for_win = int(x*y/2)
         
 
-
-
 class CardMatchingGame(QWidget):
     def __init__(self, config: ConfigCardMatching=ConfigCardMatching()):
         super().__init__()
@@ -75,8 +73,9 @@ class CardMatchingGame(QWidget):
     def cardClicked(self):
         sender = self.sender()
         if not sender.isVisible and len(self.selected_cards) < 2:
-            sender.setText(sender.symbol)
+            sender.setText(sender.symbol)  # maybe use a different method if sender.symbol is not str
             sender.isVisible = True
+            sender.setStyleSheet("background-color: gray;")
             self.selected_cards.append(sender)
 
         if len(self.selected_cards) == 2:
@@ -103,6 +102,7 @@ class CardMatchingGame(QWidget):
         for card in self.selected_cards:
             card.setText('')
             card.isVisible = False
+            card.setStyleSheet("")
         self.selected_cards = []
 
 if __name__ == "__main__":
