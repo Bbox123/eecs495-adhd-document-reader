@@ -15,13 +15,14 @@ def blocking_delay(milliseconds):
 
 
 class ConfigCardMatching:
-    def __init__(self, x: int=4, y: int=4, num: int=4):
+    def __init__(self, x: int=4, y: int=4, num: int=4, picture_mapping=str):
         """initialize the card board
         
         Keyword arguments:
         x: height (axis=0)
         y: width (axis=1)
         num: how many different cards
+        picture_mapping: mapping function from int digits (1, 2, etc. to things that actually shown. Default is str function)
         num|(x*y) is required, otherwise error occurs
         
         """
@@ -29,7 +30,7 @@ class ConfigCardMatching:
         self.x = x
         self.y = y
         self.num = num
-        self.symbols = (list(map(str, range(1,num+1)))) * int(x*y/num)
+        self.symbols = (list(map(picture_mapping, range(1,num+1)))) * int(x*y/num)
         self.pairs_for_win = int(x*y/2)
         
 
