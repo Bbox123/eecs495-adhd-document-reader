@@ -2,6 +2,7 @@ from PyQt6.QtCore import Qt, QTimer, QEventLoop
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QApplication, QWidget, QGridLayout, QPushButton
 import random
+import sys
 
 
 def blocking_delay(milliseconds):
@@ -23,10 +24,10 @@ class ConfigCardMatching:
         y: width (axis=1)
         num: how many different cards
         picture_mapping: mapping function from int digits (1, 2, etc. to things that actually shown. Default is str function)
-        num|(x*y) is required, otherwise error occurs
+        (num*2)|(x*y) is required, otherwise error occurs
         
         """
-        assert x*y%num == 0
+        assert x*y % (num*2) == 0
         self.x = x
         self.y = y
         self.num = num
@@ -106,7 +107,7 @@ class CardMatchingGame(QWidget):
         self.selected_cards = []
 
 if __name__ == "__main__":
-    import sys
+    
     app = QApplication(sys.argv)
     config = ConfigCardMatching(4,6,6)
     game = CardMatchingGame(config)
