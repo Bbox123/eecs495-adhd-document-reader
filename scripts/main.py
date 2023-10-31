@@ -3,6 +3,7 @@ from PyQt6 import QtWidgets
 import MainWindow as mw
 import ReadingScreen_MileStoneScreen as rs_ms
 import configureDocumentPopUp as config
+import settings
 
 class ADHDReader(QtWidgets.QMainWindow):
     def __init__(self):
@@ -11,6 +12,8 @@ class ADHDReader(QtWidgets.QMainWindow):
         self.stacked_widget = QtWidgets.QStackedWidget()
 
         MainWindow = mw.Ui_MainWindow(self)
+
+        self.settings = settings.Settings()
 
         self.stacked_widget.addWidget(MainWindow)
         self.setCentralWidget(self.stacked_widget)

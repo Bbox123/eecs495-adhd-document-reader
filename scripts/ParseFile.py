@@ -22,10 +22,12 @@ class Partition_Text(object):
         # Partition variables
         self.partition_size = partition_size            # number of words per partition
         self.milestone_frequency = milestone_frequency  # number of partitions between milestones
+        self.milestone_total = int(self.partition_size / self.milestone_frequency) # total number of milestones for reading 
 
         # Counter variables
         self.current_partition = 0                      # index of current partition
         self.milestone_counter = 0                      # number of partitions since last milestone (resets to 0 after each milestone)
+        self.milestone_running_count = 0                # number of milestones encountered so far
 
     def parse_file(self, file_type, file_name):
         ''' This function takes in a file type and file name and calls the respective parsing function for that file type '''
@@ -99,6 +101,7 @@ class Partition_Text(object):
         if self.current_partition < len(self.partitions):           # if there are more partitions
             if self.milestone_counter == self.milestone_frequency:      # if milestone
                 self.milestone_counter = 0                                  # reset milestone counter
+                self.milestone_running_count += 1                           # increment milestone counter
                 loadMileStone()                                     # return milestone (TODO: replace with function call to determine which milestone (maybe its own class that front end calls?))
             else:                                                       # if not milestone
                 self.milestone_counter += 1                                 # increment milestone counter

@@ -7,6 +7,7 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
+import genericMilestone as mileStoneScreen
 import TakeABreakMilestone as tab_m
 import ParseFile
 import configureDocumentPopUp as config
@@ -22,6 +23,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.parser = parser
         self.muted = True
         self.paused = True
+        self.ttsLoaded = False
 
         # partitioning text in parser
         self.parser.partition_text()
@@ -83,7 +85,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
                                                "border: 3px solid rgb(182, 194, 139)}")
         self.backgroundFrame.setGraphicsEffect(QtWidgets.QGraphicsOpacityEffect(self.backgroundFrame))
         self.backgroundFrame.setLayout(QtWidgets.QHBoxLayout())
-        self.backgroundFrame.layout().setContentsMargins(13,0,13,0)
+        self.backgroundFrame.layout().setContentsMargins(12,0,12,0)
         self.backgroundFrame.layout().setSpacing(15)
         self.gridLayout.addWidget(self.backgroundFrame, 0, 0, 1, 1)
         self.gridLayout.addWidget(self.textBrowser, 1, 0, 1, 1)
@@ -274,6 +276,10 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.progressBar.setValue(self.parser.current_partition)
         if self.parser.current_partition > 1:
             self.leftArrow.setIcon(self.leftEnabled)
+        tts.audio_unload()
+        self.ttsLoaded = False
+        if self.paused == False:
+            self.playPauseTTS()
 
     def loadLastPartition(self):
         """Get the next partition or milestone"""
@@ -284,12 +290,14 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
             self.leftArrow.setIcon(self.leftDisabled)
             self.textBrowser.setText(self.parser.get_last(self.loadTextBrowser))
             self.progressBar.setValue(self.parser.current_partition)
+        tts.audio_unload()
+        self.ttsLoaded = False
+        if self.paused == False:
+            self.playPauseTTS()
         
     def loadMileStone(self):
-        """hardcoded to take a break milestone for now"""
-        takeBreakMilestone = QtWidgets.QWidget()
-        ui = tab_m.Ui_takeBreakMilestone()
-        ui.setupUi(takeBreakMilestone, self.gridLayout, self)
+        """Load generic milestone screen."""
+        self.mileStoneScreen = mileStoneScreen.Ui_Generic_Milestone(self.gridLayout, self)
         self.textBrowser.hide()
         self.gridLayout.update()
 
@@ -303,6 +311,8 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
             self.gridLayout.itemAt(index).widget().hide()
         
         self.textBrowser.show()
+        self.backgroundFrame.show()
+        self.textToSpeech.show()
         self.gridLayout.update()
 
     def instantiatePopUps(self):
@@ -351,12 +361,30 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         """Toggle play/pause"""
         icon = QtGui.QIcon()
         if self.paused:
+            self.timer = QtCore.QTimer() # Timer for when to stop audio
+            self.timer.timeout.connect(self.endAudio)
+            if self.ttsLoaded == False:
+                tts.text2aud(self.textBrowser.toPlainText(), 0)
+                self.ttsLoaded = True
+                self.audioLength = int(tts.get_audio_length() * 1000)
+            else:
+                tts.audio_unpause()
             icon.addPixmap(QtGui.QPixmap("UI/icons/pause.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
             self.playPause.setIcon(icon)
-            tts.text2aud(self.textBrowser.toPlainText(), 0)
             self.paused = False
+            self.timer.start(self.audioLength - int(tts.get_audio_pos()))
+            
         else:
+            self.timer.stop()
             icon.addPixmap(QtGui.QPixmap("UI/icons/play.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
             self.playPause.setIcon(icon)
-            tts.audio_stop()
+            tts.audio_pause()
             self.paused = True
+        
+    def endAudio(self):
+        """End audio"""
+        while tts.get_audio_playing():
+            pass
+        self.paused = False
+        self.playPauseTTS()
+        tts.audio_rewind()
