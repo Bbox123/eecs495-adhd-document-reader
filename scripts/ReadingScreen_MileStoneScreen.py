@@ -299,6 +299,10 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         """Load generic milestone screen."""
         self.mileStoneScreen = mileStoneScreen.Ui_Generic_Milestone(self.gridLayout, self)
         self.textBrowser.hide()
+        self.muted = False
+        self.toggleTTS()
+        self.backgroundFrame.hide()
+        self.textToSpeech.hide()
         self.gridLayout.update()
 
     def loadTextBrowser(self):
