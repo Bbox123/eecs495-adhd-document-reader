@@ -1,6 +1,6 @@
 from PyQt6.QtCore import Qt, QTimer, QEventLoop
 from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QApplication, QWidget, QGridLayout, QPushButton
+from PyQt6.QtWidgets import QApplication, QWidget, QGridLayout, QPushButton, QLabel
 import random
 import sys
 
@@ -43,6 +43,20 @@ class CardMatchingGame(QWidget):
 
     def initUI(self):
         self.gridLayout = QGridLayout()
+
+        # add title to first grid row
+        self.instructions = QLabel(parent=self)
+        self.instructions.setStyleSheet("color: #4E8696;\n"
+            "font-family: Inter;\n"
+            "font-size: 40px;\n"
+            "font-style: normal;\n"
+            "font-weight: 600;\n"
+            "line-height: normal;\n"
+            "border-color: rgb(255, 255, 255);")
+        self.instructions.setObjectName("instructions")
+        self.instructions.setText("Find all the matching pairs!")
+        self.gridLayout.addWidget(self.instructions, 0, 0, 1, 4, Qt.AlignmentFlag.AlignHCenter)
+
         self.cards = []
 
         # Initialize the cards with numbers
@@ -51,8 +65,9 @@ class CardMatchingGame(QWidget):
                 card = QPushButton('', self)
                 card.setFixedSize(100, 100)
                 card.setIconSize(card.size())
+                card.setStyleSheet("background-color: #F8F8FF; border: 1px solid black;")
                 card.clicked.connect(self.cardClicked)
-                self.gridLayout.addWidget(card, row, col)
+                self.gridLayout.addWidget(card, row + 1, col, Qt.AlignmentFlag.AlignHCenter)
                 self.cards.append(card)
         
         self.shuffleAndHideCards()
@@ -92,6 +107,7 @@ class CardMatchingGame(QWidget):
 
             if self.matched_pairs == self.config.pairs_for_win:
                 # win msg
+                self.instructions.setText("Nice one!")
                 print("you win!")
                 
         else:
@@ -103,7 +119,7 @@ class CardMatchingGame(QWidget):
         for card in self.selected_cards:
             card.setText('')
             card.isVisible = False
-            card.setStyleSheet("")
+            card.setStyleSheet("background-color: #F8F8FF; border: 1px solid black;")
         self.selected_cards = []
 
 if __name__ == "__main__":
