@@ -235,7 +235,7 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
                 self.addMilestoneToGrid(milestoneWidget)
                 milestoneWidget.startTimer()
         if self.mileStoneChoice == "Card Matching Minigame":
-                milestoneWidget = m_cardmatch.CardMatchingGame()
+                milestoneWidget = m_cardmatch.LevelSelectionWindow()
                 self.addMilestoneToGrid(milestoneWidget)
 
     def addMilestoneToGrid(self, milestoneWidget):

@@ -1,6 +1,6 @@
 from PyQt6.QtCore import Qt, QTimer, QEventLoop
 from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QApplication, QWidget, QGridLayout, QPushButton, QLabel
+from PyQt6.QtWidgets import QApplication, QWidget, QGridLayout, QPushButton, QLabel, QVBoxLayout
 import random
 import sys
 
@@ -122,10 +122,55 @@ class CardMatchingGame(QWidget):
             card.setStyleSheet("background-color: #F8F8FF; border: 1px solid black;")
         self.selected_cards = []
 
+
+class LevelSelectionWindow(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        self.setWindowTitle("Level Selection")
+        self.resize(800, 600)
+        self.layout = QVBoxLayout()
+        button_size = 200
+        self.button_level1 = QPushButton("Level 1")
+        self.button_level2 = QPushButton("Level 2")
+        self.button_level3 = QPushButton("Level 3")
+        
+        self.button_level1.setFixedSize(button_size, button_size)
+        self.button_level2.setFixedSize(button_size, button_size)
+        self.button_level3.setFixedSize(button_size, button_size)
+        
+
+        self.button_level1.clicked.connect(self.show_level1)
+        self.button_level2.clicked.connect(self.show_level2)
+        self.button_level3.clicked.connect(self.show_level3)
+
+        self.layout.addWidget(self.button_level1)
+        self.layout.addWidget(self.button_level2)
+        self.layout.addWidget(self.button_level3)
+        self.setLayout(self.layout)
+
+        self.level1_game = CardMatchingGame(ConfigCardMatching(4,4,4))
+        self.level2_game = CardMatchingGame(ConfigCardMatching(4,6,6))
+        self.level3_game = CardMatchingGame(ConfigCardMatching(6,6,9))
+
+    def show_level1(self):
+        self.level1_game.show()
+        self.hide()
+
+    def show_level2(self):
+        self.level2_game.show()
+        self.hide()
+
+    def show_level3(self):
+        self.level3_game.show()
+        self.hide()
+
 if __name__ == "__main__":
     
     app = QApplication(sys.argv)
     config = ConfigCardMatching(4,6,6)
-    game = CardMatchingGame(config)
-    game.show()
+    # game = CardMatchingGame(config)
+    # game.show()
+    window = LevelSelectionWindow()
+    window.show()
     sys.exit(app.exec())
