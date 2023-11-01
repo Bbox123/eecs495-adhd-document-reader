@@ -53,8 +53,28 @@ class Partition_Text(object):
         with fitz.open(file_name) as doc:
             text = ""
             for page in doc:
-                text += page.get_text()
+                blocks_dict = page.get_text("dict")
+                # print(blocks_dict)
+                processed_blocks = []
+                for block in blocks_dict["blocks"]:
+                    if block["type"] == 0:
+                        block_text = ""
+                        # add every line of text to block_text, adding <\b> if the line is bold
+                        for line in block["lines"]:
+                            if not re.sub("\n", "", line["spans"][0]["text"]).isnumeric():
+                                # bold is indicated by bit 4 of the flags being set to 1
+                                if line["spans"][0]["flags"] & 0b10000 == 0b10000:
+                                    block_text += "<b>" + line["spans"][0]["text"] + "</b>"
+                                else:
+                                    block_text += line["spans"][0]["text"]
+                        block_text = re.sub("\n", " ", block_text)
+                        processed_blocks.append(block_text)
+                text += "\n".join(processed_blocks)
+                # text += "\n".join([re.sub("\n", " ", block[4]) for block in page.get_text("blocks") if block[6]==0 and re.sub("\n", "", block[4]).isnumeric()==False])
+                # print(page.get_text("blocks"))
+                # print(page.get_text("blocks"))
             self.text = text
+            print(self.text)
             self.partition_text()
 
     def parse_pdf_w_image(self, file_name):
@@ -76,7 +96,7 @@ class Partition_Text(object):
     def partition_text(self):
         ''' This function partitions the text into strings of size partition_size (or less) and stores them in a list '''
         # Format text and split into sentences
-        self.text = " ".join(self.text.split())                                                 # remove extra whitespace
+        # self.text = " ".join(self.text.split())                                                 # remove extra whitespace
         sentences = sent_tokenize(self.text)                                                    # list of sentences in text
 
         # Check if partition size is too small

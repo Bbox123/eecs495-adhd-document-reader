@@ -272,7 +272,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
 
     def loadNextPartition(self):
         """Get the next partition or milestone"""
-        self.textBrowser.setText(self.parser.get_next(self.loadMileStone, self.loadTextBrowser))
+        self.textBrowser.setHtml(self.parser.get_next(self.loadMileStone, self.loadTextBrowser))
         self.progressBar.setValue(self.parser.current_partition)
         if self.parser.current_partition > 1:
             self.leftArrow.setIcon(self.leftEnabled)
@@ -299,6 +299,10 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         """Load generic milestone screen."""
         self.mileStoneScreen = mileStoneScreen.Ui_Generic_Milestone(self.gridLayout, self)
         self.textBrowser.hide()
+        self.muted = False
+        self.toggleTTS()
+        self.backgroundFrame.hide()
+        self.textToSpeech.hide()
         self.gridLayout.update()
 
     def loadTextBrowser(self):
