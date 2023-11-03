@@ -35,6 +35,8 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
 
     def setupUi(self):
         self.setObjectName("MainWindow")
+        self.setWindowTitle(self.parser.file_name)
+        print("setting window title to file name: " + self.parser.file_name)
         self.resize(1124, 749)
         self.setStyleSheet("background-color: rgb(252, 255, 237);")
         self.centralwidget = QtWidgets.QWidget(parent=self)
