@@ -22,12 +22,13 @@ class Partition_Text(object):
         # Partition variables
         self.partition_size = partition_size            # number of words per partition
         self.milestone_frequency = milestone_frequency  # number of partitions between milestones
-        self.milestone_total = int(self.partition_size / self.milestone_frequency) # total number of milestones for reading 
+        
 
         # Counter variables
         self.current_partition = 0                      # index of current partition
         self.milestone_counter = 0                      # number of partitions since last milestone (resets to 0 after each milestone)
         self.milestone_running_count = 0                # number of milestones encountered so far
+        self.milestones_remaining = int(len(self.partitions) / self.milestone_frequency) + 1 # total number of milestones for reading 
 
     def parse_file(self, file_type, file_name):
         ''' This function takes in a file type and file name and calls the respective parsing function for that file type '''
@@ -73,6 +74,17 @@ class Partition_Text(object):
             self.text = text
             self.partition_text()
 
+    def set_milestone_frequency(self, frequency):
+        if self.milestone_frequency != frequency:
+            self.milestone_frequency = frequency
+            partitions_remaining = len(self.partitions) - self.current_partition
+            self.milestones_remaining = int(partitions_remaining / self.milestone_frequency) + self.milestone_running_count
+            if self.milestone_counter >= self.milestone_frequency:
+                self.milestone_counter = self.milestone_counter % self.milestone_frequency # use discrete math to get the inverse of this and add it to running count to display
+    
+    def get_partitions_list_size(self):
+        return len(self.partitions)
+
     def partition_text(self):
         ''' This function partitions the text into strings of size partition_size (or less) and stores them in a list '''
         # Format text and split into sentences
@@ -95,6 +107,8 @@ class Partition_Text(object):
             
             self.partitions.append(partition.strip())                       # add current partition to list of partitions
 
+        self.milestones_remaining = int(len(self.partitions) / self.milestone_frequency) # use new list size to determing remaining partitions
+
     # Return next partition or milestone
     def get_next(self, loadMileStone, loadTextBrowser):
         ''' This function returns the next partition or milestone or None if there are no more partitions '''
@@ -102,7 +116,7 @@ class Partition_Text(object):
             if self.milestone_counter == self.milestone_frequency:      # if milestone
                 self.milestone_counter = 0                                  # reset milestone counter
                 self.milestone_running_count += 1                           # increment milestone counter
-                loadMileStone()                                     # return milestone (TODO: replace with function call to determine which milestone (maybe its own class that front end calls?))
+                loadMileStone()                                     # return milestone 
             else:                                                       # if not milestone
                 self.milestone_counter += 1                                 # increment milestone counter
                 self.current_partition += 1                                 # increment current partition
@@ -123,8 +137,9 @@ class Partition_Text(object):
                 # print(len(self.partitions[self.current_partition - 1].split())
             elif self.milestone_counter == 1:
                 self.current_partition -= 1 
-            else:
+            else:   # if milestone_counter = 0, that means we are on a milestone screen
                 self.milestone_counter = self.milestone_frequency
+                self.milestone_running_count -= 1               # keeps us from counting the same milestone we've yet to pass
             loadTextBrowser()                                   # call to switch back over to text browser if necessary 
             return self.partitions[self.current_partition - 1]          # return next partition
         else:                                                       # if no more partitions  

@@ -3,7 +3,7 @@ class Settings(object):
     def __init__(self) -> None:
         """set default settings here"""
         self.text = {
-            "size" : 24,
+            "size" : 30,
             "style" : "Inter"
         }
 
