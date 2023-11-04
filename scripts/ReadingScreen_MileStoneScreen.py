@@ -273,6 +273,8 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
     def loadNextPartition(self):
         """Get the next partition or milestone"""
         self.textBrowser.setHtml(self.parser.get_next(self.loadMileStone, self.loadTextBrowser))
+        # set text font size
+        self.textBrowser.setFontPointSize(50)
         self.progressBar.setValue(self.parser.current_partition)
         if self.parser.current_partition > 1:
             self.leftArrow.setIcon(self.leftEnabled)
