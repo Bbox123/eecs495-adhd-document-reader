@@ -79,8 +79,9 @@ class Partition_Text(object):
             self.milestone_frequency = frequency
             partitions_remaining = len(self.partitions) - self.current_partition
             self.milestones_remaining = int(partitions_remaining / self.milestone_frequency) + self.milestone_running_count
-            if self.milestone_counter >= self.milestone_frequency:
-                self.milestone_counter = self.milestone_counter % self.milestone_frequency # use discrete math to get the inverse of this and add it to running count to display
+            self.milestone_counter = 0
+               
+                
     
     def get_partitions_list_size(self):
         return len(self.partitions)
