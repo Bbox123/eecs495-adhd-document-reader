@@ -15,7 +15,7 @@ class Settings(object):
             "frequency" : 5,
             "enabled" : {
                 "Timed Break": True,
-                "Card Matching Minigame": False, 
+                "Card Matching Minigame": True, 
                 "Pong Minigame": False,
                 "Reading Comprehension Questions": False,
                 "Reward Audio": False

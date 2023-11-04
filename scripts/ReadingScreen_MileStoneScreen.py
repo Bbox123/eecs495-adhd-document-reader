@@ -74,7 +74,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.gridLayout = QtWidgets.QGridLayout(self.frame)
         self.gridLayout.setObjectName("gridLayout")
         self.textBrowser = QtWidgets.QTextBrowser(parent=self.frame)
-        self.textBrowser.setStyleSheet("border-color: rgb(255, 255, 255);")
+        self.textBrowser.setStyleSheet(f"border-color: rgb(255, 255, 255);font-size:{self.adhdReader.settings.text['size']};", )
         self.textBrowser.setObjectName("textBrowser")
         self.textBrowser.setFontPointSize(24)
         self.textBrowser.setText(self.parser.get_next(self.loadMileStone, self.loadTextBrowser))
@@ -384,7 +384,21 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
             self.playPause.setIcon(icon)
             tts.audio_pause()
             self.paused = True
-        
+
+    def updateReaderToMatchSettings(self):
+        self.textBrowser.setFontFamily(self.adhdReader.settings.text["style"])
+        # round input text size to nearest 10. This is because the textbrowser function requires this, 
+        # and we'll have to change this anyways when we switch to html input
+        self.textBrowser.setFontPointSize(round(int(self.adhdReader.settings.text["size"]), -1))
+        # go between partitions to funtionally, reload page
+        if self.parser.current_partition == 1:
+            self.loadNextPartition()
+            self.loadLastPartition()
+        elif self.parser.current_partition > 1:
+            self.loadLastPartition()
+            self.loadNextPartition()
+
+
     def endAudio(self):
         """End audio"""
         while tts.get_audio_playing():

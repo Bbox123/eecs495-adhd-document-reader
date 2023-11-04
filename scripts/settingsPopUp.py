@@ -68,7 +68,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 "line-height: normal;")
         self.settingsLabel.setObjectName("settingsLabel")
         self.horizontalLayout_2.addWidget(self.settingsLabel)
-        self.closeButton = QtWidgets.QToolButton(parent=self.titleLayout, clicked = lambda: self.readingScreen.togglePopUp(self))
+        self.closeButton = QtWidgets.QToolButton(parent=self.titleLayout, clicked = lambda: self.closeSettings())
         self.closeButton.setStyleSheet("color: #FFF;")
         self.closeButton.setText("")
         icon1 = QtGui.QIcon()
@@ -591,8 +591,9 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         
         newStyleSheet = newStyleSheet.replace("{SIZE}", fontSize).replace("{STYLE}", fontStyle)
         self.sampleText.setStyleSheet(newStyleSheet)
+        # update settings in settings function
+        self.adhdReader.settings.text["size"] = value
 
-    # TODO: new font style needs to be stored and applied upong clicking the close button on the pop up
     def changeFontStyle(self, fontStyle):
         '''Change the font style, also change the sample text.'''
         fontSize = f"{self.fontSlider.value()}px"
@@ -608,5 +609,11 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         
         newStyleSheet = newStyleSheet.replace("{SIZE}", fontSize).replace("{STYLE}", fontStyle)
         self.sampleText.setStyleSheet(newStyleSheet)
+        self.adhdReader.settings.text["style"] = fontStyle
+
+    def closeSettings(self):
+        '''update new reading screen settings and close menu'''
+        self.readingScreen.updateReaderToMatchSettings()
+        self.readingScreen.togglePopUp(self)
         
         
