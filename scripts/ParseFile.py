@@ -48,7 +48,6 @@ class Partition_Text(object):
         ''' This function takes in a file name and parses the txt file corresponding to that file name, then calls the partition_text function '''
         with open(file_name, "r") as f:
             self.text = f.read()    # string of text in file
-            # self.partition_text()   # call partition_text function
 
     def parse_pdf(self, file_name):
         ''' This function takes in a file name and parses the pdf file corresponding to that file name, then calls the partition_text function '''
@@ -63,14 +62,7 @@ class Partition_Text(object):
             text = re.sub(r'<img(?s:.)*?/>', '', text)
             # write xml to file
             self.text = text
-            with open("xhtml.txt", "w") as f:
-                f.write(text)
-            with open("xhtml.xhtml", "w") as f:
-                f.write(text)
-            with open("json.json", "w") as f:
-                f.write(json)
             self.isXHTML = True
-            # self.partition_text()
 
     def parse_pdf_w_image(self, file_name):
         path = "var"
@@ -86,14 +78,31 @@ class Partition_Text(object):
             full_file = os.path.join(path, filename)
             text += img2str(full_file)
             self.text = text
-            # self.partition_text()
 
     def partition_text(self):
         ''' This function partitions the text into strings of size partition_size (or less) and stores them in a list '''
         if self.isXHTML:
             self.partition_text_xhtml()
         else:
-            sentences = sent_tokenize(self.text) # tokenize text by sentence
+            # Format text and split into sentences
+            self.text = " ".join(self.text.split())                                                 # remove extra whitespace
+            sentences = sent_tokenize(self.text)                                                    # list of sentences in text
+
+            # Check if partition size is too small
+            max_sentence = heapq.nlargest(1, [len(sentence.split()) for sentence in sentences])[0]  # length of longest sentence
+            if max_sentence > self.partition_size:                                                  # if the longest sentence is longer than the partition size
+                print("Partition size is too small, increasing partition size to", max_sentence)
+                self.partition_size = max_sentence                                                  # increase partition size to length of longest sentence (TODO: should we do this or just throw an error?)
+
+            # Partition text into strings of size partition_size (or less)
+            while len(sentences) > 0:                                                               # while there are more sentences to partition
+                partition = ""
+                while len(sentences) > 0\
+                    and len((partition + " " + sentences[0]).split())\
+                        <= self.partition_size:                            # while the current partition would not exceed the partition size if the next sentence were added
+                    partition = " ".join([partition, sentences.pop(0)])         # add next sentence to current partition
+                
+                self.partitions.append(partition.strip())                       # add current partition to list of partitions
 
     def partition_text_xhtml(self):
         soup = BeautifulSoup(self.text, "html.parser")
@@ -143,21 +152,17 @@ class Partition_Text(object):
             # remove adjacent tags of the same type (i.e. if there is an end tag followed by a start tag OF THE SAME TYPE, remove both)
             text = re.sub(r'</(\w+)><\1>', ' ', text)
             self.partitions.append(text)                        # add partition to list of partitions
-        print("Number of partitions:", len(self.partitions))    # print number of partitions
 
     # Return next partition or milestone
     def get_next(self, loadMileStone, loadTextBrowser):
         ''' This function returns the next partition or milestone or None if there are no more partitions '''
         if self.current_partition < len(self.partitions):           # if there are more partitions
-            print("current partition:", self.current_partition, "total partitions:", len(self.partitions))
             if self.milestone_counter == self.milestone_frequency:      # if milestone
-                print("milestone")                                          # print milestone
                 self.milestone_counter = 0                                  # reset milestone counter
                 self.milestone_running_count += 1                           # increment milestone counter
                 loadMileStone()                                     # return milestone (TODO: replace with function call to determine which milestone (maybe its own class that front end calls?))
             else:                                                       # if not milestone
                 self.milestone_counter += 1                                 # increment milestone counter
-                print("partition #", self.current_partition, ":")         # print partition number
                 self.current_partition += 1                                 # increment current partition
                 # print(len(self.partitions[self.current_partition - 1].split())
                 loadTextBrowser()                                   # call to switch back over to text browser if necessary 
