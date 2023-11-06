@@ -12,6 +12,7 @@ import TakeABreakMilestone as tab_m
 import ParseFile
 import configureDocumentPopUp as config
 import settingsPopUp as settings
+import settings as settings_backend
 import TextToSpeech as tts
 
 class Ui_ReadingScreen(QtWidgets.QMainWindow):
@@ -30,6 +31,9 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
 
         # Create pop ups
         self.instantiatePopUps()
+
+        # Set default milestone screen
+        self.mileStoneScreen = None
 
         self.setupUi()
 
@@ -76,7 +80,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.textBrowser = QtWidgets.QTextBrowser(parent=self.frame)
         self.textBrowser.setStyleSheet(f"border-color: rgb(255, 255, 255);font-size:{self.adhdReader.settings.text['size']};", )
         self.textBrowser.setObjectName("textBrowser")
-        self.textBrowser.setFontPointSize(24)
+        self.textBrowser.setFontPointSize(self.adhdReader.settings.text['size'])
         self.textBrowser.setText(self.parser.get_next(self.loadMileStone, self.loadTextBrowser))
         self.backgroundFrame = QtWidgets.QFrame(self)
         self.backgroundFrame.setFixedSize(81,50)
@@ -263,8 +267,12 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.verticalLayout_2.addLayout(self.horizontalLayout_2)
         self.setCentralWidget(self.centralwidget)
         
+        self.progressBar.setMaximum(self.parser.get_partitions_list_size())
+
         self.retranslateUi()
         QtCore.QMetaObject.connectSlotsByName(self)
+
+        self.updateReaderToMatchSettings()
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
@@ -386,17 +394,35 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
             self.paused = True
 
     def updateReaderToMatchSettings(self):
-        self.textBrowser.setFontFamily(self.adhdReader.settings.text["style"])
+        """Apply the settings to their relative objects"""
+        # Grab settings object
+        settings:settings_backend.Settings = self.adhdReader.settings
+
+        # Text
+        self.textBrowser.setFontFamily(settings.text["style"])
         # round input text size to nearest 10. This is because the textbrowser function requires this, 
         # and we'll have to change this anyways when we switch to html input
-        self.textBrowser.setFontPointSize(round(int(self.adhdReader.settings.text["size"]), -1))
-        # go between partitions to funtionally, reload page
+        self.textBrowser.setFontPointSize(round(int(settings.text["size"]), -1))
+        # go between partitions to functionally reload page
         if self.parser.current_partition == 1:
-            self.loadNextPartition()
-            self.loadLastPartition()
-        elif self.parser.current_partition > 1:
-            self.loadLastPartition()
-            self.loadNextPartition()
+                self.loadNextPartition()
+                self.loadLastPartition()
+        elif self.parser.current_partition > 1 and self.textBrowser.isVisible(): # keeps from reloading and causing a bug on the generic milestone page
+                self.loadLastPartition()
+                self.loadNextPartition()
+ 
+            
+        # Milestones
+        self.parser.set_milestone_frequency(settings.Milestones["frequency"])
+
+        check_boxes = self.settingsPopUp.grabMilestoneCheckBoxes()
+        for key, value in check_boxes.items():
+            settings.Milestones["enabled"][key] = value.isChecked()
+
+        if self.mileStoneScreen is not None:
+            self.mileStoneScreen.updateRemainingMilestonesText(self.parser.milestones_remaining)
+            self.mileStoneScreen.updateMilestonePicked()
+        
 
 
     def endAudio(self):
