@@ -397,24 +397,12 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
             self.paused = True
 
     def updateReaderToMatchSettings(self):
-        # Update the text document's font
-        self.document.setDefaultFont(QtGui.QFont(self.adhdReader.settings.text["style"], int(self.adhdReader.settings.text["size"])))
         """Apply the settings to their relative objects"""
         # Grab settings object
         settings:settings_backend.Settings = self.adhdReader.settings
 
         # Text
-        self.textBrowser.setFontFamily(settings.text["style"])
-        # round input text size to nearest 10. This is because the textbrowser function requires this, 
-        # and we'll have to change this anyways when we switch to html input
-        self.textBrowser.setFontPointSize(round(int(settings.text["size"]), -1))
-        # go between partitions to functionally reload page
-        if self.parser.current_partition == 1:
-                self.loadNextPartition()
-                self.loadLastPartition()
-        elif self.parser.current_partition > 1 and self.textBrowser.isVisible(): # keeps from reloading and causing a bug on the generic milestone page
-                self.loadLastPartition()
-                self.loadNextPartition()
+        self.document.setDefaultFont(QtGui.QFont(settings.text["style"], int(settings.text["size"])))
  
             
         # Milestones
