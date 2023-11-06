@@ -18,7 +18,7 @@ class Partition_Text(object):
         # Text variables
         self.text = text                                # string of text in file
         self.partitions = []                            # list of partitions
-        self.file_name = "Untitled"
+        self.file_title = "Unitled"
 
         # Partition variables
         self.partition_size = partition_size            # number of words per partition
@@ -32,6 +32,8 @@ class Partition_Text(object):
 
     def parse_file(self, file_type, file_name):
         ''' This function takes in a file type and file name and calls the respective parsing function for that file type '''
+        # set file title to be used in title bar
+        self.file_title = os.path.basename(file_name)
         # Parse txt file
         if file_type == "txt":
             self.parse_txt(file_name)
@@ -45,7 +47,6 @@ class Partition_Text(object):
 
     def parse_txt(self, file_name):
         ''' This function takes in a file name and parses the txt file corresponding to that file name, then calls the partition_text function '''
-        self.file_name = file_name
         with open(file_name, "r") as f:
             self.text = f.read()    # string of text in file
             self.partition_text()   # call partition_text function
@@ -132,6 +133,7 @@ class Partition_Text(object):
             return self.partitions[self.current_partition - 1]          # return next partition
         else:                                                       # if no more partitions  
             return None 
+
 
 
 ## Partition_Text usage

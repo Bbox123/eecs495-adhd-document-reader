@@ -35,8 +35,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
 
     def setupUi(self):
         self.setObjectName("MainWindow")
-        self.setWindowTitle(self.parser.file_name)
-        print("setting window title to file name: " + self.parser.file_name)
+        self.setWindowTitle(self.parser.file_title)
         self.resize(1124, 749)
         self.setStyleSheet("background-color: rgb(252, 255, 237);")
         self.centralwidget = QtWidgets.QWidget(parent=self)
@@ -44,6 +43,15 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.centralwidget)
         self.verticalLayout_2.setContentsMargins(50, 50, 50, 20)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
+
+         # add doc title
+        docTitle = QtWidgets.QLabel()
+        docTitle.setStyleSheet("background-color: #4E8696; height: 400px; font-style: italic; color: white; text-align: center; font-size: 17px;")
+        docTitle.setAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter|QtCore.Qt.AlignmentFlag.AlignTop)
+        docTitle.setText(self.parser.file_title)
+        self.verticalLayout_2.addWidget(docTitle)
+        
+
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setContentsMargins(-1, -1, 0, -1)
         self.horizontalLayout.setObjectName("horizontalLayout")
@@ -199,6 +207,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.verticalLayout_4.addItem(spacerItem)
         self.horizontalLayout.addLayout(self.verticalLayout_4)
         self.horizontalLayout.setStretch(0, 1)
+
         self.verticalLayout_2.addLayout(self.horizontalLayout)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
@@ -399,8 +408,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         elif self.parser.current_partition > 1:
             self.loadLastPartition()
             self.loadNextPartition()
-
-
+    
     def endAudio(self):
         """End audio"""
         while tts.get_audio_playing():

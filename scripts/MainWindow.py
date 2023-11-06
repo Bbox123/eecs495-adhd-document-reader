@@ -327,6 +327,9 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         # Parse the file
         parser = pf.Partition_Text(text=inputText)              # create parser
 
+        # Add title for displaying on top of screen
+        parser.file_title = inputText[:20] + "..."
+
         # Change to reading screen 
         self.adhdReader.goToReadingScreen(parser)        # pass in parser object
 
