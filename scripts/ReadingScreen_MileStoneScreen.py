@@ -39,13 +39,28 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
 
     def setupUi(self):
         self.setObjectName("MainWindow")
+        self.setWindowTitle(self.parser.file_title)
         self.resize(1124, 749)
         self.setStyleSheet("background-color: rgb(252, 255, 237);")
         self.centralwidget = QtWidgets.QWidget(parent=self)
         self.centralwidget.setObjectName("centralwidget")
-        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.centralwidget)
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
+
+         # add doc title
+        docTitle = QtWidgets.QLabel()
+        docTitle.setStyleSheet("background-color: #4E8696; font-style: italic; color: white; text-align: center; font-size: 20px; line-height: 1000px")
+        docTitle.setAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        # docTitle.setFixedSize(1124,50)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Expanding)
+        docTitle.setMaximumSize(QtCore.QSize(16777215, 40))
+        docTitle.setSizePolicy(sizePolicy)
+        docTitle.setText('Reading: "'+ self.parser.file_title + '\"')
+        self.verticalLayout.addWidget(docTitle)
+        
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout()
         self.verticalLayout_2.setContentsMargins(50, 50, 50, 20)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.verticalLayout.addLayout(self.verticalLayout_2)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setContentsMargins(-1, -1, 0, -1)
         self.horizontalLayout.setObjectName("horizontalLayout")
@@ -203,6 +218,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.verticalLayout_4.addItem(spacerItem)
         self.horizontalLayout.addLayout(self.verticalLayout_4)
         self.horizontalLayout.setStretch(0, 1)
+
         self.verticalLayout_2.addLayout(self.horizontalLayout)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
@@ -397,14 +413,13 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
             self.paused = True
 
     def updateReaderToMatchSettings(self):
-        """Apply the settings to their relative objects"""
+         """Apply the settings to their relative objects"""
         # Grab settings object
         settings:settings_backend.Settings = self.adhdReader.settings
 
         # Text
         self.document.setDefaultFont(QtGui.QFont(settings.text["style"], int(settings.text["size"])))
  
-            
         # Milestones
         self.parser.set_milestone_frequency(settings.Milestones["frequency"])
 
@@ -415,9 +430,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         if self.mileStoneScreen is not None:
             self.mileStoneScreen.updateRemainingMilestonesText(self.parser.milestones_remaining)
             self.mileStoneScreen.updateMilestonePicked()
-        
-
-
+            
     def endAudio(self):
         """End audio"""
         while tts.get_audio_playing():

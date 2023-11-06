@@ -276,10 +276,11 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.Title.setSizePolicy(sizePolicy)
         self.Title.setMouseTracking(True)
         self.Title.setStyleSheet("color: #B6C28B;\n"
-"font-family: Inter;\n"
-"font-size: 40px;\n"
+"font-family: Nerko One;\n"
+"font-size: 85px;\n"
 "font-style: normal;\n"
-"font-weight: 700;\n"
+"font-weight: 1000;\n"
+'font: 75 "Bell MT";\n'
 "line-height: normal;")
         self.Title.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.Title.setObjectName("Title")
@@ -300,11 +301,11 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                                         """)
         self.pushButton.setText("")
         icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap("UI/icons/book.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon4.addPixmap(QtGui.QPixmap("UI/icons/logo.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.pushButton.setIcon(icon4)
-        self.pushButton.setIconSize(QtCore.QSize(64, 64))
+        self.pushButton.setIconSize(QtCore.QSize(70, 70))
         self.pushButton.setObjectName("pushButton")
-        self.gridLayout_2.addWidget(self.pushButton, 0, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignLeft)
+        self.gridLayout_2.addWidget(self.pushButton, 0, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.header.addLayout(self.gridLayout_2)
         self.gridLayout.addWidget(self.titleBar, 0, 1, 1, 1)
 
@@ -315,7 +316,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.importButton.setText(_translate("MainWindow", "Upload from computer"))
         self.copyPasteInput.setPlainText(_translate("MainWindow", "Paste into text box..."))
         self.submitButton.setText(_translate("MainWindow", "Submit"))
-        self.Title.setText(_translate("MainWindow", "ADHD Reader"))
+        self.Title.setText(_translate("MainWindow", "Readmate"))
 
     def collectTextFromTextBox(self, inputText):
         """inputText contains all the text that was placed in the text box before submit was clicked"""
@@ -325,6 +326,9 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         
         # Parse the file
         parser = pf.Partition_Text(text=inputText)              # create parser
+
+        # Add title for displaying on top of screen
+        parser.file_title = inputText[:20] + "..."
 
         # Change to reading screen 
         self.adhdReader.goToReadingScreen(parser)        # pass in parser object

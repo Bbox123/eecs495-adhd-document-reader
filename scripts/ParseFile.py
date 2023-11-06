@@ -19,7 +19,9 @@ class Partition_Text(object):
         # Text variables
         self.text = text                                # string of text in file
         self.partitions = []                            # list of partitions
+        self.file_title = "Unitled"
         self.isXHTML = False                            # boolean to check if text is in xhtml format
+
 
         # Partition variables
         self.partition_size = partition_size            # number of words per partition
@@ -34,6 +36,8 @@ class Partition_Text(object):
 
     def parse_file(self, file_type, file_name):
         ''' This function takes in a file type and file name and calls the respective parsing function for that file type '''
+        # set file title to be used in title bar
+        self.file_title = os.path.basename(file_name)
         # Parse txt file
         if file_type == "txt":
             self.parse_txt(file_name)
@@ -63,6 +67,9 @@ class Partition_Text(object):
             text = re.sub(r'<img(?s:.)*?/>', '', text)
             # write xml to file
             self.text = text
+
+            self.file_name = str(text[:20]) + "..."
+            self.partition_text()
             self.isXHTML = True
 
     def parse_pdf_w_image(self, file_name):
@@ -203,6 +210,8 @@ class Partition_Text(object):
             return self.partitions[self.current_partition - 1]          # return next partition
         else:                                                       # if no more partitions  
             return None 
+
+
 
 ## Partition_Text usage
     # if using a txt or pdf file:
