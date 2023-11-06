@@ -43,6 +43,8 @@ class CardMatchingGame(QWidget):
 
     def initUI(self):
         self.gridLayout = QGridLayout()
+        self.gridLayout.setContentsMargins(0, 0, 0, 0) 
+        self.gridLayout.setSpacing(0)
 
         # add title to first grid row
         self.instructions = QLabel(parent=self)
@@ -71,6 +73,9 @@ class CardMatchingGame(QWidget):
                 self.cards.append(card)
         
         self.shuffleAndHideCards()
+        self.gridLayout.setContentsMargins(0, 0, 0, 0) 
+        self.gridLayout.setHorizontalSpacing(0)  
+        self.gridLayout.setVerticalSpacing(0)
 
         self.setLayout(self.gridLayout)
         self.selected_cards = []
