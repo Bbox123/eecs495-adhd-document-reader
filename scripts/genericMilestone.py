@@ -206,26 +206,28 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
         """Determine which milestone will be used and update UI to reflect milestone progress"""
         # grab total amount of milestones
         count = self.readingScreen.parser.milestone_running_count
-        total = self.readingScreen.parser.milestone_total
+        remaining = self.readingScreen.parser.milestones_remaining
 
         # update total
-        self.milestoneTotal.setText(f"{count} of {total}")
+        self.milestoneTotal.setText(f"{count} of {remaining}")
 
-        # choose milestone based on settings TODO: implement settings backend so that we can check settings here
+        # choose milestone based on settings
         self.chooseMilestone()
-
-        # based off choice, update button text
-        self.startButton.setText(self.mileStoneChoice)
 
     def chooseMilestone(self):
         """roll a random number and choose from list of permitted milestones, set the choice to be used"""
         mileStoneChoices = []
 
+        # already choosing milestones based on enabled ones, so we just need to change the settings object for this instance
         for milestone, enabled in self.settings.Milestones["enabled"].items():
+            print(f"{milestone} : {enabled}")
             if enabled:
                 mileStoneChoices.append(milestone)
         
         self.mileStoneChoice = mileStoneChoices[random.randrange(0, len(mileStoneChoices))]
+
+        # based off choice, update button text
+        self.startButton.setText(self.mileStoneChoice)
 
     def goToMilestone(self):
         """Setup milestone in grid layout and call any milestone specific methods"""
@@ -235,7 +237,7 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
                 self.addMilestoneToGrid(milestoneWidget)
                 milestoneWidget.startTimer()
         if self.mileStoneChoice == "Card Matching Minigame":
-                milestoneWidget = m_cardmatch.CardMatchingGame()
+                milestoneWidget = m_cardmatch.LevelSelectionWindow()
                 self.addMilestoneToGrid(milestoneWidget)
 
     def addMilestoneToGrid(self, milestoneWidget):
@@ -250,6 +252,14 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
 
          # update reading screen box to reflect changes
          self.readingBoxGridLayout.update()
+
+    def updateRemainingMilestonesText(self, newRemainder):
+         self.milestoneTotal.setText(f"{self.readingScreen.parser.milestone_running_count} of {newRemainder}")
+
+    def updateMilestonePicked(self):
+         if self.settings.Milestones["enabled"][self.mileStoneChoice] is False:
+              self.chooseMilestone()
+         
                 
 
 
