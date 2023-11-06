@@ -76,8 +76,10 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.textBrowser = QtWidgets.QTextBrowser(parent=self.frame)
         self.textBrowser.setStyleSheet(f"border-color: rgb(255, 255, 255);font-size:{self.adhdReader.settings.text['size']};", )
         self.textBrowser.setObjectName("textBrowser")
-        self.textBrowser.setFontPointSize(24)
-        self.textBrowser.setText(self.parser.get_next(self.loadMileStone, self.loadTextBrowser))
+        self.document = QtGui.QTextDocument()
+        self.document.setHtml(self.parser.get_next(self.loadMileStone, self.loadTextBrowser))
+        self.document.setDefaultFont(QtGui.QFont(self.adhdReader.settings.text["style"], int(self.adhdReader.settings.text["size"])))
+        self.textBrowser.setDocument(self.document)
         self.backgroundFrame = QtWidgets.QFrame(self)
         self.backgroundFrame.setFixedSize(81,50)
         self.backgroundFrame.setStyleSheet("QFrame {border-radius: 25px; \n"
@@ -272,7 +274,8 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
 
     def loadNextPartition(self):
         """Get the next partition or milestone"""
-        self.textBrowser.setHtml(self.parser.get_next(self.loadMileStone, self.loadTextBrowser))
+        self.document.setHtml(self.parser.get_next(self.loadMileStone, self.loadTextBrowser))
+        self.textBrowser.setDocument(self.document)
         self.progressBar.setValue(self.parser.current_partition)
         if self.parser.current_partition > 1:
             self.leftArrow.setIcon(self.leftEnabled)
@@ -386,17 +389,8 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
             self.paused = True
 
     def updateReaderToMatchSettings(self):
-        self.textBrowser.setFontFamily(self.adhdReader.settings.text["style"])
-        # round input text size to nearest 10. This is because the textbrowser function requires this, 
-        # and we'll have to change this anyways when we switch to html input
-        self.textBrowser.setFontPointSize(round(int(self.adhdReader.settings.text["size"]), -1))
-        # go between partitions to funtionally, reload page
-        if self.parser.current_partition == 1:
-            self.loadNextPartition()
-            self.loadLastPartition()
-        elif self.parser.current_partition > 1:
-            self.loadLastPartition()
-            self.loadNextPartition()
+        # Update the text document's font
+        self.document.setDefaultFont(QtGui.QFont(self.adhdReader.settings.text["style"], int(self.adhdReader.settings.text["size"])))
 
 
     def endAudio(self):
