@@ -1,6 +1,6 @@
 from PyQt6.QtCore import Qt, QTimer, QEventLoop
 from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QApplication, QWidget, QGridLayout, QPushButton, QLabel
+from PyQt6.QtWidgets import QApplication, QWidget, QGridLayout, QPushButton, QLabel, QVBoxLayout
 import random
 import sys
 
@@ -43,6 +43,8 @@ class CardMatchingGame(QWidget):
 
     def initUI(self):
         self.gridLayout = QGridLayout()
+        self.gridLayout.setContentsMargins(0, 0, 0, 0) 
+        self.gridLayout.setSpacing(0)
 
         # add title to first grid row
         self.instructions = QLabel(parent=self)
@@ -71,6 +73,9 @@ class CardMatchingGame(QWidget):
                 self.cards.append(card)
         
         self.shuffleAndHideCards()
+        self.gridLayout.setContentsMargins(0, 0, 0, 0) 
+        self.gridLayout.setHorizontalSpacing(0)  
+        self.gridLayout.setVerticalSpacing(0)
 
         self.setLayout(self.gridLayout)
         self.selected_cards = []
@@ -122,10 +127,115 @@ class CardMatchingGame(QWidget):
             card.setStyleSheet("background-color: #F8F8FF; border: 1px solid black;")
         self.selected_cards = []
 
+
+class LevelSelectionWindow(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        self.setWindowTitle("Level Selection")
+        self.resize(800, 600)
+        self.layout = QVBoxLayout()
+        button_size = 200
+        self.button_level1 = QPushButton("Level 1")
+        self.button_level2 = QPushButton("Level 2")
+        self.button_level3 = QPushButton("Level 3")
+        
+        self.button_level1.setFixedSize(button_size, button_size)
+        self.button_level2.setFixedSize(button_size, button_size)
+        self.button_level3.setFixedSize(button_size, button_size)
+        
+
+        self.button_level1.clicked.connect(self.show_level1)
+        self.button_level2.clicked.connect(self.show_level2)
+        self.button_level3.clicked.connect(self.show_level3)
+
+        self.layout.addWidget(self.button_level1)
+        self.layout.addWidget(self.button_level2)
+        self.layout.addWidget(self.button_level3)
+        self.setLayout(self.layout)
+
+        self.level1_game = CardMatchingGame(ConfigCardMatching(4,4,4))
+        self.level2_game = CardMatchingGame(ConfigCardMatching(4,6,6))
+        self.level3_game = CardMatchingGame(ConfigCardMatching(6,6,9))
+
+    def show_level1(self):
+        self.layout.addWidget(self.level1_game)
+        self.level1_game.show()
+        # self.hide()
+        self.button_level1.hide()
+        self.button_level2.hide()
+        self.button_level3.hide()
+        
+
+    def show_level2(self):
+        self.layout.addWidget(self.level2_game)
+        self.level2_game.show()
+        self.button_level1.hide()
+        self.button_level2.hide()
+        self.button_level3.hide()
+
+    def show_level3(self):
+        self.layout.addWidget(self.level3_game)
+        self.level3_game.show()
+        self.button_level1.hide()
+        self.button_level2.hide()
+        self.button_level3.hide()
+    
+    def switch_widget(self, new_widget):
+        # Remove the current widget from the layout
+        self.layout.removeWidget(self.current_widget)
+        self.current_widget.hide()
+
+        # Set the new widget as the current widget
+        self.current_widget = new_widget
+
+        # Add the new widget to the layout
+        self.layout.addWidget(self.current_widget)
+        self.current_widget.show()
+
+class MainWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.layout = QVBoxLayout()
+        self.level_selection = LevelSelectionWindow()
+        self.game_level1 = CardMatchingGame(ConfigCardMatching(4,4,4))
+        self.game_level2 = CardMatchingGame(ConfigCardMatching(4,6,6))
+        self.game_level3 = CardMatchingGame(ConfigCardMatching(6,6,9))
+
+        self.current_widget = self.level_selection  # Set the initial widget
+
+        # Add the initial widget to the layout
+        self.layout.addWidget(self.current_widget)
+        self.setLayout(self.layout)
+
+    def switch_to_level1(self):
+        self.switch_widget(self.game_level1)
+
+    def switch_to_level2(self):
+        self.switch_widget(self.game_level2)
+
+    def switch_to_level3(self):
+        self.switch_widget(self.game_level3)
+
+    def switch_widget(self, new_widget):
+        # Remove the current widget from the layout
+        self.layout.removeWidget(self.current_widget)
+        self.current_widget.hide()
+
+        # Set the new widget as the current widget
+        self.current_widget = new_widget
+
+        # Add the new widget to the layout
+        self.layout.addWidget(self.current_widget)
+        self.current_widget.show()
+
+
 if __name__ == "__main__":
     
     app = QApplication(sys.argv)
     config = ConfigCardMatching(4,6,6)
-    game = CardMatchingGame(config)
-    game.show()
+    # game = CardMatchingGame(config)
+    # game.show()
+    window = LevelSelectionWindow()
+    window.show()
     sys.exit(app.exec())
