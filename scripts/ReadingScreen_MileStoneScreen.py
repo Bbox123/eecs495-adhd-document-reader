@@ -413,7 +413,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
             self.paused = True
 
     def updateReaderToMatchSettings(self):
-         """Apply the settings to their relative objects"""
+        """Apply the settings to their relative objects"""
         # Grab settings object
         settings:settings_backend.Settings = self.adhdReader.settings
 
