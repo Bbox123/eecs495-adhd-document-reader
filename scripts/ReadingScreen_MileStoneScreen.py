@@ -14,6 +14,7 @@ import configureDocumentPopUp as config
 import settingsPopUp as settings
 import settings as settings_backend
 import TextToSpeech as tts
+import math
 
 class Ui_ReadingScreen(QtWidgets.QMainWindow):
     
@@ -311,11 +312,13 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
     def loadLastPartition(self):
         """Get the next partition or milestone"""
         if self.parser.current_partition > 2:
-            self.textBrowser.setText(self.parser.get_last(self.loadTextBrowser) )
+            self.document.setHtml(self.parser.get_last(self.loadTextBrowser))
+            self.textBrowser.setDocument(self.document)
             self.progressBar.setValue(self.parser.current_partition)
         elif self.parser.current_partition == 2:
             self.leftArrow.setIcon(self.leftDisabled)
-            self.textBrowser.setText(self.parser.get_last(self.loadTextBrowser))
+            self.document.setHtml(self.parser.get_last(self.loadTextBrowser))
+            self.textBrowser.setDocument(self.document)
             self.progressBar.setValue(self.parser.current_partition)
         tts.audio_unload()
         self.ttsLoaded = False
@@ -430,6 +433,13 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         if self.mileStoneScreen is not None:
             self.mileStoneScreen.updateRemainingMilestonesText(self.parser.milestones_remaining)
             self.mileStoneScreen.updateMilestonePicked()
+
+        # Partition Size
+        if self.parser.partition_size != settings.pages["size"]:
+            self.parser.current_partition = max(math.floor(self.parser.current_partition * (self.parser.partition_size / settings.pages["size"])), 0)
+            self.parser.partition_size = settings.pages["size"]
+            self.parser.partition_text()
+            self.loadNextPartition()
             
     def endAudio(self):
         """End audio"""
