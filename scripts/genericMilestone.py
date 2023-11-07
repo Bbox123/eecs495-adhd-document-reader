@@ -9,6 +9,7 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 import TakeABreakMilestoneTimer as m_timer
 import cardMatchingMilestone as m_cardmatch
+import ReadingComprehensionMilestone as m_readingcomp
 import random
 import settings
 
@@ -238,6 +239,9 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
                 milestoneWidget.startTimer()
         if self.mileStoneChoice == "Card Matching Minigame":
                 milestoneWidget = m_cardmatch.LevelSelectionWindow()
+                self.addMilestoneToGrid(milestoneWidget)
+        if self.mileStoneChoice == "Reading Comprehension Questions":
+                milestoneWidget = m_readingcomp.Ui_Questions()
                 self.addMilestoneToGrid(milestoneWidget)
 
     def addMilestoneToGrid(self, milestoneWidget):

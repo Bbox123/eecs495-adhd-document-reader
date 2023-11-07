@@ -17,7 +17,7 @@ class Settings(object):
                 "Timed Break": True,
                 "Card Matching Minigame": True, 
                 "Pong Minigame": False,
-                "Reading Comprehension Questions": False,
+                "Reading Comprehension Questions": True,
                 "Reward Audio": False
             }
         }
