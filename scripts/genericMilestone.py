@@ -13,7 +13,7 @@ import ReadingComprehensionMilestone as m_readingcomp
 import random
 import settings
 
-
+m_disabled = "Milestones disabled\ncontinue reading"
 class Ui_Generic_Milestone(QtWidgets.QWidget):
     
     def __init__(self, readingBoxGridLayout: QtWidgets.QGridLayout, readingScreen):
@@ -226,15 +226,19 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
             print(f"{milestone} : {enabled}")
             if enabled:
                 mileStoneChoices.append(milestone)
-        
-        self.mileStoneChoice = mileStoneChoices[random.randrange(0, len(mileStoneChoices))]
+
+        # if all milestones have been disabled
+        if len(mileStoneChoices) == 0:
+                self.mileStoneChoice = m_disabled
+        else: 
+                self.mileStoneChoice = mileStoneChoices[random.randrange(0, len(mileStoneChoices))]
 
         # based off choice, update button text
         if self.mileStoneChoice == "Reading Comprehension Questions":
-             buttonText = "Reading Comprehension\n Questions"
-             self.startButton.setText(buttonText)
+                buttonText = "Reading Comprehension\n Questions"
+                self.startButton.setText(buttonText)
         else:
-             self.startButton.setText(self.mileStoneChoice)
+                self.startButton.setText(self.mileStoneChoice)
 
     def goToMilestone(self):
         """Setup milestone in grid layout and call any milestone specific methods"""
@@ -242,10 +246,10 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
                 self.mileStoneWidget = m_timer.Ui_Timer()
                 self.addMilestoneToGrid(self.mileStoneWidget)
                 self.mileStoneWidget.startTimer()
-        if self.mileStoneChoice == "Card Matching Minigame":
+        elif self.mileStoneChoice == "Card Matching Minigame":
                 self.mileStoneWidget = m_cardmatch.LevelSelectionWindow()
                 self.addMilestoneToGrid(self.mileStoneWidget)
-        if self.mileStoneChoice == "Reading Comprehension Questions":
+        elif self.mileStoneChoice == "Reading Comprehension Questions":
                 self.mileStoneWidget = m_readingcomp.Ui_Questions(self.settings)
                 self.addMilestoneToGrid(self.mileStoneWidget)
 
@@ -266,7 +270,7 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
          self.milestoneTotal.setText(f"{self.readingScreen.parser.milestone_running_count} of {newRemainder}")
 
     def updateMilestonePicked(self):
-         if self.settings.Milestones["enabled"][self.mileStoneChoice] is False:
+         if self.mileStoneChoice == m_disabled or self.settings.Milestones["enabled"][self.mileStoneChoice] is False:
               self.chooseMilestone()
          
                 
