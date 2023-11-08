@@ -13,7 +13,7 @@ from img_ocr import *
 # Class to partition text into strings of size partition_size
 class Partition_Text(object):
 
-    def __init__(self, partition_size=50, milestone_frequency=5, text=""):
+    def __init__(self, partition_size=100, milestone_frequency=5, text=""):
         ''' This function initializes the Partition_Text class '''
         # Text variables
         self.text = text                                # string of text in file
