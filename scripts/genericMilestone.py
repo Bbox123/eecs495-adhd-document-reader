@@ -22,6 +22,7 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
         self.readingBoxGridLayout = readingBoxGridLayout
         self.settings:settings = readingScreen.adhdReader.settings
         self.mileStoneChoice = ""
+        self.mileStoneWidget = None
         self.setupUi()
         self.determineMileStone()
 
@@ -232,17 +233,16 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
 
     def goToMilestone(self):
         """Setup milestone in grid layout and call any milestone specific methods"""
-        milestoneWidget = None
         if self.mileStoneChoice == "Timed Break":
-                milestoneWidget = m_timer.Ui_Timer()
-                self.addMilestoneToGrid(milestoneWidget)
-                milestoneWidget.startTimer()
+                self.mileStoneWidget = m_timer.Ui_Timer()
+                self.addMilestoneToGrid(self.mileStoneWidget)
+                self.mileStoneWidget.startTimer()
         if self.mileStoneChoice == "Card Matching Minigame":
-                milestoneWidget = m_cardmatch.LevelSelectionWindow()
-                self.addMilestoneToGrid(milestoneWidget)
+                self.mileStoneWidget = m_cardmatch.LevelSelectionWindow()
+                self.addMilestoneToGrid(self.mileStoneWidget)
         if self.mileStoneChoice == "Reading Comprehension Questions":
-                milestoneWidget = m_readingcomp.Ui_Questions()
-                self.addMilestoneToGrid(milestoneWidget)
+                self.mileStoneWidget = m_readingcomp.Ui_Questions(self.settings)
+                self.addMilestoneToGrid(self.mileStoneWidget)
 
     def addMilestoneToGrid(self, milestoneWidget):
          """Add milestone to reading screen grid and update layout to show changes"""

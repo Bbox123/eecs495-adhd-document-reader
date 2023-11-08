@@ -7,22 +7,26 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
+import ReadingComprehensionCompleted as reading_completed
+import settings
 import random
 
 class Ui_Questions(QtWidgets.QWidget):
-    def __init__(self):
+    def __init__(self, settings:settings.Settings):
         super().__init__()
+        self.settings = settings
         self.setupUi()
         self.questions = self.initQuestions()
         self.questionIndex = 0
         self.chooseQuestion()
+        
 
     def setupUi(self):
         self.setObjectName("Form")
         self.gridLayout = QtWidgets.QGridLayout(self)
         self.gridLayout.setObjectName("gridLayout")
         self.verticalLayout = QtWidgets.QVBoxLayout()
-        self.verticalLayout.setContentsMargins(75, 0, 75, 0)
+        self.verticalLayout.setContentsMargins(75, 75, 75, 0)
         self.verticalLayout.setObjectName("verticalLayout")
         self.questionLayout = QtWidgets.QHBoxLayout()
         self.questionLayout.setSpacing(20)
@@ -80,6 +84,7 @@ class Ui_Questions(QtWidgets.QWidget):
                                         }
                                    """)
         self.textBox.setObjectName("textBox")
+        self.textBox.setFont(QtGui.QFont(self.settings.text["style"], int(self.settings.text["size"])))
         
         shadow = QtWidgets.QGraphicsDropShadowEffect()
 
@@ -94,7 +99,7 @@ class Ui_Questions(QtWidgets.QWidget):
         self.verticalLayout.addLayout(self.textBoxLayout)
         self.submitLayout = QtWidgets.QHBoxLayout()
         self.submitLayout.setObjectName("submitLayout")
-        self.submitInputButton = QtWidgets.QPushButton(parent=self)
+        self.submitInputButton = QtWidgets.QPushButton(parent=self, clicked = lambda: self.submitInput(self.textBox.toPlainText()))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(100)
         sizePolicy.setVerticalStretch(40)
@@ -121,7 +126,13 @@ class Ui_Questions(QtWidgets.QWidget):
         self.submitInputButton.setObjectName("submitInputButton")
         self.submitLayout.addWidget(self.submitInputButton, 0, QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTop)
         self.verticalLayout.addLayout(self.submitLayout)
+
+        self.completionScreen = reading_completed.Ui_Form()
+
         self.gridLayout.addLayout(self.verticalLayout, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.completionScreen)
+
+        self.completionScreen.hide()
 
         self.retranslateUi()
         QtCore.QMetaObject.connectSlotsByName(self)
@@ -152,3 +163,15 @@ class Ui_Questions(QtWidgets.QWidget):
 
         self.questionIndex = choice
         self.question.setText(self.questions[self.questionIndex])
+
+    def loadCompletionScreen(self):
+        """There is absolutely a better way to do this but this is fine."""
+        self.question.hide()
+        self.textBox.hide()
+        self.submitInputButton.hide()
+        self.resetQuestionButton.hide()
+        self.completionScreen.show()
+
+    def submitInput(self, text):
+        """Accept user input for prompt and proceed to the next screen"""
+        self.loadCompletionScreen()

@@ -430,6 +430,10 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         if self.mileStoneScreen is not None:
             self.mileStoneScreen.updateRemainingMilestonesText(self.parser.milestones_remaining)
             self.mileStoneScreen.updateMilestonePicked()
+            # I'm sorry about this
+            if self.mileStoneScreen.mileStoneWidget is not None and self.mileStoneScreen.mileStoneChoice == "Reading Comprehension Questions":
+                # In this specific scenario, allows changing font size and style of text box
+                self.mileStoneScreen.mileStoneWidget.textBox.setFont(QtGui.QFont(settings.text["style"], int(settings.text["size"])))
             
     def endAudio(self):
         """End audio"""
