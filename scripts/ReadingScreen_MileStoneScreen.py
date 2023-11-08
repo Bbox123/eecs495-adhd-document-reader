@@ -149,7 +149,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap("UI/icons/doc.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.configDoc.setIcon(icon1)
-        self.configDoc.setIconSize(QtCore.QSize(50, 50))
+        self.configDoc.setIconSize(QtCore.QSize(70, 70))
         self.configDoc.setObjectName("configDoc")
         self.verticalLayout_4.addWidget(self.configDoc)
         self.textToSpeech = QtWidgets.QPushButton(parent=self.centralwidget, clicked = lambda: self.toggleTTS())
