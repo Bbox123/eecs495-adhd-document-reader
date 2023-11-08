@@ -14,6 +14,7 @@ import configureDocumentPopUp as config
 import settingsPopUp as settings
 import settings as settings_backend
 import TextToSpeech as tts
+import completionScreen as complete
 
 class Ui_ReadingScreen(QtWidgets.QMainWindow):
     
@@ -298,6 +299,10 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
 
     def loadNextPartition(self):
         """Get the next partition or milestone"""
+        # check for if completion screen should instead be loaded
+        if self.parser.current_partition == len(self.parser.partitions):
+            self.loadCompletion()
+            print("entering completion")
         self.document.setHtml(self.parser.get_next(self.loadMileStone, self.loadTextBrowser))
         self.textBrowser.setDocument(self.document)
         self.progressBar.setValue(self.parser.current_partition)
@@ -331,6 +336,17 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.backgroundFrame.hide()
         self.textToSpeech.hide()
         self.gridLayout.update()
+
+    def loadCompletion(self):
+        """Load document completion screen."""
+        self.completionScreen = complete.completion_Screen(self.gridLayout, self)
+        self.textBrowser.hide()
+        self.muted = False
+        self.toggleTTS()
+        self.backgroundFrame.hide()
+        self.textToSpeech.hide()
+        self.gridLayout.update()
+
 
     def loadTextBrowser(self):
         """Check to see if text browser needs to be shown. Hide all other widgets in our grid except for our text browser"""
