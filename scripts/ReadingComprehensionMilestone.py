@@ -81,6 +81,10 @@ class Ui_Questions(QtWidgets.QWidget):
                                                 border-radius: 10px;
                                                 border: 0px solid #FCFFED;
                                                 background: #FFF;
+                                                padding-left: 30px;
+                                                padding-right: 30px;
+                                                padding-top: 30px;
+                                                padding-bottom: 30px;
                                         }
                                    """)
         self.textBox.setObjectName("textBox")

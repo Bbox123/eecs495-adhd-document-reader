@@ -129,21 +129,22 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
         self.startButton.setSizePolicy(sizePolicy)
         self.startButton.setMinimumSize(QtCore.QSize(444, 95))
         self.startButton.setMaximumSize(QtCore.QSize(16777215, 100))
-        self.startButton.setStyleSheet("QPushButton {\n"
-"    border: none;    \n"
-"    background-color: rgb(78, 134, 150);\n"
-"    border-radius: 20px;\n"
-"    color: #FCFFED;\n"
-"    font-family: Roboto;\n"
-"    font-size: 32px;\n"
-"    font-style: normal;\n"
-"    font-weight: 400;\n"
-"    line-height: normal;\n"
-"}\n"
-"\n"
-"QPushButton::hover {\n"
-"    background-color: rgb(46, 79, 88);\n"
-"}")
+        self.startButton.setStyleSheet("""QPushButton {
+                                    border: none;    
+                                    background-color: rgb(78, 134, 150);
+                                    border-radius: 20px;
+                                    color: #FCFFED;
+                                    font-family: Roboto;
+                                    font-size: 32px;
+                                    font-style: normal;
+                                    font-weight: 400;
+                                    line-height: normal;
+                                    text-align: center;
+                                }
+                                
+                                QPushButton::hover {
+                                    background-color: rgb(46, 79, 88);
+                                }""")
         self.startButton.setObjectName("startButton")
         self.horizontalLayout_3.addWidget(self.startButton)
         spacerItem7 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
@@ -229,7 +230,11 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
         self.mileStoneChoice = mileStoneChoices[random.randrange(0, len(mileStoneChoices))]
 
         # based off choice, update button text
-        self.startButton.setText(self.mileStoneChoice)
+        if self.mileStoneChoice == "Reading Comprehension Questions":
+             buttonText = "Reading Comprehension\n Questions"
+             self.startButton.setText(buttonText)
+        else:
+             self.startButton.setText(self.mileStoneChoice)
 
     def goToMilestone(self):
         """Setup milestone in grid layout and call any milestone specific methods"""
