@@ -7,6 +7,7 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
+import settings as settings_backend
 
 
 class Ui_MainWindow(QtWidgets.QMainWindow):
@@ -68,7 +69,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 "line-height: normal;")
         self.settingsLabel.setObjectName("settingsLabel")
         self.horizontalLayout_2.addWidget(self.settingsLabel)
-        self.closeButton = QtWidgets.QToolButton(parent=self.titleLayout, clicked = lambda: self.readingScreen.togglePopUp(self))
+        self.closeButton = QtWidgets.QToolButton(parent=self.titleLayout, clicked = lambda: self.closeSettings())
         self.closeButton.setStyleSheet("color: #FFF;")
         self.closeButton.setText("")
         icon1 = QtGui.QIcon()
@@ -200,7 +201,6 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.fontSlider.setMinimumSize(QtCore.QSize(300, 0))
         self.fontSlider.setMinimum(1)
         self.fontSlider.setMaximum(100)
-        self.fontSlider.setValue(24)
         self.fontSlider.setStyleSheet("QSlider {\n"
 "    border: none;\n"
 "}\n"
@@ -266,11 +266,6 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         sizePolicy.setHeightForWidth(self.fontStyleDropDown.sizePolicy().hasHeightForWidth())
         self.fontStyleDropDown.setSizePolicy(sizePolicy)
         self.fontStyleDropDown.setMinimumSize(QtCore.QSize(300, 0))
-        self.font_db = QtGui.QFontDatabase
-        # The current font we use
-        self.fontStyleDropDown.addItem("Inter")
-        # We can add custom ones that are for individuals with dyslexia by manually adding them to this project and implementing here
-        self.fontStyleDropDown.addItems(self.font_db.families())
         self.fontStyleDropDown.setStyleSheet("QComboBox {\n"
 "    border: 2px solid #B6C28B;\n"
 "}")
@@ -381,6 +376,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         spacerItem7 = QtWidgets.QSpacerItem(150, 20, QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Minimum)
         self.frequencyLayout.addItem(spacerItem7)
         self.frequencyLabel = QtWidgets.QLabel(parent=self.settingsOptionMilestones)
+        
         self.frequencyLabel.setStyleSheet("font-family: Roboto;\n"
 "font-size: 32px;\n"
 "font-style: normal;\n"
@@ -399,6 +395,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.everyLabel.setObjectName("everyLabel")
         self.frequencyLayout.addWidget(self.everyLabel)
         self.frequencyInput = QtWidgets.QLineEdit(parent=self.settingsOptionMilestones)
+        self.frequencyInput.textChanged[str].connect(self.changeMilestoneFrequency)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -531,6 +528,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
         self.fontSlider.valueChanged[int].connect(self.changeFontSize)
         self.fontStyleDropDown.currentTextChanged[str].connect(self.changeFontStyle)
+        self.setCurrentSettingsUI()
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
@@ -573,7 +571,6 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         # move the popup to the center
         self.setGeometry(center_x, center_y, widgetWidth, widgetHeight)
 
-    # TODO: new font size needs to be stored and applied upong clicking the close button on the pop up
     def changeFontSize(self, value):
         '''Change the font size, also change the sample text.'''
         fontSize = f"{value}px"
@@ -591,8 +588,9 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         
         newStyleSheet = newStyleSheet.replace("{SIZE}", fontSize).replace("{STYLE}", fontStyle)
         self.sampleText.setStyleSheet(newStyleSheet)
+        # update settings in settings function
+        self.adhdReader.settings.text["size"] = value
 
-    # TODO: new font style needs to be stored and applied upong clicking the close button on the pop up
     def changeFontStyle(self, fontStyle):
         '''Change the font style, also change the sample text.'''
         fontSize = f"{self.fontSlider.value()}px"
@@ -608,5 +606,56 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         
         newStyleSheet = newStyleSheet.replace("{SIZE}", fontSize).replace("{STYLE}", fontStyle)
         self.sampleText.setStyleSheet(newStyleSheet)
+        self.adhdReader.settings.text["style"] = fontStyle
+
+    def changeMilestoneFrequency(self, frequency:str):
+        if frequency.isnumeric() and frequency != "0" and int(frequency) < len(self.readingScreen.parser.partitions):
+            self.adhdReader.settings.Milestones["frequency"] = int(frequency)
+
+        elif len(frequency) != 0:
+            self.frequencyInput.setText(str(self.adhdReader.settings.Milestones["frequency"]))
+
+    # Replace with values from settings object
+    def setCurrentSettingsUI(self):
+        '''Set Settings PopUp to reflect default settings upon initial load'''
+
+        # Grab settings ref
+        settings:settings_backend.Settings = self.adhdReader.settings
+
+        # Text
+        self.font_db = QtGui.QFontDatabase
+        # The current font we use
+        self.fontStyleDropDown.addItem(settings.text["style"])
+        # We can add custom ones that are for individuals with dyslexia by manually adding them to this project and implementing here
+        self.fontStyleDropDown.addItems(self.font_db.families())
+
+        self.fontSlider.setValue(settings.text["size"])
+
+        # Pages
+        self.wordsInput.setText(str(settings.pages["size"]))
+
+        # Milestones
+        self.frequencyInput.setText(str(settings.Milestones["frequency"]))
+
+        check_boxes = self.grabMilestoneCheckBoxes()
+
+        for key, value in check_boxes.items():
+            value.setChecked(settings.Milestones["enabled"][key])
+
+    def grabMilestoneCheckBoxes(self):
+        boxes = {
+             "Timed Break" : self.timedBreak,
+             "Card Matching Minigame" : self.cardMatching,
+             "Pong Minigame" : self.pongMinigame,
+             "Reading Comprehension Questions" : self.readingComp,
+             "Reward Audio" : self.rewardAudio
+        }
+
+        return boxes
+    
+    def closeSettings(self):
+        '''update new reading screen settings and close menu'''
+        self.readingScreen.updateReaderToMatchSettings()
+        self.readingScreen.togglePopUp(self)
         
         
