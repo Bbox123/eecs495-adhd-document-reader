@@ -99,7 +99,6 @@ class Partition_Text(object):
     def partition_text(self):
         ''' This function partitions the text into strings of size partition_size (or less) and stores them in a list '''
         self.partitions = []
-        self.current_partition = 0
         if self.isXHTML:
             self.partition_text_xhtml()
         else:

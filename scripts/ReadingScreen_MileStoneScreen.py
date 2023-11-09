@@ -436,7 +436,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
 
         # Partition Size
         if self.parser.partition_size != settings.pages["size"]:
-            self.parser.current_partition = max(math.floor(self.parser.current_partition * (self.parser.partition_size / settings.pages["size"])), 0)
+            self.parser.current_partition = max(math.floor(self.parser.current_partition * (self.parser.partition_size / settings.pages["size"]))-1, 0)
             self.parser.partition_size = settings.pages["size"]
             self.parser.partition_text()
             self.loadNextPartition()
