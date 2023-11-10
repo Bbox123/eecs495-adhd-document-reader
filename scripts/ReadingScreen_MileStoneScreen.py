@@ -462,12 +462,19 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
             self.mileStoneScreen.updateRemainingMilestonesText(self.parser.milestones_remaining)
             self.mileStoneScreen.updateMilestonePicked()
 
+            # I'm sorry about this
+            if self.mileStoneScreen.mileStoneWidget is not None and self.mileStoneScreen.mileStoneChoice == "Reading Comprehension Questions":
+                # In this specific scenario, allows changing font size and style of text box
+                self.mileStoneScreen.mileStoneWidget.textBox.setFont(QtGui.QFont(settings.text["style"], int(settings.text["size"])))
+
+
         # Partition Size
         if self.parser.partition_size != settings.pages["size"]:
             self.parser.current_partition = max(math.floor(self.parser.current_partition * (self.parser.partition_size / settings.pages["size"]))-1, 0)
             self.parser.partition_size = settings.pages["size"]
             self.parser.partition_text()
             self.loadNextPartition()
+
             
     def endAudio(self):
         """End audio"""

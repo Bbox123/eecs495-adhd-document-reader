@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>713</width>
+    <height>658</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="spacing">
+      <number>20</number>
+     </property>
+     <item alignment="Qt::AlignHCenter|Qt::AlignBottom">
+      <widget class="QLabel" name="title">
+       <property name="styleSheet">
+        <string notr="true">QLabel {
+	color: #324143;
+	font-family: Niramit;
+	font-size: 65px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: normal;
+}</string>
+       </property>
+       <property name="text">
+        <string>Nice work!</string>
+       </property>
+      </widget>
+     </item>
+     <item alignment="Qt::AlignHCenter">
+      <widget class="QLabel" name="checkImage">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap>../../../Downloads/check.png</pixmap>
+       </property>
+      </widget>
+     </item>
+     <item alignment="Qt::AlignHCenter|Qt::AlignTop">
+      <widget class="QLabel" name="continueLabel">
+       <property name="styleSheet">
+        <string notr="true">QLabel {
+	color: #324143;
+	text-align: center;
+	font-family: Niramit;
+	font-size: 45px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+}</string>
+       </property>
+       <property name="text">
+        <string>Let's continue.</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

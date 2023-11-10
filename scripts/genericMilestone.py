@@ -9,10 +9,11 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 import TakeABreakMilestoneTimer as m_timer
 import cardMatchingMilestone as m_cardmatch
+import ReadingComprehensionMilestone as m_readingcomp
 import random
 import settings
 
-
+m_disabled = "Milestones disabled\ncontinue reading"
 class Ui_Generic_Milestone(QtWidgets.QWidget):
     
     def __init__(self, readingBoxGridLayout: QtWidgets.QGridLayout, readingScreen):
@@ -21,6 +22,7 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
         self.readingBoxGridLayout = readingBoxGridLayout
         self.settings:settings = readingScreen.adhdReader.settings
         self.mileStoneChoice = ""
+        self.mileStoneWidget = None
         self.setupUi()
         self.determineMileStone()
 
@@ -127,21 +129,22 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
         self.startButton.setSizePolicy(sizePolicy)
         self.startButton.setMinimumSize(QtCore.QSize(444, 95))
         self.startButton.setMaximumSize(QtCore.QSize(16777215, 100))
-        self.startButton.setStyleSheet("QPushButton {\n"
-"    border: none;    \n"
-"    background-color: rgb(78, 134, 150);\n"
-"    border-radius: 20px;\n"
-"    color: #FCFFED;\n"
-"    font-family: Roboto;\n"
-"    font-size: 32px;\n"
-"    font-style: normal;\n"
-"    font-weight: 400;\n"
-"    line-height: normal;\n"
-"}\n"
-"\n"
-"QPushButton::hover {\n"
-"    background-color: rgb(46, 79, 88);\n"
-"}")
+        self.startButton.setStyleSheet("""QPushButton {
+                                    border: none;    
+                                    background-color: rgb(78, 134, 150);
+                                    border-radius: 20px;
+                                    color: #FCFFED;
+                                    font-family: Roboto;
+                                    font-size: 32px;
+                                    font-style: normal;
+                                    font-weight: 400;
+                                    line-height: normal;
+                                    text-align: center;
+                                }
+                                
+                                QPushButton::hover {
+                                    background-color: rgb(46, 79, 88);
+                                }""")
         self.startButton.setObjectName("startButton")
         self.horizontalLayout_3.addWidget(self.startButton)
         spacerItem7 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
@@ -223,22 +226,32 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
             print(f"{milestone} : {enabled}")
             if enabled:
                 mileStoneChoices.append(milestone)
-        
-        self.mileStoneChoice = mileStoneChoices[random.randrange(0, len(mileStoneChoices))]
+
+        # if all milestones have been disabled
+        if len(mileStoneChoices) == 0:
+                self.mileStoneChoice = m_disabled
+        else: 
+                self.mileStoneChoice = mileStoneChoices[random.randrange(0, len(mileStoneChoices))]
 
         # based off choice, update button text
-        self.startButton.setText(self.mileStoneChoice)
+        if self.mileStoneChoice == "Reading Comprehension Questions":
+                buttonText = "Reading Comprehension\n Questions"
+                self.startButton.setText(buttonText)
+        else:
+                self.startButton.setText(self.mileStoneChoice)
 
     def goToMilestone(self):
         """Setup milestone in grid layout and call any milestone specific methods"""
-        milestoneWidget = None
         if self.mileStoneChoice == "Timed Break":
-                milestoneWidget = m_timer.Ui_Timer()
-                self.addMilestoneToGrid(milestoneWidget)
-                milestoneWidget.startTimer()
-        if self.mileStoneChoice == "Card Matching Minigame":
-                milestoneWidget = m_cardmatch.LevelSelectionWindow()
-                self.addMilestoneToGrid(milestoneWidget)
+                self.mileStoneWidget = m_timer.Ui_Timer()
+                self.addMilestoneToGrid(self.mileStoneWidget)
+                self.mileStoneWidget.startTimer()
+        elif self.mileStoneChoice == "Card Matching Minigame":
+                self.mileStoneWidget = m_cardmatch.LevelSelectionWindow()
+                self.addMilestoneToGrid(self.mileStoneWidget)
+        elif self.mileStoneChoice == "Reading Comprehension Questions":
+                self.mileStoneWidget = m_readingcomp.Ui_Questions(self.settings)
+                self.addMilestoneToGrid(self.mileStoneWidget)
 
     def addMilestoneToGrid(self, milestoneWidget):
          """Add milestone to reading screen grid and update layout to show changes"""
@@ -257,7 +270,7 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
          self.milestoneTotal.setText(f"{self.readingScreen.parser.milestone_running_count} of {newRemainder}")
 
     def updateMilestonePicked(self):
-         if self.settings.Milestones["enabled"][self.mileStoneChoice] is False:
+         if self.mileStoneChoice == m_disabled or self.settings.Milestones["enabled"][self.mileStoneChoice] is False:
               self.chooseMilestone()
          
                 
