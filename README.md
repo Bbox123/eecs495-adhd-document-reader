@@ -3,7 +3,7 @@ This is an ADHD document reading assistant project as a part of an EECS495 proje
 # Table of Contents
 
 1. [Developer Setup Instructions](#Developer-Setup-Instructions)
-2. [Alpha Release Usage Instructions](#alpha-release-usage-instructions)
+2. [Beta Release Usage Instructions](#beta-release-usage-instructions)
 
 ## Developer Setup Instructions
 
@@ -29,31 +29,8 @@ $ ./bin/ADHDReaderRun
 $ python3 scripts/ParseFile.py <file type (txt or pdf)> <file name/path>
 Prints out the parsed and partitioned text to the console
 
-## Alpha Release Usage Instructions
+## Beta Release Usage Instructions
 
-1. [Download Files](#download-files)
-2. [Navigate and Unpack](#navigate-and-unpack)
-3. [Setup](#setup)
+1. Navigate to our beta release: https://github.com/Bbox123/eecs495-adhd-document-reader/releases/tag/v.0.9
+2. Follow instructions from there
 
-### Download Files:
-Download the .zip containing our project files:
-(https://github.com/Bbox123/eecs495-adhd-document-reader/archive/refs/heads/main.zip)
-
-Setup a Linux environment of your choice (most of our team uses WSL)
-
-Move the .zip file from your downloads directory into this environment:  
-$ cp -R <source_directory> <dest_directory>
-
-### Navigate and Unpack:
-Navigate to <dest_directory> and run the following commands 
-
-$ sudo apt-get install unzip  
-$ unzip eecs495-adhd-document-reader-main.zip  
-$ mv eecs495-adhd-document-reader-main/* .  
-$ rm -r eecs495-adhd-document-reader-main eecs495-adhd-document-reader-main.zip
-
-### Setup:
-./bin/alphaSetup
-
-### To run the project:
-$ ./bin/ADHDReaderRun
