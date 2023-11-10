@@ -8,7 +8,7 @@ class Settings(object):
         }
 
         self.pages = {
-            "size" : 50
+            "size" : 100
         }
 
         self.Milestones = {

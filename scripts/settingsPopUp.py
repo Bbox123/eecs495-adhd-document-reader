@@ -330,6 +330,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 "}")
         self.wordsInput.setObjectName("wordsInput")
         self.pageSizeLayout.addWidget(self.wordsInput)
+        self.wordsInput.textChanged[str].connect(self.changePageSize)
         self.wordsLabel = QtWidgets.QLabel(parent=self.settingsOptionPages)
         self.wordsLabel.setStyleSheet("font-family: Roboto;\n"
 "font-size: 25px;\n"
@@ -607,6 +608,13 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         newStyleSheet = newStyleSheet.replace("{SIZE}", fontSize).replace("{STYLE}", fontStyle)
         self.sampleText.setStyleSheet(newStyleSheet)
         self.adhdReader.settings.text["style"] = fontStyle
+
+    def changePageSize(self, size:str):
+        if size.isnumeric() and size != "0" and int(size) != self.readingScreen.parser.partition_size:
+            self.adhdReader.settings.pages["size"] = int(size)
+
+        elif len(size) != 0:
+            self.wordsInput.setText(str(self.adhdReader.settings.pages["size"]))
 
     def changeMilestoneFrequency(self, frequency:str):
         if frequency.isnumeric() and frequency != "0" and int(frequency) < len(self.readingScreen.parser.partitions):
