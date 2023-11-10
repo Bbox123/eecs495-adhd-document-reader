@@ -83,3 +83,6 @@ Icon
 .pyproject.user
 
 adhdenv
+
+# Build executables
+build
