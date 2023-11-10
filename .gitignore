@@ -81,3 +81,5 @@ Icon
 # WSL transfer files
 .Identifier
 .pyproject.user
+
+adhdenv
