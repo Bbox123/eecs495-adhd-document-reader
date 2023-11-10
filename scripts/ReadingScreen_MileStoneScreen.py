@@ -331,6 +331,10 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         """Load generic milestone screen."""
         self.mileStoneScreen = mileStoneScreen.Ui_Generic_Milestone(self.gridLayout, self)
         self.textBrowser.hide()
+        # make page invisible
+        self.frame.setStyleSheet("border: 00px solid #324143;\n"
+                "background: rgb(252, 255, 237);\n"
+                "padding: -10 px;")
         self.muted = False
         self.toggleTTS()
         self.backgroundFrame.hide()
@@ -341,6 +345,10 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         """Load document completion screen."""
         self.completionScreen = complete.completion_Screen(self.gridLayout, self)
         self.textBrowser.hide()
+         # make page invisible
+        self.frame.setStyleSheet("border: 00px solid #324143;\n"
+                "background: rgb(252, 255, 237);\n"
+                "padding: -10 px;")
         self.muted = False
         self.toggleTTS()
         self.backgroundFrame.hide()
@@ -352,7 +360,10 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         """Check to see if text browser needs to be shown. Hide all other widgets in our grid except for our text browser"""
         if self.textBrowser.isHidden() is not True:
             return
-
+         # make page visible
+        self.frame.setStyleSheet("border: 00px solid #324143;\n"
+                "background: #fff;\n"
+                "padding: -10 px;")
         # Iterate through everything in the grid layout
         for index in range(self.gridLayout.count()):
             self.gridLayout.itemAt(index).widget().hide()
