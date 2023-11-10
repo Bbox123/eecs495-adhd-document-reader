@@ -14,7 +14,9 @@ import configureDocumentPopUp as config
 import settingsPopUp as settings
 import settings as settings_backend
 import TextToSpeech as tts
+import completionScreen as complete
 import math
+
 
 class Ui_ReadingScreen(QtWidgets.QMainWindow):
     
@@ -150,7 +152,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap("UI/icons/doc.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.configDoc.setIcon(icon1)
-        self.configDoc.setIconSize(QtCore.QSize(50, 50))
+        self.configDoc.setIconSize(QtCore.QSize(70, 70))
         self.configDoc.setObjectName("configDoc")
         self.verticalLayout_4.addWidget(self.configDoc)
         self.textToSpeech = QtWidgets.QPushButton(parent=self.centralwidget, clicked = lambda: self.toggleTTS())
@@ -299,6 +301,10 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
 
     def loadNextPartition(self):
         """Get the next partition or milestone"""
+        # check for if completion screen should instead be loaded
+        if self.parser.current_partition == len(self.parser.partitions):
+            self.loadCompletion()
+            print("entering completion")
         self.document.setHtml(self.parser.get_next(self.loadMileStone, self.loadTextBrowser))
         self.textBrowser.setDocument(self.document)
         self.progressBar.setValue(self.parser.current_partition)
@@ -329,17 +335,39 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         """Load generic milestone screen."""
         self.mileStoneScreen = mileStoneScreen.Ui_Generic_Milestone(self.gridLayout, self)
         self.textBrowser.hide()
+        # make page invisible
+        self.frame.setStyleSheet("border: 00px solid #324143;\n"
+                "background: rgb(252, 255, 237);\n"
+                "padding: -10 px;")
         self.muted = False
         self.toggleTTS()
         self.backgroundFrame.hide()
         self.textToSpeech.hide()
         self.gridLayout.update()
 
+    def loadCompletion(self):
+        """Load document completion screen."""
+        self.completionScreen = complete.completion_Screen(self.gridLayout, self)
+        self.textBrowser.hide()
+         # make page invisible
+        self.frame.setStyleSheet("border: 00px solid #324143;\n"
+                "background: rgb(252, 255, 237);\n"
+                "padding: -10 px;")
+        self.muted = False
+        self.toggleTTS()
+        self.backgroundFrame.hide()
+        self.textToSpeech.hide()
+        self.gridLayout.update()
+
+
     def loadTextBrowser(self):
         """Check to see if text browser needs to be shown. Hide all other widgets in our grid except for our text browser"""
         if self.textBrowser.isHidden() is not True:
             return
-
+         # make page visible
+        self.frame.setStyleSheet("border: 00px solid #324143;\n"
+                "background: #fff;\n"
+                "padding: -10 px;")
         # Iterate through everything in the grid layout
         for index in range(self.gridLayout.count()):
             self.gridLayout.itemAt(index).widget().hide()

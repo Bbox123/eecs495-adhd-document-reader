@@ -47,6 +47,13 @@ class Partition_Text(object):
                 self.parse_pdf_w_image(file_name)
             else:
                 self.parse_pdf(file_name)
+    
+    def restart_file(self):
+        self.current_partition = 0                     # index of current partition
+        self.milestone_counter = 0                      # number of partitions since last milestone (resets to 0 after each milestone)
+        self.milestone_running_count = 0
+        print(str(self.get_partitions_list_size()))
+        pass
 
     def parse_txt(self, file_name):
         ''' This function takes in a file name and parses the txt file corresponding to that file name, then calls the partition_text function '''
@@ -92,7 +99,6 @@ class Partition_Text(object):
             self.milestone_counter = 0
                
                 
-    
     def get_partitions_list_size(self):
         return len(self.partitions)
 
