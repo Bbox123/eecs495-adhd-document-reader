@@ -474,6 +474,8 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
             self.parser.partition_size = settings.pages["size"]
             self.parser.partition_text()
             self.loadNextPartition()
+            self.progressBar.setMaximum(len(self.parser.partitions))
+            self.progressBar.setValue(self.parser.current_partition)
 
             
     def endAudio(self):

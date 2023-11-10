@@ -31,7 +31,9 @@ class Partition_Text(object):
         self.current_partition = 0                      # index of current partition
         self.milestone_counter = 0                      # number of partitions since last milestone (resets to 0 after each milestone)
         self.milestone_running_count = 0                # number of milestones encountered so far
-        self.milestones_remaining = int(len(self.partitions) / self.milestone_frequency) + 1 # total number of milestones for reading 
+        self.milestones_remaining = int(len(self.partitions) / self.milestone_frequency)  # total number of milestones for reading 
+        if len(self.partitions) % self.milestone_frequency == 0:
+            self.milestones_remaining -= 1
 
     def parse_file(self, file_type, file_name):
         ''' This function takes in a file type and file name and calls the respective parsing function for that file type '''
@@ -94,10 +96,14 @@ class Partition_Text(object):
     def set_milestone_frequency(self, frequency):
         if self.milestone_frequency != frequency:
             self.milestone_frequency = frequency
-            partitions_remaining = len(self.partitions) - self.current_partition
-            self.milestones_remaining = int(partitions_remaining / self.milestone_frequency) + self.milestone_running_count
-            self.milestone_counter = 0
-               
+            self.set_milestones_remaining()
+
+    def set_milestones_remaining(self):
+        partitions_remaining = len(self.partitions) - self.current_partition
+        self.milestones_remaining = int(partitions_remaining / self.milestone_frequency) + self.milestone_running_count
+        if partitions_remaining % self.milestone_frequency == 0:
+            self.milestones_remaining -= 1
+        self.milestone_counter = 0      
                 
     def get_partitions_list_size(self):
         return len(self.partitions)
@@ -127,7 +133,7 @@ class Partition_Text(object):
                     partition = " ".join([partition, sentences.pop(0)])         # add next sentence to current partition
                 
                 self.partitions.append(partition.strip())                       # add current partition to list of partitions
-        self.milestones_remaining = int(len(self.partitions) / self.milestone_frequency) # use new list size to determing remaining partitions
+        self.set_milestones_remaining()                                     # use new list size to determing remaining partitions
 
 
     def partition_text_xhtml(self):
