@@ -86,3 +86,4 @@ adhdenv
 
 # Build executables
 build
+builds/*
