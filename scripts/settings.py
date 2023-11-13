@@ -8,7 +8,7 @@ class Settings(object):
         }
 
         self.pages = {
-            "size" : 50
+            "size" : 100
         }
 
         self.Milestones = {
@@ -17,7 +17,7 @@ class Settings(object):
                 "Timed Break": True,
                 "Card Matching Minigame": True, 
                 "Pong Minigame": False,
-                "Reading Comprehension Questions": False,
+                "Reading Comprehension Questions": True,
                 "Reward Audio": False
             }
         }

@@ -1,5 +1,4 @@
 import fitz
-from bs4 import BeautifulSoup
 import sys
 import heapq
 import nltk
@@ -14,7 +13,7 @@ from img_ocr import *
 # Class to partition text into strings of size partition_size
 class Partition_Text(object):
 
-    def __init__(self, partition_size=50, milestone_frequency=5, text=""):
+    def __init__(self, partition_size=100, milestone_frequency=5, text=""):
         ''' This function initializes the Partition_Text class '''
         # Text variables
         self.text = text                                # string of text in file
@@ -32,7 +31,9 @@ class Partition_Text(object):
         self.current_partition = 0                      # index of current partition
         self.milestone_counter = 0                      # number of partitions since last milestone (resets to 0 after each milestone)
         self.milestone_running_count = 0                # number of milestones encountered so far
-        self.milestones_remaining = int(len(self.partitions) / self.milestone_frequency) + 1 # total number of milestones for reading 
+        self.milestones_remaining = int(len(self.partitions) / self.milestone_frequency)  # total number of milestones for reading 
+        if len(self.partitions) % self.milestone_frequency == 0:
+            self.milestones_remaining -= 1
 
     def parse_file(self, file_type, file_name):
         ''' This function takes in a file type and file name and calls the respective parsing function for that file type '''
@@ -48,6 +49,13 @@ class Partition_Text(object):
                 self.parse_pdf_w_image(file_name)
             else:
                 self.parse_pdf(file_name)
+    
+    def restart_file(self):
+        self.current_partition = 0                     # index of current partition
+        self.milestone_counter = 0                      # number of partitions since last milestone (resets to 0 after each milestone)
+        self.milestone_running_count = 0
+        print(str(self.get_partitions_list_size()))
+        pass
 
     def parse_txt(self, file_name):
         ''' This function takes in a file name and parses the txt file corresponding to that file name, then calls the partition_text function '''
@@ -61,7 +69,6 @@ class Partition_Text(object):
             json = ""
             for page in doc:
                 xhtml = page.get_text("xhtml")
-                json += page.get_text("json")
                 text += xhtml
             # remove images from text
             text = re.sub(r'<img(?s:.)*?/>', '', text)
@@ -69,7 +76,6 @@ class Partition_Text(object):
             self.text = text
 
             self.file_name = str(text[:20]) + "..."
-            self.partition_text()
             self.isXHTML = True
 
     def parse_pdf_w_image(self, file_name):
@@ -90,17 +96,21 @@ class Partition_Text(object):
     def set_milestone_frequency(self, frequency):
         if self.milestone_frequency != frequency:
             self.milestone_frequency = frequency
-            partitions_remaining = len(self.partitions) - self.current_partition
-            self.milestones_remaining = int(partitions_remaining / self.milestone_frequency) + self.milestone_running_count
-            self.milestone_counter = 0
-               
+            self.set_milestones_remaining()
+
+    def set_milestones_remaining(self):
+        partitions_remaining = len(self.partitions) - self.current_partition
+        self.milestones_remaining = int(partitions_remaining / self.milestone_frequency) + self.milestone_running_count
+        if partitions_remaining % self.milestone_frequency == 0:
+            self.milestones_remaining -= 1
+        self.milestone_counter = 0      
                 
-    
     def get_partitions_list_size(self):
         return len(self.partitions)
 
     def partition_text(self):
         ''' This function partitions the text into strings of size partition_size (or less) and stores them in a list '''
+        self.partitions = []
         if self.isXHTML:
             self.partition_text_xhtml()
         else:
@@ -112,7 +122,7 @@ class Partition_Text(object):
             max_sentence = heapq.nlargest(1, [len(sentence.split()) for sentence in sentences])[0]  # length of longest sentence
             if max_sentence > self.partition_size:                                                  # if the longest sentence is longer than the partition size
                 print("Partition size is too small, increasing partition size to", max_sentence)
-                self.partition_size = max_sentence                                                  # increase partition size to length of longest sentence (TODO: should we do this or just throw an error?)
+                self.partition_size = max_sentence                                                  # increase partition size to length of longest sentence
 
             # Partition text into strings of size partition_size (or less)
             while len(sentences) > 0:                                                               # while there are more sentences to partition
@@ -123,57 +133,46 @@ class Partition_Text(object):
                     partition = " ".join([partition, sentences.pop(0)])         # add next sentence to current partition
                 
                 self.partitions.append(partition.strip())                       # add current partition to list of partitions
+        self.set_milestones_remaining()                                     # use new list size to determing remaining partitions
+
 
     def partition_text_xhtml(self):
-        soup = BeautifulSoup(self.text, "html.parser")
-        # go through all elements in soup
-        children = []
-        # go through soup and store all single child elements in sentences as a tuple of (text, [tags]]))
-        for child in soup.recursiveChildGenerator():
-            if child.name:
-                if len(child.contents) == 1:
-                    if child.name == "b" or child.name == "i" or child.name == "u":
-                        # the previous element should be bolded, italicized, or underlined, so add it to the previous element
-                        children[-1] = (children[-1][0], children[-1][1] + [child.name])
-                    else:
-                        children.append((child.text, [child.name]))
-        # now we have our children as a list of tuples (text, [tags]), tokenize the text by sentence
-        for i in range(len(children)):
-            children[i] = (sent_tokenize(children[i][0]), children[i][1])
-        # now we have a list of tuples (list of sentences, [tags]), we want a list of tuples (individual sentence, [tags])
-        sentences = []
-        for child in children:
-            for sentence in child[0]:
-                sentences.append((sentence, child[1]))
+        sentences = sent_tokenize(self.text)                                                    # list of sentences in text
+        # split sentences with newlines
+        i = 0
+        while i < len(sentences):
+            split = sentences[i].split("\n")
+            split = [sentence.strip() for sentence in split if sentence != ""]
+            sentences = sentences[:i] + split + sentences[i+1:]
+            i += len(split)
 
         # Check if partition size is too small
-        max_sentence = heapq.nlargest(1, [len(sentence[0].split()) for sentence in sentences])[0]  # length of longest sentence
+        max_sentence = heapq.nlargest(1, [len(re.sub(r'<[^>]*>', '', sentence).split()) for sentence in sentences])[0]  # length of longest sentence
         if max_sentence > self.partition_size:                                                  # if the longest sentence is longer than the partition size
             print("Partition size is too small, increasing partition size to", max_sentence)
-            self.partition_size = max_sentence                                                  # increase partition size to length of longest sentence (TODO: should we do this or just throw an error?)
-
-        # Partition text into strings of size partition_size (or less)
+            self.partition_size = max_sentence                                                  # increase partition size to length of longest sentence
+        
         while len(sentences) > 0:                                                               # while there are more sentences to partition
-            partition = ("",[]) # will be a list of tuples (partition text without tags, [(sentence, [tags])])
-            while len(sentences) > 0\
-                and len((partition[0] + " " + sentences[0][0]).split())\
-                    <= self.partition_size:                            # while the current partition would not exceed the partition size if the next sentence were added
-                next_sentence = sentences.pop(0)                     # get next sentence
-                partition = (" ".join([partition[0], next_sentence[0]]),partition[1]+ [next_sentence])         # add next sentence to current partition
-            # now we have a partition with text of size partition_size (or less) and a list of tuples (sentence, [tags]) that make up that partition
-            # take the sentences and tags from the partition and add them to the list of partitions
-            text = ""
-            for sentence in partition[1]:
-                tagged_sentence = sentence[0]
-                sentence[1].reverse()
-                for tag in sentence[1]: # reverse the list of tags so that the tags are in the correct order
-                    tagged_sentence = "<" + tag + ">" + tagged_sentence + "</" + tag + ">" # add tags to sentence
-                text += tagged_sentence
-            # remove adjacent tags of the same type (i.e. if there is an end tag followed by a start tag OF THE SAME TYPE, remove both)
-            text = re.sub(r'</(\w+)><\1>', ' ', text)
-            self.partitions.append(text)                        # add partition to list of partitions
-
-        self.milestones_remaining = int(len(self.partitions) / self.milestone_frequency) # use new list size to determing remaining partitions
+                partition = ""
+                while len(sentences) > 0\
+                    and len(re.sub(r'<[^>]*>', '', (partition + " " + sentences[0])).split())\
+                        <= self.partition_size:                            # while the current partition would not exceed the partition size if the next sentence were added
+                    partition = " ".join([partition, sentences.pop(0)])         # add next sentence to current partition
+                
+                # complete any tags that were started but not finished (detect using regex)
+                start_tags = re.findall(r'<(\w+)>', partition)
+                end_tags = re.findall(r'</(\w+)>', partition)
+                while start_tags != []:
+                    tag = start_tags[0]
+                    if tag in end_tags:
+                        start_tags.remove(tag)
+                        end_tags.remove(tag)
+                    else:
+                        partition += "</" + tag + ">"
+                        sentences[0] = "<" + tag + ">" + sentences[0]
+                        start_tags.remove(tag)
+                # add partition to list of partitions
+                self.partitions.append(partition.strip())                       # add current partition to list of partitions
 
     # Return next partition or milestone
     def get_next(self, loadMileStone, loadTextBrowser):
