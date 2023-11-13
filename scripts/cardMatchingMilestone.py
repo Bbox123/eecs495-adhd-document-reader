@@ -40,6 +40,7 @@ class CardMatchingGame(QWidget):
         super().__init__()
         self.config = config
         self.initUI()
+        
 
     def initUI(self):
         self.gridLayout = QGridLayout()
@@ -50,9 +51,9 @@ class CardMatchingGame(QWidget):
         self.instructions = QLabel(parent=self)
         self.instructions.setStyleSheet("color: #4E8696;\n"
             "font-family: Inter;\n"
-            "font-size: 40px;\n"
+            "font-size: 30px;\n"
             "font-style: normal;\n"
-            "font-weight: 600;\n"
+            "font-weight: 400;\n"
             "line-height: normal;\n"
             "border-color: rgb(255, 255, 255);")
         self.instructions.setObjectName("instructions")
@@ -155,43 +156,33 @@ class LevelSelectionWindow(QWidget):
         self.setLayout(self.layout)
 
         self.level1_game = CardMatchingGame(ConfigCardMatching(4,4,4))
+        self.level1_game.resize(200,200)
         self.level2_game = CardMatchingGame(ConfigCardMatching(4,6,6))
+        self.level2_game.resize(200,200)
         self.level3_game = CardMatchingGame(ConfigCardMatching(6,6,9))
+        self.level3_game.resize(200,200)
 
     def show_level1(self):
+        self.clearLayout()
         self.layout.addWidget(self.level1_game)
         self.level1_game.show()
-        # self.hide()
-        self.button_level1.hide()
-        self.button_level2.hide()
-        self.button_level3.hide()
-        
 
     def show_level2(self):
+        self.clearLayout()
         self.layout.addWidget(self.level2_game)
         self.level2_game.show()
-        self.button_level1.hide()
-        self.button_level2.hide()
-        self.button_level3.hide()
 
     def show_level3(self):
+        self.clearLayout()
         self.layout.addWidget(self.level3_game)
         self.level3_game.show()
-        self.button_level1.hide()
-        self.button_level2.hide()
-        self.button_level3.hide()
     
-    def switch_widget(self, new_widget):
-        # Remove the current widget from the layout
-        self.layout.removeWidget(self.current_widget)
-        self.current_widget.hide()
-
-        # Set the new widget as the current widget
-        self.current_widget = new_widget
-
-        # Add the new widget to the layout
-        self.layout.addWidget(self.current_widget)
-        self.current_widget.show()
+    def clearLayout(self):
+        while self.layout.count():
+            item = self.layout.takeAt(0)
+            widget = item.widget()
+            if widget is not None:
+                widget.deleteLater()
 
 class MainWidget(QWidget):
     def __init__(self):
@@ -233,9 +224,8 @@ class MainWidget(QWidget):
 if __name__ == "__main__":
     
     app = QApplication(sys.argv)
-    config = ConfigCardMatching(4,6,6)
-    # game = CardMatchingGame(config)
-    # game.show()
-    window = LevelSelectionWindow()
-    window.show()
+    config = ConfigCardMatching(6,6,6)
+    game = CardMatchingGame(config)
+    game.show()
+    
     sys.exit(app.exec())
