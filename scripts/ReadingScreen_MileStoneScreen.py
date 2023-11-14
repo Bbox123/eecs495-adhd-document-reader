@@ -378,6 +378,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.gridLayout.update()
 
     def instantiatePopUps(self):
+        """Create and store instances of the configuration and settings UI classes."""
         self.configPopUp = config.Ui_MainWindow(self.adhdReader, self)
         self.configPopUp.hide()
 
@@ -385,7 +386,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.settingsPopUp.hide() 
 
     def togglePopUp(self, popUp: QtWidgets.QMainWindow):
-        """If the pop up is visible, hide it. Otherwise show it"""
+        """If the pop up is visible, hide it. Otherwise show it."""
         if popUp.isVisible():
             popUp.hide()
             self.overlay.hide()
@@ -395,7 +396,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
             popUp.show()
             
     def toggleTTS(self):
-        """Toggle text to speech"""
+        """Toggle text to speech."""
         icon = QtGui.QIcon()
         if self.muted:
             self.muted = False
@@ -444,7 +445,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
             self.paused = True
 
     def updateReaderToMatchSettings(self):
-        """Apply the settings to their relative objects"""
+        """Apply the settings to their relative objects."""
         # Grab settings object
         settings:settings_backend.Settings = self.adhdReader.settings
 

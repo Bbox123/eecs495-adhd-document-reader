@@ -31,6 +31,6 @@ Prints out the parsed and partitioned text to the console
 
 ## Beta Release Usage Instructions
 
-1. Navigate to our beta release: https://github.com/Bbox123/eecs495-adhd-document-reader/releases/tag/v.0.9
-2. Follow instructions from there
+1. Navigate to our beta release: https://github.com/Bbox123/eecs495-adhd-document-reader/releases/tag/v.0.91
+2. Follow instructions on that page
 
