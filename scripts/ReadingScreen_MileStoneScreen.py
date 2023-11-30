@@ -43,7 +43,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
     def setupUi(self):
         self.setObjectName("MainWindow")
         self.setWindowTitle(self.parser.file_title)
-        self.resize(1124, 749)
+        self.resize(1125, 750)
         self.setStyleSheet("background-color: rgb(252, 255, 237);")
         self.centralwidget = QtWidgets.QWidget(parent=self)
         self.centralwidget.setObjectName("centralwidget")
@@ -54,8 +54,8 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         docTitle.setStyleSheet("background-color: #4E8696; font-style: italic; color: white; text-align: center; font-size: 20px; line-height: 1000px")
         docTitle.setAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter|QtCore.Qt.AlignmentFlag.AlignVCenter)
         # docTitle.setFixedSize(1124,50)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Expanding)
-        docTitle.setMaximumSize(QtCore.QSize(16777215, 40))
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed)
+        docTitle.setMinimumHeight(40)
         docTitle.setSizePolicy(sizePolicy)
         docTitle.setText('Reading: "'+ self.parser.file_title + '\"')
         self.verticalLayout.addWidget(docTitle)
@@ -318,12 +318,12 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
     def loadLastPartition(self):
         """Get the next partition or milestone"""
         if self.parser.current_partition > 2:
-            self.document.setHtml(self.parser.get_last(self.loadTextBrowser))
+            self.document.setHtml(self.parser.get_last(self.loadTextBrowser, self.mileStoneScreen))
             self.textBrowser.setDocument(self.document)
             self.progressBar.setValue(self.parser.current_partition)
         elif self.parser.current_partition == 2:
             self.leftArrow.setIcon(self.leftDisabled)
-            self.document.setHtml(self.parser.get_last(self.loadTextBrowser))
+            self.document.setHtml(self.parser.get_last(self.loadTextBrowser, self.mileStoneScreen))
             self.textBrowser.setDocument(self.document)
             self.progressBar.setValue(self.parser.current_partition)
         tts.audio_unload()
@@ -362,6 +362,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
 
     def loadTextBrowser(self):
         """Check to see if text browser needs to be shown. Hide all other widgets in our grid except for our text browser"""
+        self.mileStoneScreen = None
         if self.textBrowser.isHidden() is not True:
             return
          # make page visible
