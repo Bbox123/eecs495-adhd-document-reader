@@ -69,7 +69,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.horizontalLayout.setContentsMargins(-1, -1, 0, -1)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.frame = QtWidgets.QFrame(parent=self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setWidthForHeight(False)
@@ -99,7 +99,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.gridLayout = QtWidgets.QGridLayout(self.frame)
         self.gridLayout.setObjectName("gridLayout")
         self.textBrowser = QtWidgets.QTextBrowser(parent=self.frame)
-        self.textBrowser.setStyleSheet(f"border-color: rgb(255, 255, 255);font-size:{self.adhdReader.settings.text['size']};", )
+        self.textBrowser.setStyleSheet(f"border-color: rgb(255, 255, 255);font-size:{self.adhdReader.settings.text['size']};padding:30px 40px; line-height: 3; font-weight:lighter", )
         self.textBrowser.setObjectName("textBrowser")
         self.document = QtGui.QTextDocument()
         self.document.setHtml(self.parser.get_next(self.loadMileStone, self.loadTextBrowser))
@@ -118,9 +118,9 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.gridLayout.addWidget(self.textBrowser, 1, 0, 1, 1)
         
         """End of important things to pay attention to."""
-        # spacerItem1 = QtWidgets.QSpacerItem(1000, 1000, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
-        # self.horizontalLayout.addSpacerItem(spacerItem1)
-        self.horizontalLayout.addWidget(self.frame)
+        self.horizontalLayout.addStretch(stretch=1)
+        self.horizontalLayout.addWidget(self.frame, stretch=5)
+        
         self.verticalLayout_4 = QtWidgets.QVBoxLayout()
         self.verticalLayout_4.setSpacing(15)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
@@ -142,7 +142,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.Settings.setIconSize(QtCore.QSize(50, 50))
         self.Settings.setObjectName("Settings")
 
-        self.verticalLayout_4.addWidget(self.Settings)
+        self.verticalLayout_4.addWidget(self.Settings, alignment=QtCore.Qt.AlignmentFlag.AlignRight)
         self.configDoc = QtWidgets.QToolButton(parent=self.centralwidget, clicked = lambda: self.togglePopUp(self.configPopUp))
         self.configDoc.setStyleSheet("QToolButton {\n"
 "    border: none;    \n"
@@ -226,9 +226,8 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.textToSpeechLabel.hide()
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.verticalLayout_4.addItem(spacerItem)
-        # spacerItem2 = QtWidgets.QSpacerItem(1000, 1000, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Maximum)
-        # self.horizontalLayout.addSpacerItem(spacerItem2)
-        self.horizontalLayout.addLayout(self.verticalLayout_4)
+        self.horizontalLayout.addStretch(stretch=1)
+        self.horizontalLayout.addLayout(self.verticalLayout_4, stretch=2)
         self.horizontalLayout.setStretch(0, 1)
 
         self.verticalLayout_2.addLayout(self.horizontalLayout)
