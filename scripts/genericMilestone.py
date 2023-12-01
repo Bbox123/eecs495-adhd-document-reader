@@ -16,11 +16,12 @@ import settings
 m_disabled = "Milestones disabled\ncontinue reading"
 class Ui_Generic_Milestone(QtWidgets.QWidget):
     
-    def __init__(self, readingBoxGridLayout: QtWidgets.QGridLayout, readingScreen):
+    def __init__(self, readingBoxGridLayout: QtWidgets.QGridLayout, readingScreen, milestoneIndex):
         super().__init__()
         self.readingScreen = readingScreen
         self.readingBoxGridLayout = readingBoxGridLayout
         self.settings:settings = readingScreen.adhdReader.settings
+        self.milestoneIndex = milestoneIndex
         self.mileStoneChoice = ""
         self.mileStoneWidget = None
         self.setupUi()
@@ -50,13 +51,12 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
         self.mainUI.setObjectName("mainUI")
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Preferred)
         self.horizontalLayout_4.addItem(spacerItem)
         self.label = QtWidgets.QLabel(parent=self)
         self.label.setStyleSheet("width: 645px;\n"
 "font: 45pt \"Niramit\";\n"
 "height: 76px;\n"
-"flex-shrink: 0;\n"
 "color: #324143;\n"
 "font-size: 45px;\n"
 "font-style: normal;\n"
@@ -64,12 +64,12 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
 "line-height: normal;")
         self.label.setObjectName("label")
         self.horizontalLayout_4.addWidget(self.label)
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Preferred)
         self.horizontalLayout_4.addItem(spacerItem1)
         self.mainUI.addLayout(self.horizontalLayout_4)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        spacerItem2 = QtWidgets.QSpacerItem(561, 20, QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem2 = QtWidgets.QSpacerItem(561, 20, QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
         self.horizontalLayout_2.addItem(spacerItem2)
         '''self.milestoneNum = QtWidgets.QLabel(parent=self)
         self.milestoneNum.setStyleSheet("color: #4E8696;\n"
@@ -104,22 +104,22 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
         self.milestoneTotal.setObjectName("milestoneTotal")
         self.milestoneTotal.setAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter)
         self.horizontalLayout_2.addWidget(self.milestoneTotal)
-        spacerItem3 = QtWidgets.QSpacerItem(561, 20, QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem3 = QtWidgets.QSpacerItem(560, 20, QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
         self.horizontalLayout_2.addItem(spacerItem3)
         self.mainUI.addLayout(self.horizontalLayout_2)
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
-        spacerItem4 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem4 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Preferred)
         self.horizontalLayout_5.addItem(spacerItem4)
         self.label_2 = QtWidgets.QLabel(parent=self)
         self.label_2.setObjectName("label_2")
         self.horizontalLayout_5.addWidget(self.label_2)
-        spacerItem5 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem5 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Preferred)
         self.horizontalLayout_5.addItem(spacerItem5)
         self.mainUI.addLayout(self.horizontalLayout_5)
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        spacerItem6 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem6 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Preferred)
         self.horizontalLayout_3.addItem(spacerItem6)
         self.startButton = QtWidgets.QPushButton(parent=self, clicked = lambda: self.goToMilestone())
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
@@ -147,11 +147,11 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
                                 }""")
         self.startButton.setObjectName("startButton")
         self.horizontalLayout_3.addWidget(self.startButton)
-        spacerItem7 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem7 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Preferred)
         self.horizontalLayout_3.addItem(spacerItem7)
         self.mainUI.addLayout(self.horizontalLayout_3)
         self.skipButton = QtWidgets.QPushButton(parent=self, clicked = lambda: self.readingScreen.loadNextPartition())
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.skipButton.sizePolicy().hasHeightForWidth())
@@ -173,11 +173,10 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
 "    font-style: normal;\n"
 "    font-weight: 400;\n"
 "    line-height: normal;\n"
-"    text-decoration-line: underline;\n"
 "}")
         self.skipButton.setObjectName("skipButton")
         self.mainUI.addWidget(self.skipButton)
-        spacerItem8 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Preferred)
+        spacerItem8 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
         self.mainUI.addItem(spacerItem8)
         self.horizontalLayout.addLayout(self.mainUI)
         self.verticalLayout_3 = QtWidgets.QVBoxLayout()
@@ -223,7 +222,6 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
 
         # already choosing milestones based on enabled ones, so we just need to change the settings object for this instance
         for milestone, enabled in self.settings.Milestones["enabled"].items():
-            print(f"{milestone} : {enabled}")
             if enabled:
                 mileStoneChoices.append(milestone)
 
@@ -231,7 +229,8 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
         if len(mileStoneChoices) == 0:
                 self.mileStoneChoice = m_disabled
         else: 
-                self.mileStoneChoice = mileStoneChoices[random.randrange(0, len(mileStoneChoices))]
+                index = self.milestoneIndex % len(mileStoneChoices) # choosing from enabled milestones in round robin format
+                self.mileStoneChoice = mileStoneChoices[index]
 
         # based off choice, update button text
         if self.mileStoneChoice == "Reading Comprehension Questions":

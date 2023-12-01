@@ -37,13 +37,14 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
 
         # Set default milestone screen
         self.mileStoneScreen = None
+        self.milestoneIndex = 0
 
         self.setupUi()
 
     def setupUi(self):
         self.setObjectName("MainWindow")
         self.setWindowTitle(self.parser.file_title)
-        self.resize(1124, 749)
+        self.resize(1125, 750)
         self.setStyleSheet("background-color: rgb(252, 255, 237);")
         self.centralwidget = QtWidgets.QWidget(parent=self)
         self.centralwidget.setObjectName("centralwidget")
@@ -54,8 +55,8 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         docTitle.setStyleSheet("background-color: #4E8696; font-style: italic; color: white; text-align: center; font-size: 20px; line-height: 1000px")
         docTitle.setAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter|QtCore.Qt.AlignmentFlag.AlignVCenter)
         # docTitle.setFixedSize(1124,50)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Expanding)
-        docTitle.setMaximumSize(QtCore.QSize(16777215, 40))
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed)
+        docTitle.setMinimumHeight(40)
         docTitle.setSizePolicy(sizePolicy)
         docTitle.setText('Reading: "'+ self.parser.file_title + '\"')
         self.verticalLayout.addWidget(docTitle)
@@ -294,6 +295,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         QtCore.QMetaObject.connectSlotsByName(self)
 
         self.updateReaderToMatchSettings()
+        self.parser.milestone_counter = 0 # reset to hot fix bug
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
@@ -318,12 +320,12 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
     def loadLastPartition(self):
         """Get the next partition or milestone"""
         if self.parser.current_partition > 2:
-            self.document.setHtml(self.parser.get_last(self.loadTextBrowser))
+            self.document.setHtml(self.parser.get_last(self.loadTextBrowser, self.loadMileStone))
             self.textBrowser.setDocument(self.document)
             self.progressBar.setValue(self.parser.current_partition)
         elif self.parser.current_partition == 2:
             self.leftArrow.setIcon(self.leftDisabled)
-            self.document.setHtml(self.parser.get_last(self.loadTextBrowser))
+            self.document.setHtml(self.parser.get_last(self.loadTextBrowser, self.loadMileStone))
             self.textBrowser.setDocument(self.document)
             self.progressBar.setValue(self.parser.current_partition)
         tts.audio_unload()
@@ -333,7 +335,8 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         
     def loadMileStone(self):
         """Load generic milestone screen."""
-        self.mileStoneScreen = mileStoneScreen.Ui_Generic_Milestone(self.gridLayout, self)
+        self.mileStoneScreen = mileStoneScreen.Ui_Generic_Milestone(self.gridLayout, self, self.milestoneIndex)
+        self.milestoneIndex += 1
         self.textBrowser.hide()
         # make page invisible
         self.frame.setStyleSheet("border: 00px solid #324143;\n"
