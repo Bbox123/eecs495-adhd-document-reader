@@ -4,7 +4,8 @@ class Settings(object):
         """set default settings here"""
         self.text = {
             "size" : 30,
-            "style" : "Inter"
+            "style" : "Inter",
+            "color" : "black"
         }
 
         self.pages = {

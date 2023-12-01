@@ -96,7 +96,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.gridLayout = QtWidgets.QGridLayout(self.frame)
         self.gridLayout.setObjectName("gridLayout")
         self.textBrowser = QtWidgets.QTextBrowser(parent=self.frame)
-        self.textBrowser.setStyleSheet(f"border-color: rgb(255, 255, 255);font-size:{self.adhdReader.settings.text['size']};", )
+        self.textBrowser.setStyleSheet(f"border-color: rgb(255, 255, 255);font-size:{self.adhdReader.settings.text['size']};color: black;", )
         self.textBrowser.setObjectName("textBrowser")
         self.document = QtGui.QTextDocument()
         self.document.setHtml(self.parser.get_next(self.loadMileStone, self.loadTextBrowser))
