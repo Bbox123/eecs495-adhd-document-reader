@@ -37,6 +37,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
 
         # Set default milestone screen
         self.mileStoneScreen = None
+        self.milestoneIndex = 0
 
         self.setupUi()
 
@@ -294,6 +295,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         QtCore.QMetaObject.connectSlotsByName(self)
 
         self.updateReaderToMatchSettings()
+        self.parser.milestone_counter = 0 # reset to hot fix bug
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
@@ -318,12 +320,12 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
     def loadLastPartition(self):
         """Get the next partition or milestone"""
         if self.parser.current_partition > 2:
-            self.document.setHtml(self.parser.get_last(self.loadTextBrowser, self.mileStoneScreen))
+            self.document.setHtml(self.parser.get_last(self.loadTextBrowser, self.loadMileStone))
             self.textBrowser.setDocument(self.document)
             self.progressBar.setValue(self.parser.current_partition)
         elif self.parser.current_partition == 2:
             self.leftArrow.setIcon(self.leftDisabled)
-            self.document.setHtml(self.parser.get_last(self.loadTextBrowser, self.mileStoneScreen))
+            self.document.setHtml(self.parser.get_last(self.loadTextBrowser, self.loadMileStone))
             self.textBrowser.setDocument(self.document)
             self.progressBar.setValue(self.parser.current_partition)
         tts.audio_unload()
@@ -333,7 +335,8 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         
     def loadMileStone(self):
         """Load generic milestone screen."""
-        self.mileStoneScreen = mileStoneScreen.Ui_Generic_Milestone(self.gridLayout, self)
+        self.mileStoneScreen = mileStoneScreen.Ui_Generic_Milestone(self.gridLayout, self, self.milestoneIndex)
+        self.milestoneIndex += 1
         self.textBrowser.hide()
         # make page invisible
         self.frame.setStyleSheet("border: 00px solid #324143;\n"
@@ -362,7 +365,6 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
 
     def loadTextBrowser(self):
         """Check to see if text browser needs to be shown. Hide all other widgets in our grid except for our text browser"""
-        self.mileStoneScreen = None
         if self.textBrowser.isHidden() is not True:
             return
          # make page visible

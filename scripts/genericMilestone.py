@@ -16,11 +16,12 @@ import settings
 m_disabled = "Milestones disabled\ncontinue reading"
 class Ui_Generic_Milestone(QtWidgets.QWidget):
     
-    def __init__(self, readingBoxGridLayout: QtWidgets.QGridLayout, readingScreen):
+    def __init__(self, readingBoxGridLayout: QtWidgets.QGridLayout, readingScreen, milestoneIndex):
         super().__init__()
         self.readingScreen = readingScreen
         self.readingBoxGridLayout = readingBoxGridLayout
         self.settings:settings = readingScreen.adhdReader.settings
+        self.milestoneIndex = milestoneIndex
         self.mileStoneChoice = ""
         self.mileStoneWidget = None
         self.setupUi()
@@ -56,7 +57,6 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
         self.label.setStyleSheet("width: 645px;\n"
 "font: 45pt \"Niramit\";\n"
 "height: 76px;\n"
-"flex-shrink: 0;\n"
 "color: #324143;\n"
 "font-size: 45px;\n"
 "font-style: normal;\n"
@@ -173,7 +173,6 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
 "    font-style: normal;\n"
 "    font-weight: 400;\n"
 "    line-height: normal;\n"
-"    text-decoration-line: underline;\n"
 "}")
         self.skipButton.setObjectName("skipButton")
         self.mainUI.addWidget(self.skipButton)
@@ -223,7 +222,6 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
 
         # already choosing milestones based on enabled ones, so we just need to change the settings object for this instance
         for milestone, enabled in self.settings.Milestones["enabled"].items():
-            print(f"{milestone} : {enabled}")
             if enabled:
                 mileStoneChoices.append(milestone)
 
@@ -231,7 +229,8 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
         if len(mileStoneChoices) == 0:
                 self.mileStoneChoice = m_disabled
         else: 
-                self.mileStoneChoice = mileStoneChoices[random.randrange(0, len(mileStoneChoices))]
+                index = self.milestoneIndex % len(mileStoneChoices) # choosing from enabled milestones in round robin format
+                self.mileStoneChoice = mileStoneChoices[index]
 
         # based off choice, update button text
         if self.mileStoneChoice == "Reading Comprehension Questions":
