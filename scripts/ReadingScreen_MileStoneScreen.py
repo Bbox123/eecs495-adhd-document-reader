@@ -72,9 +72,11 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.frame.sizePolicy().hasHeightForWidth())
+        sizePolicy.setWidthForHeight(False)
+        sizePolicy.setHeightForWidth(False)
         self.frame.setSizePolicy(sizePolicy)
-        self.frame.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.frame.setMaximumSize(QtCore.QSize(900, 16777215))
+        # self.frame.setMinimumSize(QtCore.QSize(900, 1))
         self.frame.setStyleSheet("border: 00px solid #324143;\n"
 "background: #FFF;\n"
 "padding: -10 px;")
@@ -116,6 +118,8 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.gridLayout.addWidget(self.textBrowser, 1, 0, 1, 1)
         
         """End of important things to pay attention to."""
+        # spacerItem1 = QtWidgets.QSpacerItem(1000, 1000, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
+        # self.horizontalLayout.addSpacerItem(spacerItem1)
         self.horizontalLayout.addWidget(self.frame)
         self.verticalLayout_4 = QtWidgets.QVBoxLayout()
         self.verticalLayout_4.setSpacing(15)
@@ -137,10 +141,12 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.Settings.setIcon(icon)
         self.Settings.setIconSize(QtCore.QSize(50, 50))
         self.Settings.setObjectName("Settings")
+
         self.verticalLayout_4.addWidget(self.Settings)
         self.configDoc = QtWidgets.QToolButton(parent=self.centralwidget, clicked = lambda: self.togglePopUp(self.configPopUp))
         self.configDoc.setStyleSheet("QToolButton {\n"
 "    border: none;    \n"
+"    background-color: transparent;\n"
 "}\n"
 "\n"
 "QToolButton::hover {\n"
@@ -220,6 +226,8 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.textToSpeechLabel.hide()
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.verticalLayout_4.addItem(spacerItem)
+        # spacerItem2 = QtWidgets.QSpacerItem(1000, 1000, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Maximum)
+        # self.horizontalLayout.addSpacerItem(spacerItem2)
         self.horizontalLayout.addLayout(self.verticalLayout_4)
         self.horizontalLayout.setStretch(0, 1)
 
