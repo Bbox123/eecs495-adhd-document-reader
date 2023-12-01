@@ -459,9 +459,13 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.parser.set_milestone_frequency(settings.Milestones["frequency"])
 
         check_boxes = self.settingsPopUp.grabMilestoneCheckBoxes()
+        anyMilestonesEnabled = False 
         for key, value in check_boxes.items():
             settings.Milestones["enabled"][key] = value.isChecked()
+            # if a checkbox is checked, milestonesenabled will be true
+            anyMilestonesEnabled = (anyMilestonesEnabled or value.isChecked())
 
+        self.parser.set_milestones_enabled(anyMilestonesEnabled)
         if self.mileStoneScreen is not None:
             self.mileStoneScreen.updateRemainingMilestonesText(self.parser.milestones_remaining)
             self.mileStoneScreen.updateMilestonePicked()
