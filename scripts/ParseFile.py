@@ -13,7 +13,7 @@ from img_ocr import *
 # Class to partition text into strings of size partition_size
 class Partition_Text(object):
 
-    def __init__(self, partition_size=100, milestone_frequency=5, text=""):
+    def __init__(self, partition_size=100, milestone_frequency=5, text="", start_sentence=0):
         ''' This function initializes the Partition_Text class '''
         # Text variables
         self.text = text                                # string of text in file
@@ -25,15 +25,18 @@ class Partition_Text(object):
         # Partition variables
         self.partition_size = partition_size            # number of words per partition
         self.milestone_frequency = milestone_frequency  # number of partitions between milestones
+        self.start_sentence = start_sentence            # sentence number to start reading from
+        self.partition_to_num_sentences = {}            # dictionary mapping partition number to number of sentences in that partition (used to determine which partition a given sentence number is in)
         
 
         # Counter variables
-        self.current_partition = 0                      # index of current partition
+        self.current_partition = 0                      # index of current partition (technically the next partition to be read)
         self.milestone_counter = 0                      # number of partitions since last milestone (resets to 0 after each milestone)
         self.milestone_running_count = 0                # number of milestones encountered so far
         self.milestones_remaining = int(len(self.partitions) / self.milestone_frequency)  # total number of milestones for reading 
         if len(self.partitions) % self.milestone_frequency == 0:
             self.milestones_remaining -= 1
+        self.sentences_read = 0                         # number of sentences read so far
 
     def parse_file(self, file_type, file_name):
         ''' This function takes in a file type and file name and calls the respective parsing function for that file type '''
@@ -120,44 +123,101 @@ class Partition_Text(object):
 
             # Check if partition size is too small
             max_sentence = heapq.nlargest(1, [len(sentence.split()) for sentence in sentences])[0]  # length of longest sentence
+            self.min_partition_size = max_sentence
             if max_sentence > self.partition_size:                                                  # if the longest sentence is longer than the partition size
                 print("Partition size is too small, increasing partition size to", max_sentence)
                 self.partition_size = max_sentence                                                  # increase partition size to length of longest sentence
 
+            num_sentences = 0                                                                      # number of sentences processed so far
+            start_point_set = False                                                                # boolean to check if start point has been set
+            i = 0                                                                                   # index of current partition
             # Partition text into strings of size partition_size (or less)
             while len(sentences) > 0:                                                               # while there are more sentences to partition
                 partition = ""
+                len_partition = 0                                                              # number of sentences in current partition
                 while len(sentences) > 0\
                     and len((partition + " " + sentences[0]).split())\
                         <= self.partition_size:                            # while the current partition would not exceed the partition size if the next sentence were added
+                    len_partition +=1                                                  # increment number of sentences in current partition
+                    if not start_point_set and num_sentences + len_partition >= self.start_sentence: # if the start point has not been set and the current partition contains the start sentence
+                        self.current_partition = i                                # set current partition to current partition
+                        self.sentences_read = num_sentences if i == 0 else num_sentences - self.partition_to_num_sentences[i - 1] # set number of sentences read to number of sentences processed so far
+                        start_point_set = True                                          # set start point to true
+                        print(f"moving to partition {i}")
+                        print(f"should be at sentence {self.start_sentence}, currently at sentence {num_sentences + len_partition}")
                     partition = " ".join([partition, sentences.pop(0)])         # add next sentence to current partition
+                num_sentences += len_partition                                         # increment number of sentences processed so far
+                self.partition_to_num_sentences[i] = len_partition
+                i += 1                                                                 # increment index of current partition
                 
                 self.partitions.append(partition.strip())                       # add current partition to list of partitions
         self.set_milestones_remaining()                                     # use new list size to determing remaining partitions
 
 
     def partition_text_xhtml(self):
-        sentences = sent_tokenize(self.text)                                                    # list of sentences in text
-        # split sentences with newlines
+        
+        self.text = re.sub(r'<p><\/p>', '', self.text)
+        self.text = re.sub(r'<p>\d+</p>\s*</div>', '', self.text)
+        self.text = re.sub(r'<div id="page0">', '', self.text)
+
+        sentences = re.split(r'(<p>.*?<\/p>)', self.text)
+        # remove empty strings
         i = 0
         while i < len(sentences):
-            split = sentences[i].split("\n")
-            split = [sentence.strip() for sentence in split if sentence != ""]
-            sentences = sentences[:i] + split + sentences[i+1:]
-            i += len(split)
-
+            if sentences[i] == "":
+                sentences.pop(i)
+            else:
+                i += 1
+        # split sentences more using sentence tokenizer
+        i = 0
+        while i < len(sentences):
+            split = sent_tokenize(sentences[i])
+            # replace the sentence with the split sentences (end result should still be a list of sentences)
+            sentences.pop(i)
+            for sentence in split:
+                if sentence != "":
+                    sentences.insert(i, sentence)
+                    i += 1
+        # remove newlines
+        i = 0
+        while i < len(sentences):
+            sentences[i] = sentences[i].replace("\n", " ")
+            i += 1
+            
+        with open("sentences.txt", "w") as f:
+            for sentence in sentences:
+                f.write(sentence + "\n")
         # Check if partition size is too small
         max_sentence = heapq.nlargest(1, [len(re.sub(r'<[^>]*>', '', sentence).split()) for sentence in sentences])[0]  # length of longest sentence
+        self.min_partition_size = max_sentence
         if max_sentence > self.partition_size:                                                  # if the longest sentence is longer than the partition size
             print("Partition size is too small, increasing partition size to", max_sentence)
             self.partition_size = max_sentence                                                  # increase partition size to length of longest sentence
         
+        # while building partitions, find the partition containing the start sentence (the sentence we left off on last time)
+        num_sentences = 0                                                                      # number of sentences processed so far
+        start_point_set = False                                                                # boolean to check if start point has been set
+        i = 0                                                                                   # index of current partition
         while len(sentences) > 0:                                                               # while there are more sentences to partition
                 partition = ""
+                len_partition = 0                                                              # number of sentences in current partition
                 while len(sentences) > 0\
                     and len(re.sub(r'<[^>]*>', '', (partition + " " + sentences[0])).split())\
                         <= self.partition_size:                            # while the current partition would not exceed the partition size if the next sentence were added
+                    # finding the start sentence
+                    len_partition +=1                                                  # increment number of sentences in current partition
+                    if not start_point_set and num_sentences + len_partition >= self.start_sentence: # if the start point has not been set and the current partition contains the start sentence
+                        self.current_partition = i                                # set current partition to current partition
+                        self.sentences_read = num_sentences if i == 0 else num_sentences - self.partition_to_num_sentences[i - 1] # set number of sentences read to number of sentences processed so far
+                        start_point_set = True                                          # set start point to true
+                        print(f"moving to partition {i}")
+                        print(f"should be at sentence {self.start_sentence}, currently at sentence {num_sentences + len_partition}")
+                    
                     partition = " ".join([partition, sentences.pop(0)])         # add next sentence to current partition
+                num_sentences += len_partition                                         # increment number of sentences processed so far
+                self.partition_to_num_sentences[i] = len_partition
+                i += 1                                                                 # increment index of current partition
+
                 
                 # complete any tags that were started but not finished (detect using regex)
                 start_tags = re.findall(r'<(\w+)>', partition)
@@ -173,6 +233,15 @@ class Partition_Text(object):
                         start_tags.remove(tag)
                 # add partition to list of partitions
                 self.partitions.append(partition.strip())                       # add current partition to list of partitions
+        # remove occurrences of "</p> <p>" IF AND ONLY IF there is no punctuation immediately before the "</p>"
+        i = 0
+        while i < len(self.partitions):
+            self.partitions[i] = re.sub(r'(?<![.,;:!?>])<\/p> *<p>', ' ', self.partitions[i])
+            i += 1
+        #output partitions to file for debugging
+        with open("partitions.txt", "w") as f:
+            for partition in self.partitions:
+                f.write(partition + "\n")
 
     # Return next partition or milestone
     def get_next(self, loadMileStone, loadTextBrowser):
@@ -183,6 +252,9 @@ class Partition_Text(object):
                 self.milestone_running_count += 1                           # increment milestone counter
                 loadMileStone()                                     # return milestone 
             else:                                                       # if not milestone
+                if self.current_partition > 0:
+                    self.sentences_read += self.partition_to_num_sentences[self.current_partition - 1]
+                print(f"sentences read: {self.sentences_read}")
                 self.milestone_counter += 1                                 # increment milestone counter
                 self.current_partition += 1                                 # increment current partition
                 # print(len(self.partitions[self.current_partition - 1].split())
@@ -199,9 +271,13 @@ class Partition_Text(object):
                 # deincrement milestone counter
                 self.milestone_counter -= 1
                 self.current_partition -= 1                                 # increment current partition
+                self.sentences_read -= self.partition_to_num_sentences[self.current_partition - 1]
+                print(f"sentences read: {self.sentences_read}")
                 # print(len(self.partitions[self.current_partition - 1].split())
             elif self.milestone_counter == 1:
                 self.current_partition -= 1 
+                self.sentences_read -= self.partition_to_num_sentences[self.current_partition - 1]
+                print(f"sentences read: {self.sentences_read}")
             else:   # if milestone_counter = 0, that means we are on a milestone screen
                 self.milestone_counter = self.milestone_frequency
                 self.milestone_running_count -= 1               # keeps us from counting the same milestone we've yet to pass
@@ -209,9 +285,7 @@ class Partition_Text(object):
             return self.partitions[self.current_partition - 1]          # return next partition
         else:                                                       # if no more partitions  
             return None 
-
-
-
+        
 ## Partition_Text usage
     # if using a txt or pdf file:
         # parser = Partition_Text()     # create parser
