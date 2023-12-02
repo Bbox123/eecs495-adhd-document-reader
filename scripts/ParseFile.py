@@ -148,8 +148,6 @@ class Partition_Text(object):
                         self.current_partition = i                                # set current partition to current partition
                         self.sentences_read = num_sentences if i == 0 else num_sentences - self.partition_to_num_sentences[i - 1] # set number of sentences read to number of sentences processed so far
                         start_point_set = True                                          # set start point to true
-                        print(f"moving to partition {i}")
-                        print(f"should be at sentence {self.start_sentence}, currently at sentence {num_sentences + len_partition}")
                     partition = " ".join([partition, sentences.pop(0)])         # add next sentence to current partition
                 num_sentences += len_partition                                         # increment number of sentences processed so far
                 self.partition_to_num_sentences[i] = len_partition
@@ -189,9 +187,6 @@ class Partition_Text(object):
             sentences[i] = sentences[i].replace("\n", " ")
             i += 1
             
-        with open("sentences.txt", "w") as f:
-            for sentence in sentences:
-                f.write(sentence + "\n")
         # Check if partition size is too small
         max_sentence = heapq.nlargest(1, [len(re.sub(r'<[^>]*>', '', sentence).split()) for sentence in sentences])[0]  # length of longest sentence
         self.min_partition_size = max_sentence
@@ -215,8 +210,6 @@ class Partition_Text(object):
                         self.current_partition = i                                # set current partition to current partition
                         self.sentences_read = num_sentences if i == 0 else num_sentences - self.partition_to_num_sentences[i - 1] # set number of sentences read to number of sentences processed so far
                         start_point_set = True                                          # set start point to true
-                        print(f"moving to partition {i}")
-                        print(f"should be at sentence {self.start_sentence}, currently at sentence {num_sentences + len_partition}")
                     
                     partition = " ".join([partition, sentences.pop(0)])         # add next sentence to current partition
                 num_sentences += len_partition                                         # increment number of sentences processed so far
@@ -243,10 +236,6 @@ class Partition_Text(object):
         while i < len(self.partitions):
             self.partitions[i] = re.sub(r'(?<![.,;:!?>])<\/p> *<p>', ' ', self.partitions[i])
             i += 1
-        #output partitions to file for debugging
-        with open("partitions.txt", "w") as f:
-            for partition in self.partitions:
-                f.write(partition + "\n")
 
     # Return next partition or milestone
     def get_next(self, loadMileStone, loadTextBrowser):
@@ -263,10 +252,8 @@ class Partition_Text(object):
             else:                                                       # if not milestone
                 if self.current_partition > 0:
                     self.sentences_read += self.partition_to_num_sentences[self.current_partition - 1]
-                print(f"sentences read: {self.sentences_read}")
                 self.milestone_counter += 1                                 # increment milestone counter
                 self.current_partition += 1                                 # increment current partition
-                # print(len(self.partitions[self.current_partition - 1].split())
                 loadTextBrowser()                                   # call to switch back over to text browser if necessary 
                 print(self.milestone_counter)
                 return self.partitions[self.current_partition - 1]          # return next partition
@@ -283,20 +270,13 @@ class Partition_Text(object):
                 self.milestone_counter -= 1
                 self.current_partition -= 1                                 # increment current partition
                 self.sentences_read -= self.partition_to_num_sentences[self.current_partition - 1]
-                print(f"sentences read: {self.sentences_read}")
                 # print(len(self.partitions[self.current_partition - 1].split())
             elif self.milestone_counter == 1:
                 self.current_partition -= 1 
                 self.sentences_read -= self.partition_to_num_sentences[self.current_partition - 1]
-                print(f"sentences read: {self.sentences_read}")
             else:   # if milestone_counter = 0, that means we are on a milestone screen
                 self.milestone_counter = self.milestone_frequency
                 self.milestone_running_count -= 1               # keeps us from counting the same milestone we've yet to pass
-            # deincrement milestone counter
-            self.milestone_counter -= 1
-            # increment current partition
-            self.current_partition -= 1   
-                    
             loadTextBrowser()                                   # call to switch back over to text browser if necessary 
 
             print(self.milestone_counter)
