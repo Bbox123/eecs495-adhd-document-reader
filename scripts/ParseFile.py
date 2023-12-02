@@ -25,6 +25,7 @@ class Partition_Text(object):
         # Partition variables
         self.partition_size = partition_size            # number of words per partition
         self.milestone_frequency = milestone_frequency  # number of partitions between milestones
+        self.milestones_enabled = True                  # whether milestones are currently enabled at all in settings
         self.start_sentence = start_sentence            # sentence number to start reading from
         self.partition_to_num_sentences = {}            # dictionary mapping partition number to number of sentences in that partition (used to determine which partition a given sentence number is in)
         
@@ -107,6 +108,10 @@ class Partition_Text(object):
         if partitions_remaining % self.milestone_frequency == 0:
             self.milestones_remaining -= 1
         self.milestone_counter = 0      
+
+    def set_milestones_enabled(self, milestones_enabled):
+        self.milestones_enabled = milestones_enabled
+
                 
     def get_partitions_list_size(self):
         return len(self.partitions)
@@ -247,10 +252,14 @@ class Partition_Text(object):
     def get_next(self, loadMileStone, loadTextBrowser):
         ''' This function returns the next partition or milestone or None if there are no more partitions '''
         if self.current_partition < len(self.partitions):           # if there are more partitions
-            if self.milestone_counter == self.milestone_frequency:      # if milestone
+            if self.milestone_counter >= self.milestone_frequency:      # if milestone
                 self.milestone_counter = 0                                  # reset milestone counter
                 self.milestone_running_count += 1                           # increment milestone counter
-                loadMileStone()                                     # return milestone 
+                if self.milestones_enabled:                                 
+                    loadMileStone()                                       
+                else:                                                     #still resets counter when no milestones enabled so milestone count will be correct if reenabled
+                    loadTextBrowser()                                   # call to switch back over to text browser if necessary 
+                    return self.partitions[self.current_partition - 1]                                     # return milestone 
             else:                                                       # if not milestone
                 if self.current_partition > 0:
                     self.sentences_read += self.partition_to_num_sentences[self.current_partition - 1]
@@ -259,13 +268,15 @@ class Partition_Text(object):
                 self.current_partition += 1                                 # increment current partition
                 # print(len(self.partitions[self.current_partition - 1].split())
                 loadTextBrowser()                                   # call to switch back over to text browser if necessary 
+                print(self.milestone_counter)
                 return self.partitions[self.current_partition - 1]          # return next partition
         else:                                                       # if no more partitions
             return None                                                 # return None (TODO: replace with front end call)
         
     # Return last partition or milestone
-    def get_last(self, loadTextBrowser):
+    def get_last(self, loadTextBrowser, milestoneScreen):
         ''' This function returns the last partition or milestone or None if there are no more partitions '''
+        
         if self.current_partition > 1: 
             if self.milestone_counter > 1:           
                 # deincrement milestone counter
@@ -281,8 +292,16 @@ class Partition_Text(object):
             else:   # if milestone_counter = 0, that means we are on a milestone screen
                 self.milestone_counter = self.milestone_frequency
                 self.milestone_running_count -= 1               # keeps us from counting the same milestone we've yet to pass
+            # deincrement milestone counter
+            self.milestone_counter -= 1
+            # increment current partition
+            self.current_partition -= 1   
+                    
             loadTextBrowser()                                   # call to switch back over to text browser if necessary 
-            return self.partitions[self.current_partition - 1]          # return next partition
+
+            print(self.milestone_counter)
+
+            return self.partitions[self.current_partition - 1]          # return prev partition
         else:                                                       # if no more partitions  
             return None 
         

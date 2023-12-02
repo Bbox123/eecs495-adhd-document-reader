@@ -17,7 +17,8 @@ class ADHDReader(QtWidgets.QMainWindow):
 
         self.stacked_widget.addWidget(MainWindow)
         self.setCentralWidget(self.stacked_widget)
-        self.resize(1500, 900)
+        self.resize(1600, 1000)
+        self.setMinimumSize(775, 950)
 
     def goToReadingScreen(self, parser):
         """Take the document or text and head to the reading screen to display it!"""
