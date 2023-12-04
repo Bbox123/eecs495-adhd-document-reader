@@ -45,7 +45,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.setObjectName("MainWindow")
         self.setWindowTitle(self.parser.file_title)
         self.resize(1125, 750)
-        self.setStyleSheet("background-color: rgb(252, 255, 237);")
+        self.setStyleSheet("background-color: #FAF8F3;")
         self.centralwidget = QtWidgets.QWidget(parent=self)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
@@ -142,7 +142,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.Settings.setIconSize(QtCore.QSize(50, 50))
         self.Settings.setObjectName("Settings")
 
-        self.verticalLayout_4.addWidget(self.Settings, alignment=QtCore.Qt.AlignmentFlag.AlignRight)
+        self.verticalLayout_4.addWidget(self.Settings, alignment=QtCore.Qt.AlignmentFlag.AlignCenter)
         self.configDoc = QtWidgets.QToolButton(parent=self.centralwidget, clicked = lambda: self.togglePopUp(self.configPopUp))
         self.configDoc.setStyleSheet("QToolButton {\n"
 "    border: none;    \n"
@@ -347,7 +347,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.textBrowser.hide()
         # make page invisible
         self.frame.setStyleSheet("border: 00px solid #324143;\n"
-                "background: rgb(252, 255, 237);\n"
+                "background: #FAF8F3;\n"
                 "padding: -10 px;")
         self.muted = False
         self.toggleTTS()
@@ -361,7 +361,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.textBrowser.hide()
          # make page invisible
         self.frame.setStyleSheet("border: 00px solid #324143;\n"
-                "background: rgb(252, 255, 237);\n"
+                "background: #FAF8F3;\n"
                 "padding: -10 px;")
         self.muted = False
         self.toggleTTS()

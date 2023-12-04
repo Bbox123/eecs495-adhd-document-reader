@@ -20,7 +20,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
     def setupUi(self):
         self.setObjectName("MainWindow")
         self.resize(1600, 1000)
-        self.setStyleSheet("background-color: rgb(252, 255, 237);")
+        self.setStyleSheet("background-color: #FAF8F3;")
         self.centralwidget = QtWidgets.QWidget(self)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
