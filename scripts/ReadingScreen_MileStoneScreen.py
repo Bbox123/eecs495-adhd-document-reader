@@ -302,7 +302,6 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         QtCore.QMetaObject.connectSlotsByName(self)
 
         self.updateReaderToMatchSettings()
-        self.parser.milestone_counter = 0 # reset to hot fix bug
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
@@ -464,27 +463,6 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
 
         # Text
         self.document.setDefaultFont(QtGui.QFont(settings.text["style"], int(settings.text["size"])))
- 
-        # Milestones
-        self.parser.set_milestone_frequency(settings.Milestones["frequency"])
-
-        check_boxes = self.settingsPopUp.grabMilestoneCheckBoxes()
-        anyMilestonesEnabled = False 
-        for key, value in check_boxes.items():
-            settings.Milestones["enabled"][key] = value.isChecked()
-            # if a checkbox is checked, milestonesenabled will be true
-            anyMilestonesEnabled = (anyMilestonesEnabled or value.isChecked())
-
-        self.parser.set_milestones_enabled(anyMilestonesEnabled)
-        if self.mileStoneScreen is not None:
-            self.mileStoneScreen.updateRemainingMilestonesText(self.parser.milestones_remaining)
-            self.mileStoneScreen.updateMilestonePicked()
-
-            # I'm sorry about this
-            if self.mileStoneScreen.mileStoneWidget is not None and self.mileStoneScreen.mileStoneChoice == "Reading Comprehension Questions":
-                # In this specific scenario, allows changing font size and style of text box
-                self.mileStoneScreen.mileStoneWidget.textBox.setFont(QtGui.QFont(settings.text["style"], int(settings.text["size"])))
-
 
         # Partition Size
         if self.parser.partition_size != settings.pages["size"]:
@@ -506,9 +484,30 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
             self.loadNextPartition()
             print(f"new partition: {self.parser.current_partition}")
             self.progressBar.setMaximum(len(self.parser.partitions))
-            self.progressBar.setValue(self.parser.current_partition)
+            self.progressBar.setValue(self.parser.current_partition - 1)
+            print("Calling progress bar set val")
             settings.pages["size"] = self.parser.partition_size
             print(settings.pages["size"])
+
+        # Milestones
+        self.parser.set_milestone_frequency(settings.Milestones["frequency"])
+
+        check_boxes = self.settingsPopUp.grabMilestoneCheckBoxes()
+        anyMilestonesEnabled = False 
+        for key, value in check_boxes.items():
+            settings.Milestones["enabled"][key] = value.isChecked()
+            # if a checkbox is checked, milestonesenabled will be true
+            anyMilestonesEnabled = (anyMilestonesEnabled or value.isChecked())
+
+        self.parser.set_milestones_enabled(anyMilestonesEnabled)
+        if self.mileStoneScreen is not None:
+            self.mileStoneScreen.updateRemainingMilestonesText(self.parser.milestones_remaining)
+            self.mileStoneScreen.updateMilestonePicked()
+
+            # I'm sorry about this
+            if self.mileStoneScreen.mileStoneWidget is not None and self.mileStoneScreen.mileStoneChoice == "Reading Comprehension Questions":
+                # In this specific scenario, allows changing font size and style of text box
+                self.mileStoneScreen.mileStoneWidget.textBox.setFont(QtGui.QFont(settings.text["style"], int(settings.text["size"])))
 
             
     def endAudio(self):

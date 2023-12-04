@@ -13,7 +13,7 @@ from img_ocr import *
 # Class to partition text into strings of size partition_size
 class Partition_Text(object):
 
-    def __init__(self, partition_size=100, milestone_frequency=5, text="", start_sentence=0):
+    def __init__(self, partition_size=70, milestone_frequency=5, text="", start_sentence=0):
         ''' This function initializes the Partition_Text class '''
         # Text variables
         self.text = text                                # string of text in file
@@ -58,6 +58,8 @@ class Partition_Text(object):
         self.current_partition = 0                     # index of current partition
         self.milestone_counter = 0                      # number of partitions since last milestone (resets to 0 after each milestone)
         self.milestone_running_count = 0
+        self.sentences_read = 0
+        self.set_milestones_remaining()
         print(str(self.get_partitions_list_size()))
         pass
 
@@ -263,20 +265,14 @@ class Partition_Text(object):
     # Return last partition or milestone
     def get_last(self, loadTextBrowser, milestoneScreen):
         ''' This function returns the last partition or milestone or None if there are no more partitions '''
-        
         if self.current_partition > 1: 
-            if self.milestone_counter > 1:           
-                # deincrement milestone counter
-                self.milestone_counter -= 1
-                self.current_partition -= 1                                 # increment current partition
-                self.sentences_read -= self.partition_to_num_sentences[self.current_partition - 1]
-                # print(len(self.partitions[self.current_partition - 1].split())
-            elif self.milestone_counter == 1:
-                self.current_partition -= 1 
-                self.sentences_read -= self.partition_to_num_sentences[self.current_partition - 1]
-            else:   # if milestone_counter = 0, that means we are on a milestone screen
-                self.milestone_counter = self.milestone_frequency
-                self.milestone_running_count -= 1               # keeps us from counting the same milestone we've yet to pass
+            # deincrement milestone counter
+            self.milestone_counter -= 1
+            # increment current partition
+            self.current_partition -= 1   
+
+            self.sentences_read -= self.partition_to_num_sentences[self.current_partition - 1]
+                    
             loadTextBrowser()                                   # call to switch back over to text browser if necessary 
 
             print(self.milestone_counter)
