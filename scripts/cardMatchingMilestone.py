@@ -3,16 +3,11 @@ from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QApplication, QWidget, QGridLayout, QPushButton, QLabel, QVBoxLayout
 import random
 import sys
+import time
+
+blocking_status = 0
 
 
-def blocking_delay(milliseconds):
-    loop = QEventLoop()
-    timer = QTimer()
-
-    timer.timeout.connect(loop.quit)
-    timer.start(milliseconds)
-
-    loop.exec()
 
 
 class ConfigCardMatching:
@@ -40,7 +35,21 @@ class CardMatchingGame(QWidget):
         super().__init__()
         self.config = config
         self.initUI()
+        self.blocking_status = 0
         
+
+    def blocking_delay(self, milliseconds):
+        print("blocking!")
+        self.blocking_status = 1
+        loop = QEventLoop()
+        timer = QTimer()
+
+        timer.timeout.connect(loop.quit)
+        timer.start(milliseconds)
+
+        loop.exec()
+        self.blocking_status = 0
+        print("end!")
 
     def initUI(self):
         self.gridLayout = QGridLayout()
@@ -118,8 +127,10 @@ class CardMatchingGame(QWidget):
                 
         else:
             # Delay to let the player see the cards before hiding them
-            blocking_delay(1000)
-            self.hideSelectedCards()
+            if not blocking_status:
+                self.blocking_delay(40)
+                time.sleep(0.96)
+                self.hideSelectedCards()
 
     def hideSelectedCards(self):
         for card in self.selected_cards:
