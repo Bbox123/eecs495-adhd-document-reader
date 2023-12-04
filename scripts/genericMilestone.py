@@ -221,7 +221,7 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
         mileStoneChoices = []
 
         # already choosing milestones based on enabled ones, so we just need to change the settings object for this instance
-        for milestone, enabled in self.settings.Milestones["enabled"].items():
+        for milestone, enabled in self.settings["milestones"]["enabled"].items():
             if enabled:
                 mileStoneChoices.append(milestone)
 
@@ -269,7 +269,7 @@ class Ui_Generic_Milestone(QtWidgets.QWidget):
          self.milestoneTotal.setText(f"{self.readingScreen.parser.milestone_running_count} of {newRemainder}")
 
     def updateMilestonePicked(self):
-         if self.mileStoneChoice == m_disabled or self.settings.Milestones["enabled"][self.mileStoneChoice] is False:
+         if self.mileStoneChoice == m_disabled or self.settings["milestones"]["enabled"][self.mileStoneChoice] is False:
               self.chooseMilestone()
          
                 

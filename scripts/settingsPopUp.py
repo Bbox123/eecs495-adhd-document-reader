@@ -590,7 +590,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         newStyleSheet = newStyleSheet.replace("{SIZE}", fontSize).replace("{STYLE}", fontStyle)
         self.sampleText.setStyleSheet(newStyleSheet)
         # update settings in settings function
-        self.adhdReader.settings.text["size"] = value
+        self.adhdReader.settings["text"]["size"] = value
 
     def changeFontStyle(self, fontStyle):
         '''Change the font style, also change the sample text.'''
@@ -607,21 +607,21 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         
         newStyleSheet = newStyleSheet.replace("{SIZE}", fontSize).replace("{STYLE}", fontStyle)
         self.sampleText.setStyleSheet(newStyleSheet)
-        self.adhdReader.settings.text["style"] = fontStyle
+        self.adhdReader.settings["text"]["style"] = fontStyle
 
     def changePageSize(self, size:str):
         if size.isnumeric() and size != "0" and int(size) != self.readingScreen.parser.partition_size:
-            self.adhdReader.settings.pages["size"] = int(size)
+            self.adhdReader.settings["pages"]["size"] = int(size)
 
         elif len(size) != 0:
-            self.wordsInput.setText(str(self.adhdReader.settings.pages["size"]))
+            self.wordsInput.setText(str(self.adhdReader.settings["pages"]["size"]))
 
     def changeMilestoneFrequency(self, frequency:str):
         if frequency.isnumeric() and frequency != "0" and int(frequency) < len(self.readingScreen.parser.partitions):
-            self.adhdReader.settings.Milestones["frequency"] = int(frequency)
+            self.adhdReader.settings["milestones"]["frequency"] = int(frequency)
 
         elif len(frequency) != 0:
-            self.frequencyInput.setText(str(self.adhdReader.settings.Milestones["frequency"]))
+            self.frequencyInput.setText(str(self.adhdReader.settings["milestones"]["frequency"]))
 
     # Replace with values from settings object
     def setCurrentSettingsUI(self):
@@ -631,24 +631,31 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         settings:settings_backend.Settings = self.adhdReader.settings
 
         # Text
+        # Font database
         self.font_db = QtGui.QFontDatabase
-        # The current font we use
-        self.fontStyleDropDown.addItem(settings.text["style"])
-        # We can add custom ones that are for individuals with dyslexia by manually adding them to this project and implementing here
-        self.fontStyleDropDown.addItems(self.font_db.families())
 
-        self.fontSlider.setValue(settings.text["size"])
+        fonts = self.font_db.families()
+        # Custom font we have
+        fonts.append("Inter")
+        # sort after the fact
+        fonts.sort()
+        # make first item our current font
+        fonts.insert(0, settings["text"]["style"])
+        self.fontStyleDropDown.addItems(fonts)
+        
+
+        self.fontSlider.setValue(settings["text"]["size"])
 
         # Pages
-        self.wordsInput.setText(str(settings.pages["size"]))
+        self.wordsInput.setText(str(settings["pages"]["size"]))
 
         # Milestones
-        self.frequencyInput.setText(str(settings.Milestones["frequency"]))
+        self.frequencyInput.setText(str(settings["milestones"]["frequency"]))
 
         check_boxes = self.grabMilestoneCheckBoxes()
 
         for key, value in check_boxes.items():
-            value.setChecked(settings.Milestones["enabled"][key])
+            value.setChecked(settings["milestones"]["enabled"][key])
 
     def grabMilestoneCheckBoxes(self):
         boxes = {
@@ -663,6 +670,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
     
     def closeSettings(self):
         '''update new reading screen settings and close menu'''
+        self.adhdReader.settings_backend.save_settings(self.adhdReader.settings)
         self.readingScreen.updateReaderToMatchSettings()
         self.readingScreen.togglePopUp(self)
         

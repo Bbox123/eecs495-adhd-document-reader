@@ -13,7 +13,8 @@ class ADHDReader(QtWidgets.QMainWindow):
 
         MainWindow = mw.Ui_MainWindow(self)
 
-        self.settings = settings.Settings()
+        self.settings_backend = settings.Settings()
+        self.settings = self.settings_backend.settings
 
         self.stacked_widget.addWidget(MainWindow)
         self.setCentralWidget(self.stacked_widget)

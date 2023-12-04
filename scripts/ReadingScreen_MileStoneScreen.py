@@ -8,14 +8,12 @@
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 import genericMilestone as mileStoneScreen
-import TakeABreakMilestone as tab_m
 import ParseFile
 import configureDocumentPopUp as config
 import settingsPopUp as settings
 import settings as settings_backend
 import TextToSpeech as tts
 import completionScreen as complete
-import math
 
 
 class Ui_ReadingScreen(QtWidgets.QMainWindow):
@@ -99,11 +97,11 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.gridLayout = QtWidgets.QGridLayout(self.frame)
         self.gridLayout.setObjectName("gridLayout")
         self.textBrowser = QtWidgets.QTextBrowser(parent=self.frame)
-        self.textBrowser.setStyleSheet(f"border-color: rgb(255, 255, 255);font-size:{self.adhdReader.settings.text['size']};color: black;padding:30px 40px; line-height: 3; font-weight:lighter", )
+        self.textBrowser.setStyleSheet(f"border-color: rgb(255, 255, 255);font-size:{self.adhdReader.settings['text']['size']};color: black;padding:30px 40px; line-height: 3; font-weight:lighter", )
         self.textBrowser.setObjectName("textBrowser")
         self.document = QtGui.QTextDocument()
         self.document.setHtml(self.parser.get_next(self.loadMileStone, self.loadTextBrowser))
-        self.document.setDefaultFont(QtGui.QFont(self.adhdReader.settings.text["style"], int(self.adhdReader.settings.text["size"])))
+        self.document.setDefaultFont(QtGui.QFont(self.adhdReader.settings["text"]["style"], int(self.adhdReader.settings["text"]["size"])))
         self.textBrowser.setDocument(self.document)
         self.backgroundFrame = QtWidgets.QFrame(self)
         self.backgroundFrame.setFixedSize(81,50)
@@ -462,12 +460,12 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         settings:settings_backend.Settings = self.adhdReader.settings
 
         # Text
-        self.document.setDefaultFont(QtGui.QFont(settings.text["style"], int(settings.text["size"])))
+        self.document.setDefaultFont(QtGui.QFont(settings["text"]["style"], int(settings["text"]["size"])))
 
         # Partition Size
-        if self.parser.partition_size != settings.pages["size"]:
-            # self.parser.current_partition = max(math.floor(self.parser.current_partition * (self.parser.partition_size / settings.pages["size"]))-1, 0)
-            new_partition_size = max(settings.pages["size"], self.parser.min_partition_size)
+        if self.parser.partition_size != settings["pages"]["size"]:
+            # self.parser.current_partition = max(math.floor(self.parser.current_partition * (self.parser.partition_size / settings["pages"]["size"]))-1, 0)
+            new_partition_size = max(settings["pages"]["size"], self.parser.min_partition_size)
             print(f"new_partition_size: {new_partition_size}")
             print(f"old partition: {self.parser.current_partition}")
             
@@ -477,7 +475,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
             #     back_step = self.parser.current_partition%math.ceil(new_partition_size/new_partition_size)+1
             #     print(f"back_step: {back_step}")
             #     self.parser.current_partition = math.floor((self.parser.current_partition-back_step) * (self.parser.partition_size / new_partition_size))
-            self.parser.partition_size = settings.pages["size"]
+            self.parser.partition_size = settings["pages"]["size"]
             self.parser.start_sentence = self.parser.sentences_read + 1     # we have read sentences_read sentences so far, so we start at the next one
             self.parser.partition_text()
             # self.parser.go_to_sentence(target_sentence)
@@ -486,16 +484,16 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
             self.progressBar.setMaximum(len(self.parser.partitions))
             self.progressBar.setValue(self.parser.current_partition - 1)
             print("Calling progress bar set val")
-            settings.pages["size"] = self.parser.partition_size
-            print(settings.pages["size"])
+            settings["pages"]["size"] = self.parser.partition_size
+            print(settings["pages"]["size"])
 
         # Milestones
-        self.parser.set_milestone_frequency(settings.Milestones["frequency"])
+        self.parser.set_milestone_frequency(settings["milestones"]["frequency"])
 
         check_boxes = self.settingsPopUp.grabMilestoneCheckBoxes()
         anyMilestonesEnabled = False 
         for key, value in check_boxes.items():
-            settings.Milestones["enabled"][key] = value.isChecked()
+            settings["milestones"]["enabled"][key] = value.isChecked()
             # if a checkbox is checked, milestonesenabled will be true
             anyMilestonesEnabled = (anyMilestonesEnabled or value.isChecked())
 
@@ -507,7 +505,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
             # I'm sorry about this
             if self.mileStoneScreen.mileStoneWidget is not None and self.mileStoneScreen.mileStoneChoice == "Reading Comprehension Questions":
                 # In this specific scenario, allows changing font size and style of text box
-                self.mileStoneScreen.mileStoneWidget.textBox.setFont(QtGui.QFont(settings.text["style"], int(settings.text["size"])))
+                self.mileStoneScreen.mileStoneWidget.textBox.setFont(QtGui.QFont(settings["text"]["style"], int(settings["text"]["size"])))
 
             
     def endAudio(self):

@@ -13,7 +13,7 @@ from img_ocr import *
 # Class to partition text into strings of size partition_size
 class Partition_Text(object):
 
-    def __init__(self, partition_size=70, milestone_frequency=5, text="", start_sentence=0):
+    def __init__(self, settings, text="", start_sentence=0, ):
         ''' This function initializes the Partition_Text class '''
         # Text variables
         self.text = text                                # string of text in file
@@ -23,8 +23,8 @@ class Partition_Text(object):
 
 
         # Partition variables
-        self.partition_size = partition_size            # number of words per partition
-        self.milestone_frequency = milestone_frequency  # number of partitions between milestones
+        self.partition_size = settings["pages"]["size"]            # number of words per partition
+        self.milestone_frequency = settings["milestones"]["frequency"]   # number of partitions between milestones
         self.milestones_enabled = True                  # whether milestones are currently enabled at all in settings
         self.start_sentence = start_sentence            # sentence number to start reading from
         self.partition_to_num_sentences = {}            # dictionary mapping partition number to number of sentences in that partition (used to determine which partition a given sentence number is in)
