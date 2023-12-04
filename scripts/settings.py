@@ -4,11 +4,11 @@ class Settings(object):
         """set default settings here"""
         self.text = {
             "size" : 30,
-            "style" : "Inter"
+            "style" : "DejaVu Sans"
         }
 
         self.pages = {
-            "size" : 100
+            "size" : 70
         }
 
         self.Milestones = {
