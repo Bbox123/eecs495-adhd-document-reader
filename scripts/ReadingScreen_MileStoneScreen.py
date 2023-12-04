@@ -45,7 +45,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.setObjectName("MainWindow")
         self.setWindowTitle(self.parser.file_title)
         self.resize(1125, 750)
-        self.setStyleSheet("background-color: rgb(252, 255, 237);")
+        self.setStyleSheet("background-color: #FAF8F3;")
         self.centralwidget = QtWidgets.QWidget(parent=self)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
@@ -69,12 +69,14 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.horizontalLayout.setContentsMargins(-1, -1, 0, -1)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.frame = QtWidgets.QFrame(parent=self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.frame.sizePolicy().hasHeightForWidth())
+        sizePolicy.setWidthForHeight(False)
+        sizePolicy.setHeightForWidth(False)
         self.frame.setSizePolicy(sizePolicy)
-        self.frame.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.frame.setMaximumSize(QtCore.QSize(900, 16777215))
+        # self.frame.setMinimumSize(QtCore.QSize(900, 1))
         self.frame.setStyleSheet("border: 00px solid #324143;\n"
 "background: #FFF;\n"
 "padding: -10 px;")
@@ -97,7 +99,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.gridLayout = QtWidgets.QGridLayout(self.frame)
         self.gridLayout.setObjectName("gridLayout")
         self.textBrowser = QtWidgets.QTextBrowser(parent=self.frame)
-        self.textBrowser.setStyleSheet(f"border-color: rgb(255, 255, 255);font-size:{self.adhdReader.settings.text['size']};color: black;", )
+        self.textBrowser.setStyleSheet(f"border-color: rgb(255, 255, 255);font-size:{self.adhdReader.settings.text['size']};color: black;padding:30px 40px; line-height: 3; font-weight:lighter", )
         self.textBrowser.setObjectName("textBrowser")
         self.document = QtGui.QTextDocument()
         self.document.setHtml(self.parser.get_next(self.loadMileStone, self.loadTextBrowser))
@@ -116,7 +118,9 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.gridLayout.addWidget(self.textBrowser, 1, 0, 1, 1)
         
         """End of important things to pay attention to."""
-        self.horizontalLayout.addWidget(self.frame)
+        self.horizontalLayout.addStretch(stretch=1)
+        self.horizontalLayout.addWidget(self.frame, stretch=5)
+        
         self.verticalLayout_4 = QtWidgets.QVBoxLayout()
         self.verticalLayout_4.setSpacing(15)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
@@ -137,10 +141,12 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.Settings.setIcon(icon)
         self.Settings.setIconSize(QtCore.QSize(50, 50))
         self.Settings.setObjectName("Settings")
-        self.verticalLayout_4.addWidget(self.Settings)
+
+        self.verticalLayout_4.addWidget(self.Settings, alignment=QtCore.Qt.AlignmentFlag.AlignCenter)
         self.configDoc = QtWidgets.QToolButton(parent=self.centralwidget, clicked = lambda: self.togglePopUp(self.configPopUp))
         self.configDoc.setStyleSheet("QToolButton {\n"
 "    border: none;    \n"
+"    background-color: transparent;\n"
 "}\n"
 "\n"
 "QToolButton::hover {\n"
@@ -220,7 +226,8 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.textToSpeechLabel.hide()
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.verticalLayout_4.addItem(spacerItem)
-        self.horizontalLayout.addLayout(self.verticalLayout_4)
+        self.horizontalLayout.addStretch(stretch=1)
+        self.horizontalLayout.addLayout(self.verticalLayout_4, stretch=2)
         self.horizontalLayout.setStretch(0, 1)
 
         self.verticalLayout_2.addLayout(self.horizontalLayout)
@@ -263,7 +270,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.progressBar.setProperty("value", 24)
         self.progressBar.setTextVisible(False)
         self.progressBar.setMaximum(self.parser.partition_size)
-        self.progressBar.setValue(1)
+        self.progressBar.setValue(0)
         self.progressBar.setObjectName("progressBar")
         self.horizontalLayout_2.addWidget(self.progressBar)
         self.rightArrow = QtWidgets.QPushButton(parent=self.centralwidget, clicked = lambda: self.loadNextPartition())
@@ -306,28 +313,30 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         # check for if completion screen should instead be loaded
         if self.parser.current_partition == len(self.parser.partitions):
             self.loadCompletion()
+            self.progressBar.setValue(self.parser.current_partition)
             print("entering completion")
-        self.document.setHtml(self.parser.get_next(self.loadMileStone, self.loadTextBrowser))
-        self.textBrowser.setDocument(self.document)
-        self.progressBar.setValue(self.parser.current_partition)
-        if self.parser.current_partition > 1:
-            self.leftArrow.setIcon(self.leftEnabled)
-        tts.audio_unload()
-        self.ttsLoaded = False
-        if self.paused == False:
-            self.playPauseTTS()
+        else:
+            self.document.setHtml(self.parser.get_next(self.loadMileStone, self.loadTextBrowser))
+            self.textBrowser.setDocument(self.document)
+            self.progressBar.setValue(self.parser.current_partition - 1)
+            if self.parser.current_partition > 1:
+                self.leftArrow.setIcon(self.leftEnabled)
+            tts.audio_unload()
+            self.ttsLoaded = False
+            if self.paused == False:
+                self.playPauseTTS()
 
     def loadLastPartition(self):
         """Get the next partition or milestone"""
         if self.parser.current_partition > 2:
             self.document.setHtml(self.parser.get_last(self.loadTextBrowser, self.loadMileStone))
             self.textBrowser.setDocument(self.document)
-            self.progressBar.setValue(self.parser.current_partition)
+            self.progressBar.setValue(self.parser.current_partition - 1)
         elif self.parser.current_partition == 2:
             self.leftArrow.setIcon(self.leftDisabled)
             self.document.setHtml(self.parser.get_last(self.loadTextBrowser, self.loadMileStone))
             self.textBrowser.setDocument(self.document)
-            self.progressBar.setValue(self.parser.current_partition)
+            self.progressBar.setValue(self.parser.current_partition - 1)
         tts.audio_unload()
         self.ttsLoaded = False
         if self.paused == False:
@@ -340,7 +349,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.textBrowser.hide()
         # make page invisible
         self.frame.setStyleSheet("border: 00px solid #324143;\n"
-                "background: rgb(252, 255, 237);\n"
+                "background: #FAF8F3;\n"
                 "padding: -10 px;")
         self.muted = False
         self.toggleTTS()
@@ -354,7 +363,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.textBrowser.hide()
          # make page invisible
         self.frame.setStyleSheet("border: 00px solid #324143;\n"
-                "background: rgb(252, 255, 237);\n"
+                "background: #FAF8F3;\n"
                 "padding: -10 px;")
         self.muted = False
         self.toggleTTS()
