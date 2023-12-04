@@ -263,7 +263,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.progressBar.setProperty("value", 24)
         self.progressBar.setTextVisible(False)
         self.progressBar.setMaximum(self.parser.partition_size)
-        self.progressBar.setValue(1)
+        self.progressBar.setValue(0)
         self.progressBar.setObjectName("progressBar")
         self.horizontalLayout_2.addWidget(self.progressBar)
         self.rightArrow = QtWidgets.QPushButton(parent=self.centralwidget, clicked = lambda: self.loadNextPartition())
@@ -306,28 +306,30 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         # check for if completion screen should instead be loaded
         if self.parser.current_partition == len(self.parser.partitions):
             self.loadCompletion()
+            self.progressBar.setValue(self.parser.current_partition)
             print("entering completion")
-        self.document.setHtml(self.parser.get_next(self.loadMileStone, self.loadTextBrowser))
-        self.textBrowser.setDocument(self.document)
-        self.progressBar.setValue(self.parser.current_partition)
-        if self.parser.current_partition > 1:
-            self.leftArrow.setIcon(self.leftEnabled)
-        tts.audio_unload()
-        self.ttsLoaded = False
-        if self.paused == False:
-            self.playPauseTTS()
+        else:
+            self.document.setHtml(self.parser.get_next(self.loadMileStone, self.loadTextBrowser))
+            self.textBrowser.setDocument(self.document)
+            self.progressBar.setValue(self.parser.current_partition - 1)
+            if self.parser.current_partition > 1:
+                self.leftArrow.setIcon(self.leftEnabled)
+            tts.audio_unload()
+            self.ttsLoaded = False
+            if self.paused == False:
+                self.playPauseTTS()
 
     def loadLastPartition(self):
         """Get the next partition or milestone"""
         if self.parser.current_partition > 2:
             self.document.setHtml(self.parser.get_last(self.loadTextBrowser, self.loadMileStone))
             self.textBrowser.setDocument(self.document)
-            self.progressBar.setValue(self.parser.current_partition)
+            self.progressBar.setValue(self.parser.current_partition - 1)
         elif self.parser.current_partition == 2:
             self.leftArrow.setIcon(self.leftDisabled)
             self.document.setHtml(self.parser.get_last(self.loadTextBrowser, self.loadMileStone))
             self.textBrowser.setDocument(self.document)
-            self.progressBar.setValue(self.parser.current_partition)
+            self.progressBar.setValue(self.parser.current_partition - 1)
         tts.audio_unload()
         self.ttsLoaded = False
         if self.paused == False:
