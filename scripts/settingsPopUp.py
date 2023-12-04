@@ -472,19 +472,19 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 "}")
         self.cardMatching.setObjectName("cardMatching")
         self.checkBoxes.addWidget(self.cardMatching)
-        self.pongMinigame = QtWidgets.QCheckBox(parent=self.settingsOptionMilestones)
-        self.pongMinigame.setLayoutDirection(QtCore.Qt.LayoutDirection.RightToLeft)
-        self.pongMinigame.setStyleSheet("font-family: Roboto;\n"
-"font-size: 25px;\n"
-"font-style: normal;\n"
-"font-weight: 400;\n"
-"line-height: normal;\n"
-"border: none;\n"
-"QCheckBox::checked {\n"
-"    background-color: rgb(182, 194, 139);\n"
-"}")
-        self.pongMinigame.setObjectName("pongMinigame")
-        self.checkBoxes.addWidget(self.pongMinigame)
+#         self.pongMinigame = QtWidgets.QCheckBox(parent=self.settingsOptionMilestones)
+#         self.pongMinigame.setLayoutDirection(QtCore.Qt.LayoutDirection.RightToLeft)
+#         self.pongMinigame.setStyleSheet("font-family: Roboto;\n"
+# "font-size: 25px;\n"
+# "font-style: normal;\n"
+# "font-weight: 400;\n"
+# "line-height: normal;\n"
+# "border: none;\n"
+# "QCheckBox::checked {\n"
+# "    background-color: rgb(182, 194, 139);\n"
+# "}")
+#         self.pongMinigame.setObjectName("pongMinigame")
+#         self.checkBoxes.addWidget(self.pongMinigame)
         self.readingComp = QtWidgets.QCheckBox(parent=self.settingsOptionMilestones)
         self.readingComp.setLayoutDirection(QtCore.Qt.LayoutDirection.RightToLeft)
         self.readingComp.setStyleSheet("font-family: Roboto;\n"
@@ -551,7 +551,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.enabledMileStonesLabel.setText(_translate("MainWindow", "Enabled Milestones:"))
         self.timedBreak.setText(_translate("MainWindow", "Timed Break"))
         self.cardMatching.setText(_translate("MainWindow", "Card Matching Minigame"))
-        self.pongMinigame.setText(_translate("MainWindow", "Pong Minigame"))
+        # self.pongMinigame.setText(_translate("MainWindow", "Pong Minigame"))
         self.readingComp.setText(_translate("MainWindow", "Reading Comprehension Questions"))
         self.rewardAudio.setText(_translate("MainWindow", "Reward Audio"))
 
@@ -654,7 +654,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         boxes = {
              "Timed Break" : self.timedBreak,
              "Card Matching Minigame" : self.cardMatching,
-             "Pong Minigame" : self.pongMinigame,
+        #      "Pong Minigame" : self.pongMinigame,
              "Reading Comprehension Questions" : self.readingComp,
              "Reward Audio" : self.rewardAudio
         }
