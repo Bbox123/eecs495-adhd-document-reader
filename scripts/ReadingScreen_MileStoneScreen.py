@@ -99,7 +99,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.gridLayout = QtWidgets.QGridLayout(self.frame)
         self.gridLayout.setObjectName("gridLayout")
         self.textBrowser = QtWidgets.QTextBrowser(parent=self.frame)
-        self.textBrowser.setStyleSheet(f"border-color: rgb(255, 255, 255);font-size:{self.adhdReader.settings.text['size']};padding:30px 40px; line-height: 3; font-weight:lighter", )
+        self.textBrowser.setStyleSheet(f"border-color: rgb(255, 255, 255);font-size:{self.adhdReader.settings.text['size']};color: black;padding:30px 40px; line-height: 3; font-weight:lighter", )
         self.textBrowser.setObjectName("textBrowser")
         self.document = QtGui.QTextDocument()
         self.document.setHtml(self.parser.get_next(self.loadMileStone, self.loadTextBrowser))
@@ -406,6 +406,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
             self.overlay.setGeometry(self.adhdReader.rect())
             self.overlay.show()
             popUp.show()
+
             
     def toggleTTS(self):
         """Toggle text to speech."""
@@ -487,12 +488,27 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
 
         # Partition Size
         if self.parser.partition_size != settings.pages["size"]:
-            self.parser.current_partition = max(math.floor(self.parser.current_partition * (self.parser.partition_size / settings.pages["size"]))-1, 0)
+            # self.parser.current_partition = max(math.floor(self.parser.current_partition * (self.parser.partition_size / settings.pages["size"]))-1, 0)
+            new_partition_size = max(settings.pages["size"], self.parser.min_partition_size)
+            print(f"new_partition_size: {new_partition_size}")
+            print(f"old partition: {self.parser.current_partition}")
+            
+            # if self.parser.partition_size > new_partition_size:
+            #     self.parser.current_partition = math.floor((self.parser.current_partition-1) * (self.parser.partition_size / new_partition_size))
+            # else:
+            #     back_step = self.parser.current_partition%math.ceil(new_partition_size/new_partition_size)+1
+            #     print(f"back_step: {back_step}")
+            #     self.parser.current_partition = math.floor((self.parser.current_partition-back_step) * (self.parser.partition_size / new_partition_size))
             self.parser.partition_size = settings.pages["size"]
+            self.parser.start_sentence = self.parser.sentences_read + 1     # we have read sentences_read sentences so far, so we start at the next one
             self.parser.partition_text()
+            # self.parser.go_to_sentence(target_sentence)
             self.loadNextPartition()
+            print(f"new partition: {self.parser.current_partition}")
             self.progressBar.setMaximum(len(self.parser.partitions))
             self.progressBar.setValue(self.parser.current_partition)
+            settings.pages["size"] = self.parser.partition_size
+            print(settings.pages["size"])
 
             
     def endAudio(self):
