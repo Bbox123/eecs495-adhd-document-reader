@@ -88,7 +88,7 @@ class Ui_Questions(QtWidgets.QWidget):
                                         }
                                    """)
         self.textBox.setObjectName("textBox")
-        self.textBox.setFont(QtGui.QFont(self.settings.text["style"], int(self.settings.text["size"])))
+        self.textBox.setFont(QtGui.QFont(self.settings["text"]["style"], int(self.settings["text"]["size"])))
         
         shadow = QtWidgets.QGraphicsDropShadowEffect()
 
