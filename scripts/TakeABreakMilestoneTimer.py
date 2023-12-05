@@ -176,6 +176,7 @@ class Ui_Timer(QtWidgets.QWidget):
         sizePolicy.setHeightForWidth(self.pauseButton.sizePolicy().hasHeightForWidth())
         self.pauseIcon = QtGui.QPixmap("UI/icons/pause.png")
         self.playIcon = QtGui.QPixmap("UI/icons/play.png")
+        playIconSize = self.playIcon.size()
         self.pauseButton.setSizePolicy(sizePolicy)
         self.pauseButton.setMinimumSize(QtCore.QSize(75, 75))
         self.pauseButton.setMaximumSize(QtCore.QSize(75, 16777215))
@@ -272,6 +273,7 @@ class Ui_Timer(QtWidgets.QWidget):
     def pauseTimer(self):
         if self.timerWidget.isActive():
             self.pauseButton.setIcon(QtGui.QIcon(self.playIcon))
+            self.pauseButton.setIconSize(QtCore.QSize(40, 40))
             self.pauseButton.setText("")
             self.timerWidget.stop()
         else:
