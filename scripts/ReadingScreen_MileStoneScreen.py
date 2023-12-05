@@ -293,6 +293,14 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         self.horizontalLayout_2.addWidget(self.rightArrow)
         self.verticalLayout_2.addLayout(self.horizontalLayout_2)
         self.setCentralWidget(self.centralwidget)
+
+
+        # create back and forward keyboard shortcuts for navigation
+        self.back = QtGui.QShortcut(QtGui.QKeySequence.StandardKey['MoveToPreviousChar'], self)
+        self.back.activated.connect(self.loadLastPartition)
+        
+        self.forward = QtGui.QShortcut(QtGui.QKeySequence.StandardKey['MoveToNextChar'], self)
+        self.forward.activated.connect(self.loadNextPartition)
         
         self.progressBar.setMaximum(self.parser.get_partitions_list_size())
 
@@ -300,6 +308,9 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         QtCore.QMetaObject.connectSlotsByName(self)
 
         self.updateReaderToMatchSettings()
+    
+    def testgarbage(self):
+        print("here, thank gid")
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
@@ -311,6 +322,8 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         if self.parser.current_partition == len(self.parser.partitions):
             self.loadCompletion()
             self.progressBar.setValue(self.parser.current_partition)
+            self.leftArrow.setIcon(self.leftEnabled)
+            self.parser.current_partition += 1
             print("entering completion")
         else:
             self.document.setHtml(self.parser.get_next(self.loadMileStone, self.loadTextBrowser))
@@ -322,6 +335,7 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
             self.ttsLoaded = False
             if self.paused == False:
                 self.playPauseTTS()
+
 
     def loadLastPartition(self):
         """Get the next partition or milestone"""
