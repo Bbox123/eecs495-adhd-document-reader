@@ -311,6 +311,8 @@ class Ui_ReadingScreen(QtWidgets.QMainWindow):
         if self.parser.current_partition == len(self.parser.partitions):
             self.loadCompletion()
             self.progressBar.setValue(self.parser.current_partition)
+            self.leftArrow.setIcon(self.leftEnabled)
+            self.parser.current_partition += 1
             print("entering completion")
         else:
             self.document.setHtml(self.parser.get_next(self.loadMileStone, self.loadTextBrowser))
